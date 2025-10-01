@@ -3,12 +3,13 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { WalletProvider } from '@/contexts/WalletContext'
 import { AppProvider } from '@/contexts/AppContext'
+import { NotificationProvider } from '@/contexts/NotificationContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Asset Ride - Premium RWA NFT Marketplace',
-  description: 'Tokenized Horses and Real Estate NFTs',
+  description: 'Tokenizing Horses and Real Estate NFTs',
 }
 
 export default function RootLayout({
@@ -21,7 +22,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <WalletProvider>
           <AppProvider>
-            {children}
+            <NotificationProvider>
+              {children}
+            </NotificationProvider>
           </AppProvider>
         </WalletProvider>
       </body>

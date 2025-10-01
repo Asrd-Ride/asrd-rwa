@@ -4,7 +4,17 @@ import { useApp } from '@/contexts/AppContext'
 import { platformStats } from '@/data/mockData'
 
 export default function Hero() {
-  const { buyASRD } = useApp()
+  const { buyASRD, isLoading } = useApp()
+
+  const handleBuyASRD = async () => {
+    const success = await buyASRD(1000) // Buy $1000 worth of ASRD
+    if (success) {
+      // Success message could be shown here
+      console.log('Successfully purchased ASRD tokens')
+    } else {
+      alert('Insufficient cash balance')
+    }
+  }
 
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-32 section-py">
@@ -20,8 +30,8 @@ export default function Hero() {
             Asset Ride
           </h1>
           <p className="text-xl md:text-2xl text-neutral-light mb-8 max-w-3xl mx-auto leading-relaxed">
-            Tokenizing the world's most exclusive real-world assets. 
-            <span className="text-financial-success"> Premium horses</span> and 
+            Tokenizing the world's most exclusive real-world assets.
+            <span className="text-financial-success"> Premium horses</span> and
             <span className="text-financial-primary"> luxury real estate</span> powered by ASRD.
           </p>
         </motion.div>
@@ -56,21 +66,22 @@ export default function Hero() {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
         >
           <motion.a
-            href="#marketplace"
+            href="#featured-assets"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="btn-financial px-8 py-4 rounded-xl font-semibold text-lg glow-success"
           >
             Explore Premium Assets
           </motion.a>
-          
+
           <motion.button
-            onClick={() => buyASRD(5000)}
+            onClick={handleBuyASRD}
+            disabled={isLoading}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="btn-outline px-8 py-4 rounded-xl font-semibold text-lg"
+            className="btn-outline px-8 py-4 rounded-xl font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Buy ASRD Tokens
+            {isLoading ? 'Processing...' : 'Buy ASRD Tokens'}
           </motion.button>
         </motion.div>
 

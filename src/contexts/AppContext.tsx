@@ -1,6 +1,7 @@
 'use client'
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useWallet } from './WalletContext'
+import { useNotification } from './NotificationContext'
 import { mockAssets, ownedAssets, mockProposals, treasuryData, platformStats } from '@/data/mockData'
 
 interface AppContextType {
@@ -11,10 +12,10 @@ interface AppContextType {
   platformStats: any
   selectedAssetType: 'all' | 'horse' | 'real-estate'
   auctionTimeLeft: number
-  buyASRD: (amount: number) => void
-  purchaseAsset: (assetId: number) => void
-  claimEarnings: (assetId: number) => void
-  voteOnProposal: (proposalId: number, support: boolean) => void
+  buyASRD: (usdAmount: number) => Promise<boolean>
+  purchaseAsset: (assetId: number) => Promise<boolean>
+  claimEarnings: (assetId: number) => Promise<void>
+  voteOnProposal: (proposalId: number, support: boolean) => Promise<void>
   setSelectedAssetType: (type: 'all' | 'horse' | 'real-estate') => void
   isLoading: boolean
 }
@@ -22,12 +23,13 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined)
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const { balance, asrdBalance, updateBalance, updateAsrdBalance } = useWallet()
+  const { asrdBalance, buyASRDTokens } = useWallet()
+  const { showNotification } = useNotification()
   const [assets, setAssets] = useState(mockAssets)
   const [userAssets, setUserAssets] = useState(ownedAssets)
   const [proposals, setProposals] = useState(mockProposals)
   const [selectedAssetType, setSelectedAssetType] = useState<'all' | 'horse' | 'real-estate'>('all')
-  const [auctionTimeLeft, setAuctionTimeLeft] = useState(86400) // 24 hours in seconds
+  const [auctionTimeLeft, setAuctionTimeLeft] = useState(86400)
   const [isLoading, setIsLoading] = useState(false)
 
   // Mock auction timer
@@ -38,24 +40,37 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return () => clearInterval(timer)
   }, [])
 
-  const buyASRD = async (amount: number) => {
+  const buyASRD = async (usdAmount: number) => {
     setIsLoading(true)
-    // Mock API call
     await new Promise(resolve => setTimeout(resolve, 1000))
-    updateAsrdBalance(asrdBalance + amount)
+    const success = buyASRDTokens(usdAmount)
     setIsLoading(false)
+    return success
   }
 
   const purchaseAsset = async (assetId: number) => {
     setIsLoading(true)
     const asset = assets.find(a => a.id === assetId)
     if (asset && asrdBalance >= asset.price) {
-      // Mock purchase
       await new Promise(resolve => setTimeout(resolve, 1500))
-      updateAsrdBalance(asrdBalance - asset.price)
       setUserAssets(prev => [...prev, { ...asset, id: Date.now() }])
+      setIsLoading(false)
+      
+      showNotification({
+        type: 'success',
+        title: 'Purchase Successful!',
+        message: `You are now a fractional owner of ${asset.name}.`
+      })
+      return true
+    } else {
+      setIsLoading(false)
+      showNotification({
+        type: 'error',
+        title: 'Insufficient Balance',
+        message: `You need ${asset?.price} ASRD to purchase this asset. You have ${Math.floor(asrdBalance)} ASRD.`
+      })
+      return false
     }
-    setIsLoading(false)
   }
 
   const claimEarnings = async (assetId: number) => {
@@ -64,13 +79,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     if (asset) {
       await new Promise(resolve => setTimeout(resolve, 1000))
       const earnings = asset.unclaimedWinnings || asset.unclaimedRent || 0
-      updateBalance(balance + earnings)
-      // Reset unclaimed earnings
       setUserAssets(prev => prev.map(a => 
         a.id === assetId 
           ? { ...a, unclaimedWinnings: 0, unclaimedRent: 0 }
           : a
       ))
+      
+      showNotification({
+        type: 'success',
+        title: 'Earnings Claimed!',
+        message: `Successfully claimed $${earnings} from ${asset.name}.`
+      })
     }
     setIsLoading(false)
   }
@@ -88,6 +107,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         : p
     ))
     setIsLoading(false)
+    
+    showNotification({
+      type: 'success',
+      title: 'Vote Submitted!',
+      message: `Your vote has been ${support ? 'for' : 'against'} the proposal has been recorded.`
+    })
   }
 
   const filteredAssets = selectedAssetType === 'all' 

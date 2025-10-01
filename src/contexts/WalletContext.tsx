@@ -2,23 +2,24 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 
 interface WalletContextType {
-  balance: number // USD balance
+  cashBalance: number // USD balance
   asrdBalance: number // ASRD token balance
-  updateBalance: (amount: number) => void
+  updateCashBalance: (amount: number) => void
   updateAsrdBalance: (amount: number) => void
   getUsdValue: (asrdAmount: number) => number
+  buyASRDTokens: (usdAmount: number) => void
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined)
 
-const ASRD_PRICE = 32 // $32 per ASRD token
+const ASRD_TOKEN_PRICE = 32 // $32 per ASRD token
 
 export function WalletProvider({ children }: { children: React.ReactNode }) {
-  const [balance, setBalance] = useState(10000) // $10,000 USD
-  const [asrdBalance, setAsrdBalance] = useState(10000) // 10,000 ASRD tokens
+  const [cashBalance, setCashBalance] = useState(10000) // $10,000 USD starting cash
+  const [asrdBalance, setAsrdBalance] = useState(312) // Starting ASRD = 10,000 / 32 = 312.5 ASRD
 
-  const updateBalance = (amount: number) => {
-    setBalance(amount)
+  const updateCashBalance = (amount: number) => {
+    setCashBalance(amount)
   }
 
   const updateAsrdBalance = (amount: number) => {
@@ -26,16 +27,27 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   }
 
   const getUsdValue = (asrdAmount: number) => {
-    return asrdAmount * ASRD_PRICE
+    return asrdAmount * ASRD_TOKEN_PRICE
+  }
+
+  const buyASRDTokens = (usdAmount: number) => {
+    if (cashBalance >= usdAmount) {
+      const asrdToBuy = usdAmount / ASRD_TOKEN_PRICE
+      setCashBalance(prev => prev - usdAmount)
+      setAsrdBalance(prev => prev + asrdToBuy)
+      return true
+    }
+    return false
   }
 
   return (
     <WalletContext.Provider value={{ 
-      balance, 
+      cashBalance, 
       asrdBalance, 
-      updateBalance, 
+      updateCashBalance, 
       updateAsrdBalance,
-      getUsdValue 
+      getUsdValue,
+      buyASRDTokens
     }}>
       {children}
     </WalletContext.Provider>
