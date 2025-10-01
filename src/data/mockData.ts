@@ -24,7 +24,7 @@ export const mockAssets: Asset[] = [
     type: 'horse',
     location: 'Dubai',
     price: 3500, // 3,500 ASRD = $112,000 USD
-    image: 'https://images.unsplash.com/photo-1513276347328-54bb2def6d6b?w=600&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1599140780245-99dce06649c3?w=600&h=400&fit=crop',
     stats: { wins: 12, places: 3, pedigree: 'Pure Arabian' },
     upcomingRace: 'Dubai World Cup',
     unclaimedWinnings: 0,
@@ -37,7 +37,7 @@ export const mockAssets: Asset[] = [
     type: 'real-estate',
     location: 'Dubai',
     price: 4500, // 4,500 ASRD = $144,000 USD
-    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=600&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1613977257592-4871e5fcd7c4?w=600&h=400&fit=crop',
     stats: { value: '$144,000', yield: '6.5%' },
     projectedRent: '$780/month',
     unclaimedRent: 0,
@@ -50,7 +50,7 @@ export const mockAssets: Asset[] = [
     type: 'horse',
     location: 'UK',
     price: 2800, // 2,800 ASRD = $89,600 USD
-    image: 'https://images.unsplash.com/photo-1597852074816-d933c7d2b988?w=600&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1574883509704-8ce8e0ad0dfa?w=600&h=400&fit=crop',
     stats: { wins: 8, places: 2, pedigree: 'Thoroughbred' },
     upcomingRace: 'Ascot Gold Cup',
     unclaimedWinnings: 0,
@@ -124,7 +124,7 @@ export const ownedAssets: Asset[] = [
     type: 'horse',
     location: 'Dubai',
     price: 4000, // 4,000 ASRD = $128,000 USD
-    image: 'https://images.unsplash.com/photo-1513276347328-54bb2def6d6b?w=600&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1599140780245-99dce06649c3?w=600&h=400&fit=crop',
     stats: { wins: 6, places: 1, pedigree: 'Desert Storm lineage' },
     upcomingRace: 'Dubai World Cup',
     unclaimedWinnings: 3200, // $3,200 USD in winnings

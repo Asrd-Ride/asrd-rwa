@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header'
 import Hero from '@/components/sections/Hero'
 import FeaturedAssets from '@/components/sections/FeaturedAssets'
 import PlatformStats from '@/components/sections/PlatformStats'
+import AuctionBar from '@/components/sections/AuctionBar'
 
 export default function Home() {
   const { isLoading } = useApp()
@@ -26,16 +27,33 @@ export default function Home() {
         </motion.div>
       )}
 
-      {/* Animated Background */}
+      {/* Elegant Animated Background */}
       <div className="fixed inset-0 overflow-hidden">
+        {/* Base Gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-financial-deep via-financial-dark to-black"></div>
         
-        {/* Animated Particles */}
+        {/* Animated Mesh Gradient */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-accent-success/10 to-transparent"></div>
+          <div className="absolute bottom-0 right-0 w-full h-1/2 bg-gradient-to-t from-accent-primary/10 to-transparent"></div>
+        </div>
+
+        {/* Subtle Grid Pattern */}
+        <div 
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                             linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+            backgroundSize: '50px 50px'
+          }}
+        ></div>
+
+        {/* Floating Particles */}
         <div className="absolute inset-0">
-          {[...Array(50)].map((_, i) => (
+          {[...Array(20)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-1 h-1 bg-accent-success rounded-full"
+              className="absolute w-1 h-1 bg-accent-success/30 rounded-full"
               initial={{
                 x: Math.random() * 100 + 'vw',
                 y: Math.random() * 100 + 'vh',
@@ -45,7 +63,7 @@ export default function Home() {
                 y: Math.random() * 100 + 'vh',
               }}
               transition={{
-                duration: Math.random() * 20 + 10,
+                duration: Math.random() * 30 + 20,
                 repeat: Infinity,
                 repeatType: 'reverse',
               }}
@@ -53,11 +71,11 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Floating Shapes */}
+        {/* Animated Orbs */}
         <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-accent-success/10 to-accent-primary/10 rounded-full blur-3xl"
+          className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-r from-accent-success/5 to-accent-primary/5 rounded-full blur-3xl"
           animate={{
-            scale: [1, 1.2, 1],
+            scale: [1, 1.1, 1],
             opacity: [0.3, 0.5, 0.3],
           }}
           transition={{
@@ -66,9 +84,9 @@ export default function Home() {
           }}
         />
         <motion.div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 rounded-full blur-3xl"
+          className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-accent-primary/5 to-accent-secondary/5 rounded-full blur-3xl"
           animate={{
-            scale: [1.2, 1, 1.2],
+            scale: [1.1, 1, 1.1],
             opacity: [0.4, 0.2, 0.4],
           }}
           transition={{
@@ -79,16 +97,29 @@ export default function Home() {
       </div>
 
       <Header />
+      
+      {/* Professional Auction Bar */}
+      <AuctionBar />
+      
       <Hero />
       <FeaturedAssets />
       <PlatformStats />
 
       <footer className="glass-nav border-t border-accent-success/20 py-8 relative z-10">
-        <div className="container-pro text-center">
-          <p className="text-neutral-mid">© 2024 Asset Ride. All rights reserved.</p>
-          <p className="text-neutral-mid text-sm mt-2">
-            Tokenizing Real World Assets • Built with Next.js 14
-          </p>
+        <div className="container-pro">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="text-center md:text-left mb-4 md:mb-0">
+              <p className="text-neutral-mid">© 2024 Asset Ride. All rights reserved.</p>
+              <p className="text-neutral-mid text-sm mt-1">
+                Tokenizing Real World Assets • Built with Next.js 14
+              </p>
+            </div>
+            <div className="flex space-x-6">
+              <a href="#" className="text-neutral-mid hover:text-accent-success transition-colors text-sm">Terms</a>
+              <a href="#" className="text-neutral-mid hover:text-accent-success transition-colors text-sm">Privacy</a>
+              <a href="#" className="text-neutral-mid hover:text-accent-success transition-colors text-sm">Contact</a>
+            </div>
+          </div>
         </div>
       </footer>
     </main>

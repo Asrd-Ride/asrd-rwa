@@ -1,13 +1,25 @@
 'use client'
 import { motion } from 'framer-motion'
 import { useApp } from '@/contexts/AppContext'
+import { useWallet } from '@/contexts/WalletContext'
 import { Star, MapPin, Coins, Heart, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function FeaturedAssets() {
-  const { assets } = useApp()
+  const { assets, purchaseAsset, isLoading } = useApp()
+  const { asrdBalance } = useWallet()
   
   const featuredAssets = assets.filter(asset => asset.featured).slice(0, 3)
+
+  const handlePurchase = (assetId: number) => {
+    const asset = assets.find(a => a.id === assetId)
+    if (asset && asrdBalance >= asset.price) {
+      purchaseAsset(assetId)
+    } else {
+      alert('Insufficient ASRD balance to purchase this asset')
+    }
+  }
 
   return (
     <section id="featured-assets" className="py-20 relative">
@@ -36,14 +48,15 @@ export default function FeaturedAssets() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ y: -8 }}
-              className="glass-card rounded-2xl overflow-hidden group cursor-pointer card-hover"
+              className="glass-card rounded-2xl overflow-hidden group cursor-pointer card-hover border border-white/10"
             >
               {/* Asset Image */}
               <div className="relative h-48 overflow-hidden">
-                <img 
+                <Image 
                   src={asset.image} 
                   alt={asset.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all" />
                 
@@ -130,9 +143,11 @@ export default function FeaturedAssets() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-gradient-to-r from-accent-success to-accent-primary text-financial-dark py-3 rounded-xl font-semibold glow-success hover:glow-primary transition-all"
+                  onClick={() => handlePurchase(asset.id)}
+                  disabled={isLoading}
+                  className="w-full bg-gradient-to-r from-accent-success to-accent-primary text-financial-dark py-3 rounded-xl font-semibold glow-success hover:glow-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  View Details
+                  {isLoading ? 'Processing...' : 'Purchase Asset'}
                 </motion.button>
               </div>
             </motion.div>
@@ -149,7 +164,7 @@ export default function FeaturedAssets() {
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center space-x-2 btn-outline px-8 py-4 rounded-xl font-semibold text-lg"
+              className="inline-flex items-center space-x-3 btn-outline px-8 py-4 rounded-xl font-semibold text-lg border-2 border-accent-success text-accent-success hover:bg-accent-success hover:text-financial-dark transition-all duration-300"
             >
               <span>Explore All Assets</span>
               <ArrowRight className="w-5 h-5" />

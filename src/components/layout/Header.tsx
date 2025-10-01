@@ -6,7 +6,7 @@ import { Menu, X, Wallet, Coins } from 'lucide-react'
 import Link from 'next/link'
 
 export default function Header() {
-  const { balance, asrdBalance } = useWallet()
+  const { balance, asrdBalance, getUsdValue } = useWallet()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const menuItems = [
@@ -16,6 +16,8 @@ export default function Header() {
     { label: 'DAO', href: '/dao' },
     { label: 'Treasury', href: '/treasury' }
   ]
+
+  const asrdValueUSD = getUsdValue(asrdBalance)
 
   return (
     <header className="glass-nav fixed top-0 w-full z-40">
@@ -39,7 +41,7 @@ export default function Header() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-neutral-light hover:text-accent-success transition-colors font-medium"
+                className="text-neutral-light hover:text-accent-success transition-colors font-medium py-2 px-3 rounded-lg hover:bg-white/5"
               >
                 {item.label}
               </Link>
@@ -48,13 +50,19 @@ export default function Header() {
 
           {/* Wallet Info - Desktop */}
           <div className="hidden md:flex items-center space-x-4">
-            <div className="flex items-center space-x-2 glass-card rounded-lg px-3 py-2">
+            <div className="flex items-center space-x-2 glass-card rounded-lg px-4 py-2">
               <Wallet className="w-4 h-4 text-accent-success" />
-              <span className="text-white font-semibold">${balance.toLocaleString()}</span>
+              <div className="text-right">
+                <div className="text-white font-semibold">${balance.toLocaleString()}</div>
+                <div className="text-neutral-mid text-xs">Cash Balance</div>
+              </div>
             </div>
-            <div className="flex items-center space-x-2 glass-card rounded-lg px-3 py-2">
+            <div className="flex items-center space-x-2 glass-card rounded-lg px-4 py-2">
               <Coins className="w-4 h-4 text-accent-primary" />
-              <span className="text-white font-semibold">{asrdBalance.toLocaleString()} ASRD</span>
+              <div className="text-right">
+                <div className="text-white font-semibold">{asrdBalance.toLocaleString()} ASRD</div>
+                <div className="text-accent-success text-xs">${asrdValueUSD.toLocaleString()} USD</div>
+              </div>
             </div>
           </div>
 
@@ -92,14 +100,18 @@ export default function Header() {
               ))}
               
               {/* Mobile Wallet Info */}
-              <div className="pt-4 border-t border-white/10 space-y-2">
+              <div className="pt-4 border-t border-white/10 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-neutral-mid">Balance:</span>
+                  <span className="text-neutral-mid">Cash Balance:</span>
                   <span className="text-white font-semibold">${balance.toLocaleString()}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-neutral-mid">ASRD:</span>
+                  <span className="text-neutral-mid">ASRD Balance:</span>
                   <span className="text-white font-semibold">{asrdBalance.toLocaleString()}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-neutral-mid">ASRD Value:</span>
+                  <span className="text-accent-success font-semibold">${asrdValueUSD.toLocaleString()}</span>
                 </div>
               </div>
             </nav>
