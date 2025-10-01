@@ -30,10 +30,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [treasury, setTreasury] = useState(treasuryData)
   const [stats, setStats] = useState(platformStats)
   const [selectedAssetType, setSelectedAssetType] = useState<'all' | 'horse' | 'real-estate'>('all')
-  const [auctionTimeLeft, setAuctionTimeLeft] = useState(86400) // 24 hours in seconds
+  const [auctionTimeLeft, setAuctionTimeLeft] = useState(86400)
   const [isLoading, setIsLoading] = useState(false)
 
-  // Filter assets based on selected type
   const filteredAssets = selectedAssetType === 'all' 
     ? assets 
     : assets.filter(asset => asset.category.toLowerCase() === selectedAssetType)
@@ -41,7 +40,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const buyASRD = async (usdAmount: number): Promise<boolean> => {
     setIsLoading(true)
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000))
       const success = buyASRDTokens(usdAmount)
       return success
     } catch (error) {
@@ -55,7 +54,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const purchaseAsset = async (assetId: number): Promise<boolean> => {
     setIsLoading(true)
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500)) // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500))
       
       const asset = assets.find(a => a.id === assetId)
       if (!asset) {
@@ -63,7 +62,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       }
 
       if (asrdBalance >= asset.price) {
-        // In a real app, this would be a blockchain transaction
         setUserAssets(prev => [...prev, { ...asset, purchaseDate: new Date().toISOString() }])
         return true
       } else {
@@ -110,7 +108,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  // Countdown timer for auction
   useEffect(() => {
     const timer = setInterval(() => {
       setAuctionTimeLeft(prev => prev > 0 ? prev - 1 : 0)
