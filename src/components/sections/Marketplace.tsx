@@ -4,11 +4,9 @@ import { useState } from 'react'
 import { useApp } from '@/contexts/AppContext'
 import { Star, MapPin, Coins, Heart, Clock, Filter, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-import { useWallet } from '@/contexts/WalletContext'
 
 export default function Marketplace() {
   const { assets, selectedAssetType, setSelectedAssetType, auctionTimeLeft, purchaseAsset, isLoading } = useApp()
-  const { asrdBalance } = useWallet()
   const [sortBy, setSortBy] = useState<'price' | 'name' | 'location'>('price')
 
   const formatTime = (seconds: number) => {
@@ -37,13 +35,8 @@ export default function Marketplace() {
     { value: 'real-estate', label: 'Real Estate', emoji: '🏠' }
   ]
 
-  const handlePurchase = (assetId: number) => {
-    const asset = assets.find(a => a.id === assetId)
-    if (asset && asrdBalance >= asset.price) {
-      purchaseAsset(assetId)
-    } else {
-      alert('Insufficient ASRD balance to purchase this asset')
-    }
+  const handlePurchase = async (assetId: number) => {
+    await purchaseAsset(assetId)
   }
 
   return (
@@ -130,8 +123,8 @@ export default function Marketplace() {
               onChange={(e) => setSortBy(e.target.value as any)}
               className="bg-financial-dark border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-accent-success"
             >
-              <option value="price">Price (Low to High)</option>
-              <option value="name">Name (A-Z)</option>
+              <option value="price">Price</option>
+              <option value="name">Name</option>
               <option value="location">Location</option>
             </select>
           </div>
@@ -148,13 +141,8 @@ export default function Marketplace() {
               whileHover={{ y: -8 }}
               className="glass-card rounded-2xl overflow-hidden group cursor-pointer card-hover"
             >
-              {/* Asset Image */}
-              <div className="relative h-48 overflow-hidden">
-                <img 
-                  src={asset.image} 
-                  alt={asset.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
+              {/* Asset Image/Placeholder */}
+              <div className="relative h-48 bg-gradient-to-br from-accent-success/20 to-accent-primary/20 flex items-center justify-center">
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all" />
                 
                 {/* Asset Type Badge */}
@@ -236,7 +224,7 @@ export default function Marketplace() {
                   <div className="flex items-center space-x-2">
                     <Coins className="w-5 h-5 text-accent-success" />
                     <span className="text-accent-success font-bold text-lg">
-                      {asset.price.toLocaleString()} ASRD
+                      {asset.price} ASRD
                     </span>
                   </div>
                   <span className="text-neutral-mid text-sm">
