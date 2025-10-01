@@ -15,83 +15,85 @@ export interface Asset {
 }
 
 // ASRD token price = $32
+const ASRD_PRICE = 32;
+
 export const mockAssets: Asset[] = [
   {
     id: 1,
-    name: 'Thunderbolt',
+    name: 'Arabian Thunder',
     type: 'horse',
     location: 'Dubai',
-    price: 38000, // ~1.2M USD at $32/ASRD
-    image: 'https://images.unsplash.com/photo-1513279922550-250c2129b13a?w=400&h=300&fit=crop',
-    stats: { wins: 5, places: 2, pedigree: 'Champion bloodline' },
-    upcomingRace: 'Dubai Derby',
+    price: 3500, // 3,500 ASRD = $112,000 USD
+    image: 'https://images.unsplash.com/photo-1513276347328-54bb2def6d6b?w=600&h=400&fit=crop',
+    stats: { wins: 12, places: 3, pedigree: 'Pure Arabian' },
+    upcomingRace: 'Dubai World Cup',
     unclaimedWinnings: 0,
-    description: 'Elite racing horse with champion bloodline and proven track record.',
+    description: 'Champion Arabian racehorse with multiple international victories.',
     featured: true
   },
   {
     id: 2,
-    name: 'Ocean View Villa',
+    name: 'Ocean Pearl Villa',
     type: 'real-estate',
     location: 'Dubai',
-    price: 250000, // ~8M USD at $32/ASRD
-    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400&h=300&fit=crop',
-    stats: { value: '$8,000,000', yield: '6.5%' },
-    projectedRent: '$43,333/month',
+    price: 4500, // 4,500 ASRD = $144,000 USD
+    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=600&h=400&fit=crop',
+    stats: { value: '$144,000', yield: '6.5%' },
+    projectedRent: '$780/month',
     unclaimedRent: 0,
-    description: 'Luxury beachfront villa with panoramic ocean views and premium amenities.',
+    description: 'Luxury beachfront villa with panoramic ocean views.',
     featured: true
   },
   {
     id: 3,
-    name: 'Midnight Star',
+    name: 'Royal Ascot Champion',
     type: 'horse',
     location: 'UK',
-    price: 31250, // ~1M USD at $32/ASRD
-    image: 'https://images.unsplash.com/photo-1546975490-a79abdd545eb?w=400&h=300&fit=crop',
-    stats: { wins: 4, places: 1, pedigree: 'Royal Ascot pedigree' },
+    price: 2800, // 2,800 ASRD = $89,600 USD
+    image: 'https://images.unsplash.com/photo-1597852074816-d933c7d2b988?w=600&h=400&fit=crop',
+    stats: { wins: 8, places: 2, pedigree: 'Thoroughbred' },
     upcomingRace: 'Ascot Gold Cup',
     unclaimedWinnings: 0,
-    description: 'Royal Ascot pedigree with exceptional speed and endurance.',
+    description: 'Elite thoroughbred with exceptional racing pedigree.',
     featured: false
   },
   {
     id: 4,
-    name: 'London Penthouse',
+    name: 'London Sky Penthouse',
     type: 'real-estate',
     location: 'UK',
-    price: 281250, // ~9M USD at $32/ASRD
-    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=300&fit=crop',
-    stats: { value: '$9,000,000', yield: '5.8%' },
-    projectedRent: '$43,500/month',
+    price: 5000, // 5,000 ASRD = $160,000 USD
+    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=400&fit=crop',
+    stats: { value: '$160,000', yield: '5.8%' },
+    projectedRent: '$773/month',
     unclaimedRent: 0,
     description: 'Modern penthouse in the heart of London with luxury finishes.',
     featured: false
   },
   {
     id: 5,
-    name: 'Outback Spirit',
+    name: 'Outback Warrior',
     type: 'horse',
     location: 'Australia',
-    price: 34375, // ~1.1M USD at $32/ASRD
-    image: 'https://images.unsplash.com/photo-1500479773-e3c8ee3d9c2e?w=400&h=300&fit=crop',
-    stats: { wins: 3, places: 3, pedigree: 'Outback lineage' },
+    price: 3200, // 3,200 ASRD = $102,400 USD
+    image: 'https://images.unsplash.com/photo-1500479773-e3c8ee3d9c2e?w=600&h=400&fit=crop',
+    stats: { wins: 6, places: 4, pedigree: 'Australian Stock' },
     upcomingRace: 'Melbourne Cup',
     unclaimedWinnings: 0,
-    description: 'Robust outback lineage known for exceptional performance in long distances.',
+    description: 'Robust Australian stock horse known for exceptional endurance.',
     featured: true
   },
   {
     id: 6,
-    name: 'Sydney Harbour House',
+    name: 'Sydney Harbour View',
     type: 'real-estate',
     location: 'Australia',
-    price: 312500, // ~10M USD at $32/ASRD
-    image: 'https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=400&h=300&fit=crop',
-    stats: { value: '$10,000,000', yield: '6.2%' },
-    projectedRent: '$51,667/month',
+    price: 4800, // 4,800 ASRD = $153,600 USD
+    image: 'https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=600&h=400&fit=crop',
+    stats: { value: '$153,600', yield: '6.2%' },
+    projectedRent: '$793/month',
     unclaimedRent: 0,
-    description: 'Stunning harbor view property with exclusive access and modern design.',
+    description: 'Stunning harbor view apartment with exclusive access.',
     featured: false
   }
 ]
@@ -121,11 +123,11 @@ export const ownedAssets: Asset[] = [
     name: 'Desert King',
     type: 'horse',
     location: 'Dubai',
-    price: 46875, // ~1.5M USD at $32/ASRD
-    image: 'https://images.unsplash.com/photo-1513279922550-250c2129b13a?w=400&h=300&fit=crop',
+    price: 4000, // 4,000 ASRD = $128,000 USD
+    image: 'https://images.unsplash.com/photo-1513276347328-54bb2def6d6b?w=600&h=400&fit=crop',
     stats: { wins: 6, places: 1, pedigree: 'Desert Storm lineage' },
     upcomingRace: 'Dubai World Cup',
-    unclaimedWinnings: 32000, // $32,000 USD
+    unclaimedWinnings: 3200, // $3,200 USD in winnings
     description: 'Champion desert-bred horse with multiple international wins.'
   },
   {
@@ -133,12 +135,12 @@ export const ownedAssets: Asset[] = [
     name: 'Mountain Retreat',
     type: 'real-estate',
     location: 'Switzerland',
-    price: 375000, // ~12M USD at $32/ASRD
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de62?w=400&h=300&fit=crop',
-    stats: { value: '$12,000,000', yield: '4.5%' },
-    projectedRent: '$45,000/month',
-    unclaimedRent: 450000, // $450,000 USD
-    description: 'Luxury alpine retreat with stunning mountain views and premium amenities.'
+    price: 5200, // 5,200 ASRD = $166,400 USD
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de62?w=600&h=400&fit=crop',
+    stats: { value: '$166,400', yield: '4.5%' },
+    projectedRent: '$624/month',
+    unclaimedRent: 4500, // $4,500 USD in rent
+    description: 'Luxury alpine retreat with stunning mountain views.'
   }
 ]
 

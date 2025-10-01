@@ -12,9 +12,9 @@ export default function Header() {
   const menuItems = [
     { label: 'Home', href: '/' },
     { label: 'Marketplace', href: '/marketplace' },
-    { label: 'Dashboard', href: '#dashboard' },
-    { label: 'DAO', href: '#dao' },
-    { label: 'Treasury', href: '#treasury' }
+    { label: 'Dashboard', href: '/dashboard' },
+    { label: 'DAO', href: '/dao' },
+    { label: 'Treasury', href: '/treasury' }
   ]
 
   return (
