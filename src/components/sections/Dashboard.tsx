@@ -297,3 +297,4 @@ export default function Dashboard() {
     </section>
   )
 }
+// Build fix - proper wallet context usage
