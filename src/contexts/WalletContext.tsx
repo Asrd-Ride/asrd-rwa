@@ -22,6 +22,24 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   // Start with 0 ASRD tokens (users need to buy them)
   const [asrdBalance, setAsrdBalance] = useState(0)
 
+  // Load from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('assetRideWallet')
+    if (saved) {
+      const { cash, asrd } = JSON.parse(saved)
+      setCashBalance(cash || 10000)
+      setAsrdBalance(asrd || 0)
+    }
+  }, [])
+
+  // Save to localStorage on changes
+  useEffect(() => {
+    localStorage.setItem('assetRideWallet', JSON.stringify({
+      cash: cashBalance,
+      asrd: asrdBalance
+    }))
+  }, [cashBalance, asrdBalance])
+
   const updateCashBalance = (amount: number) => {
     setCashBalance(amount)
   }
@@ -46,9 +64,14 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       const asrdToBuy = getAsrdValue(usdAmount)
       setCashBalance(prev => prev - usdAmount)
       setAsrdBalance(prev => prev + asrdToBuy)
+      
+      // Show browser alert for now (we'll add proper modals later)
+      alert(`Success! You bought ${asrdToBuy.toFixed(2)} ASRD tokens for $${usdAmount}`)
       return true
+    } else {
+      alert('Insufficient USD balance!')
+      return false
     }
-    return false
   }
 
   // Sell ASRD tokens for USD
@@ -57,16 +80,19 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       const usdToGet = getUsdValue(asrdAmount)
       setAsrdBalance(prev => prev - asrdAmount)
       setCashBalance(prev => prev + usdToGet)
+      alert(`Success! You sold ${asrdAmount.toFixed(2)} ASRD for $${usdToGet.toFixed(2)}`)
       return true
+    } else {
+      alert('Insufficient ASRD balance!')
+      return false
     }
-    return false
   }
 
   return (
-    <WalletContext.Provider value={{ 
-      cashBalance, 
-      asrdBalance, 
-      updateCashBalance, 
+    <WalletContext.Provider value={{
+      cashBalance,
+      asrdBalance,
+      updateCashBalance,
       updateAsrdBalance,
       getUsdValue,
       getAsrdValue,

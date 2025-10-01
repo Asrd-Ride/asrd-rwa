@@ -12,7 +12,7 @@ interface AppContextType {
   selectedAssetType: 'all' | 'horse' | 'real-estate'
   auctionTimeLeft: number
   buyASRD: (usdAmount: number) => Promise<boolean>
-  purchaseAsset: (assetId: number) => Promise<boolean>
+  purchaseAsset: (assetId: number, fraction?: number) => Promise<boolean>
   claimEarnings: (assetId: number) => Promise<void>
   voteOnProposal: (proposalId: number, support: boolean) => Promise<void>
   setSelectedAssetType: (type: 'all' | 'horse' | 'real-estate') => void
@@ -22,7 +22,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined)
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const { asrdBalance, buyASRDTokens } = useWallet()
+  const { asrdBalance, buyASRDTokens, cashBalance } = useWallet()
   
   const [assets, setAssets] = useState(mockAssets)
   const [userAssets, setUserAssets] = useState(ownedAssets)
@@ -32,6 +32,19 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [selectedAssetType, setSelectedAssetType] = useState<'all' | 'horse' | 'real-estate'>('all')
   const [auctionTimeLeft, setAuctionTimeLeft] = useState(86400)
   const [isLoading, setIsLoading] = useState(false)
+
+  // Load from localStorage
+  useEffect(() => {
+    const savedAssets = localStorage.getItem('assetRidePurchases')
+    if (savedAssets) {
+      setUserAssets(JSON.parse(savedAssets))
+    }
+  }, [])
+
+  // Save to localStorage
+  useEffect(() => {
+    localStorage.setItem('assetRidePurchases', JSON.stringify(userAssets))
+  }, [userAssets])
 
   const filteredAssets = selectedAssetType === 'all' 
     ? assets 
@@ -51,7 +64,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const purchaseAsset = async (assetId: number): Promise<boolean> => {
+  const purchaseAsset = async (assetId: number, fraction: number = 1): Promise<boolean> => {
     setIsLoading(true)
     try {
       await new Promise(resolve => setTimeout(resolve, 1500))
@@ -61,8 +74,18 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         return false
       }
 
-      if (asrdBalance >= asset.price) {
-        setUserAssets(prev => [...prev, { ...asset, purchaseDate: new Date().toISOString() }])
+      const purchasePrice = asset.price * fraction
+
+      if (asrdBalance >= purchasePrice) {
+        const purchase = {
+          ...asset,
+          purchaseDate: new Date().toISOString(),
+          fractionOwned: fraction,
+          purchasePrice: purchasePrice,
+          originalPrice: asset.price
+        }
+        
+        setUserAssets(prev => [...prev, purchase])
         return true
       } else {
         return false

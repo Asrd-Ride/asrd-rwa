@@ -1,36 +1,16 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight, Play, Star } from 'lucide-react'
 
-// Safe notification hook that doesn't break SSR
-const useSafeNotification = () => {
-  if (typeof window === 'undefined') {
-    return { showNotification: () => {} }
-  }
-  
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { useNotification } = require('@/contexts/NotificationContext')
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    return useNotification()
-  } catch (error) {
-    return { showNotification: () => {} }
-  }
-}
-
 export default function HeroSection() {
-  const { showNotification } = useSafeNotification()
   const [isPlaying, setIsPlaying] = useState(false)
 
   const handleWatchDemo = () => {
     setIsPlaying(true)
-    showNotification({
-      type: 'info',
-      title: 'Demo Video',
-      message: 'Starting platform demonstration...'
-    })
+    // Demo video functionality can be added later
+    console.log('Starting demo video...')
   }
 
   const stats = [
@@ -147,7 +127,7 @@ export default function HeroSection() {
                 {/* 3D Card Effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-3xl backdrop-blur-sm border border-white/10"></div>
                 
-                {/* Floating Assets */}
+                {/* Floating Assets with Real Images */}
                 <motion.div
                   animate={{ 
                     y: [0, -20, 0],
@@ -158,11 +138,17 @@ export default function HeroSection() {
                     repeat: Infinity,
                     ease: "easeInOut"
                   }}
-                  className="absolute top-8 left-8 w-32 h-40 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20 p-4"
+                  className="absolute top-8 left-8 w-32 h-40 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20 overflow-hidden"
                 >
-                  <div className="w-full h-20 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-lg mb-2"></div>
-                  <div className="text-white text-sm font-semibold">Racehorse</div>
-                  <div className="text-green-400 text-xs">15.2% ROI</div>
+                  <img 
+                    src="https://images.unsplash.com/photo-1502262023338-9d5c0b49ea0d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80"
+                    alt="Racehorse"
+                    className="w-full h-20 object-cover"
+                  />
+                  <div className="p-2">
+                    <div className="text-white text-sm font-semibold">Racehorse</div>
+                    <div className="text-green-400 text-xs">15.2% ROI</div>
+                  </div>
                 </motion.div>
 
                 <motion.div
@@ -176,11 +162,17 @@ export default function HeroSection() {
                     ease: "easeInOut",
                     delay: 1
                   }}
-                  className="absolute bottom-8 right-8 w-36 h-44 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20 p-4"
+                  className="absolute bottom-8 right-8 w-36 h-44 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20 overflow-hidden"
                 >
-                  <div className="w-full h-24 bg-gradient-to-br from-purple-400 to-pink-400 rounded-lg mb-2"></div>
-                  <div className="text-white text-sm font-semibold">Villa</div>
-                  <div className="text-green-400 text-xs">8.7% ROI</div>
+                  <img 
+                    src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80"
+                    alt="Villa"
+                    className="w-full h-24 object-cover"
+                  />
+                  <div className="p-2">
+                    <div className="text-white text-sm font-semibold">Villa</div>
+                    <div className="text-green-400 text-xs">8.7% ROI</div>
+                  </div>
                 </motion.div>
 
                 {/* Central Glowing Orb */}
