@@ -70,9 +70,10 @@ export default function DashboardPage() {
 
   // Performance data for charts
   const performanceData: Record<string, number[]> = {
-    monthly: [12000, 19000, 15000, 25000, 22000, 30000, 28000, 32000, 30000, 35000, 33000, 38000],
-    quarterly: [45000, 52000, 48000, 62000],
-    yearly: [185000, 225000]
+    '1m': [12000, 19000, 15000, 25000, 22000, 30000, 28000, 32000, 30000, 35000, 33000, 38000],
+    '3m': [45000, 52000, 48000, 62000],
+    '1y': [185000, 225000]
+    'all': [185000, 225000]
   }
 
   // Enhanced owned assets with proper images and detailed metrics
@@ -89,9 +90,9 @@ export default function DashboardPage() {
     liquidity: asset.category === 'Equine' ? 'Quarterly' : 'Monthly'
   }))
 
-  const totalPortfolioValue = enhancedAssets.reduce((sum, asset) => sum + (asset.purchasePrice || asset.price * 32), 0)
-  const totalEarnings = enhancedAssets.reduce((sum, asset) => sum + (asset.totalEarned || 0), 0)
-  const monthlyIncome = enhancedAssets.reduce((sum, asset) => sum + (asset.monthlyEarnings || 0), 0)
+  const totalPortfolioValue = enhancedAssets.reduce((sum, asset) => sum + ((asset as any).purchasePrice || asset.price * 32), 0)
+  const totalEarnings = enhancedAssets.reduce((sum, asset) => sum + ((asset as any).totalEarned || 0), 0)
+  const monthlyIncome = enhancedAssets.reduce((sum, asset) => sum + ((asset as any).monthlyEarnings || 0), 0)
 
   const handleClaimEarnings = (earning: any) => {
     alert(`Successfully claimed ${earning.amount.toLocaleString()} ${earning.currency} from ${earning.assetName}`)
@@ -121,7 +122,7 @@ export default function DashboardPage() {
   // Mock chart data
   useEffect(() => {
     // Simulate fetching portfolio data
-    const data = performanceData[timeframe] || performanceData.yearly
+    const data = performanceData[timeframe] || performanceData['1y']
     setPortfolioData(data)
   }, [timeframe])
 
@@ -419,7 +420,7 @@ export default function DashboardPage() {
                                 </div>
                                 <div>
                                   <div className="text-gray-600">Monthly Income</div>
-                                  <div className="font-semibold text-green-600">{formatCurrency(asset.monthlyEarnings)}</div>
+                                  <div className="font-semibold text-green-600">{formatCurrency((asset as any).monthlyEarnings)}</div>
                                 </div>
                                 <div>
                                   <div className="text-gray-600">Risk Level</div>
