@@ -24,15 +24,6 @@ const AppContext = createContext<AppContextType | undefined>(undefined)
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const { asrdBalance, buyASRDTokens } = useWallet()
   
-  // Safe notification function that won't break if context isn't available
-  const showNotification = (notification: { type: 'success' | 'error' | 'warning' | 'info'; title: string; message: string }) => {
-    // This will only work if NotificationContext is available in the DOM
-    if (typeof window !== 'undefined') {
-      // We'll use a custom event to trigger notifications if needed
-      console.log('Notification:', notification)
-    }
-  }
-
   const [assets, setAssets] = useState(mockAssets)
   const [userAssets, setUserAssets] = useState(ownedAssets)
   const [proposals, setProposals] = useState(mockProposals)
@@ -52,26 +43,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
       const success = buyASRDTokens(usdAmount)
-      if (success) {
-        showNotification({
-          type: 'success',
-          title: 'Purchase Successful!',
-          message: `You bought ${(usdAmount / 32).toFixed(2)} ASRD tokens`
-        })
-      } else {
-        showNotification({
-          type: 'error',
-          title: 'Insufficient Funds',
-          message: 'You do not have enough USD to complete this purchase'
-        })
-      }
       return success
     } catch (error) {
-      showNotification({
-        type: 'error',
-        title: 'Purchase Failed',
-        message: 'There was an error processing your purchase'
-      })
+      console.error('Purchase failed:', error)
       return false
     } finally {
       setIsLoading(false)
@@ -85,37 +59,18 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       
       const asset = assets.find(a => a.id === assetId)
       if (!asset) {
-        showNotification({
-          type: 'error',
-          title: 'Asset Not Found',
-          message: 'The selected asset could not be found'
-        })
         return false
       }
 
       if (asrdBalance >= asset.price) {
         // In a real app, this would be a blockchain transaction
         setUserAssets(prev => [...prev, { ...asset, purchaseDate: new Date().toISOString() }])
-        showNotification({
-          type: 'success',
-          title: 'Asset Purchased!',
-          message: `You are now a fractional owner of ${asset.name}`
-        })
         return true
       } else {
-        showNotification({
-          type: 'error',
-          title: 'Insufficient ASRD',
-          message: `You need ${asset.price} ASRD to purchase this asset`
-        })
         return false
       }
     } catch (error) {
-      showNotification({
-        type: 'error',
-        title: 'Purchase Failed',
-        message: 'There was an error purchasing the asset'
-      })
+      console.error('Purchase failed:', error)
       return false
     } finally {
       setIsLoading(false)
@@ -126,17 +81,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true)
     try {
       await new Promise(resolve => setTimeout(resolve, 1000))
-      showNotification({
-        type: 'success',
-        title: 'Earnings Claimed!',
-        message: 'Your earnings have been distributed to your wallet'
-      })
+      console.log('Earnings claimed for asset:', assetId)
     } catch (error) {
-      showNotification({
-        type: 'error',
-        title: 'Claim Failed',
-        message: 'There was an error claiming your earnings'
-      })
+      console.error('Claim failed:', error)
     } finally {
       setIsLoading(false)
     }
@@ -156,17 +103,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
             } 
           : p
       ))
-      showNotification({
-        type: 'success',
-        title: 'Vote Submitted!',
-        message: `You voted ${support ? 'FOR' : 'AGAINST'} proposal #${proposalId}`
-      })
     } catch (error) {
-      showNotification({
-        type: 'error',
-        title: 'Vote Failed',
-        message: 'There was an error submitting your vote'
-      })
+      console.error('Vote failed:', error)
     } finally {
       setIsLoading(false)
     }

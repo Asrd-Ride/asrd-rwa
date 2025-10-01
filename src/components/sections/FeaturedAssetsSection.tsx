@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useApp } from '@/contexts/AppContext'
 import { useWallet } from '@/contexts/WalletContext'
@@ -8,26 +8,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import ConfirmationModal from '@/components/ui/ConfirmationModal'
 
-// Safe notification hook that doesn't break SSR
-const useSafeNotification = () => {
-  if (typeof window === 'undefined') {
-    return { showNotification: () => {} }
-  }
-  
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { useNotification } = require('@/contexts/NotificationContext')
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    return useNotification()
-  } catch (error) {
-    return { showNotification: () => {} }
-  }
-}
-
 export default function FeaturedAssetsSection() {
   const { assets, purchaseAsset, isLoading } = useApp()
   const { asrdBalance } = useWallet()
-  const { showNotification } = useSafeNotification()
   const [selectedAsset, setSelectedAsset] = useState<any>(null)
   const [showConfirmation, setShowConfirmation] = useState(false)
 
@@ -40,15 +23,7 @@ export default function FeaturedAssetsSection() {
 
   const confirmPurchase = async () => {
     if (!selectedAsset) return
-
-    const success = await purchaseAsset(selectedAsset.id)
-    if (success) {
-      showNotification({
-        type: 'success',
-        title: 'Purchase Successful!',
-        message: `You've successfully purchased ${selectedAsset.name}`
-      })
-    }
+    await purchaseAsset(selectedAsset.id)
     setShowConfirmation(false)
     setSelectedAsset(null)
   }

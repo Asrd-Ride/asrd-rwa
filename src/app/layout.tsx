@@ -3,7 +3,6 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { WalletProvider } from '@/contexts/WalletContext'
 import { AppProvider } from '@/contexts/AppContext'
-import { NotificationProvider } from '@/contexts/NotificationContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,9 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <WalletProvider>
           <AppProvider>
-            <NotificationProvider>
-              {children}
-            </NotificationProvider>
+            {children}
           </AppProvider>
         </WalletProvider>
       </body>
