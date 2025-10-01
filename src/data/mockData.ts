@@ -3,7 +3,7 @@ export interface Asset {
   name: string;
   type: 'horse' | 'real-estate';
   location: string;
-  price: number;
+  price: number; // Price in ASRD tokens
   image: string;
   stats: any;
   upcomingRace?: string;
@@ -11,80 +11,88 @@ export interface Asset {
   unclaimedWinnings?: number;
   unclaimedRent?: number;
   description: string;
+  featured?: boolean;
 }
 
+// ASRD token price = $32
 export const mockAssets: Asset[] = [
   {
     id: 1,
     name: 'Thunderbolt',
     type: 'horse',
     location: 'Dubai',
-    price: 38000, // ~1.19M USD
-    image: '/images/horse1.jpg',
+    price: 38000, // ~1.2M USD at $32/ASRD
+    image: 'https://images.unsplash.com/photo-1513279922550-250c2129b13a?w=400&h=300&fit=crop',
     stats: { wins: 5, places: 2, pedigree: 'Champion bloodline' },
     upcomingRace: 'Dubai Derby',
     unclaimedWinnings: 0,
-    description: 'Elite racing horse with champion bloodline and proven track record.'
+    description: 'Elite racing horse with champion bloodline and proven track record.',
+    featured: true
   },
   {
     id: 2,
     name: 'Ocean View Villa',
     type: 'real-estate',
     location: 'Dubai',
-    price: 250000, // ~8M USD
-    image: '/images/villa1.jpg',
+    price: 250000, // ~8M USD at $32/ASRD
+    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400&h=300&fit=crop',
     stats: { value: '$8,000,000', yield: '6.5%' },
     projectedRent: '$43,333/month',
     unclaimedRent: 0,
-    description: 'Luxury beachfront villa with panoramic ocean views and premium amenities.'
+    description: 'Luxury beachfront villa with panoramic ocean views and premium amenities.',
+    featured: true
   },
   {
     id: 3,
     name: 'Midnight Star',
     type: 'horse',
     location: 'UK',
-    price: 31250, // ~1M USD
-    image: '/images/horse2.jpg',
+    price: 31250, // ~1M USD at $32/ASRD
+    image: 'https://images.unsplash.com/photo-1546975490-a79abdd545eb?w=400&h=300&fit=crop',
     stats: { wins: 4, places: 1, pedigree: 'Royal Ascot pedigree' },
     upcomingRace: 'Ascot Gold Cup',
     unclaimedWinnings: 0,
-    description: 'Royal Ascot pedigree with exceptional speed and endurance.'
+    description: 'Royal Ascot pedigree with exceptional speed and endurance.',
+    featured: false
   },
   {
     id: 4,
     name: 'London Penthouse',
     type: 'real-estate',
     location: 'UK',
-    price: 281250, // ~9M USD
-    image: '/images/villa2.jpg',
+    price: 281250, // ~9M USD at $32/ASRD
+    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=300&fit=crop',
     stats: { value: '$9,000,000', yield: '5.8%' },
     projectedRent: '$43,500/month',
     unclaimedRent: 0,
-    description: 'Modern penthouse in the heart of London with luxury finishes.'
+    description: 'Modern penthouse in the heart of London with luxury finishes.',
+    featured: false
   },
   {
     id: 5,
     name: 'Outback Spirit',
     type: 'horse',
     location: 'Australia',
-    price: 34375, // ~1.1M USD
-    image: '/images/horse3.jpg',
+    price: 34375, // ~1.1M USD at $32/ASRD
+    image: 'https://images.unsplash.com/photo-1500479773-e3c8ee3d9c2e?w=400&h=300&fit=crop',
     stats: { wins: 3, places: 3, pedigree: 'Outback lineage' },
     upcomingRace: 'Melbourne Cup',
     unclaimedWinnings: 0,
-    description: 'Robust outback lineage known for exceptional performance in long distances.'
+    description: 'Robust outback lineage known for exceptional performance in long distances.',
+    featured: true
   },
   {
     id: 6,
     name: 'Sydney Harbour House',
     type: 'real-estate',
     location: 'Australia',
-    price: 312500, // ~10M USD
-    image: '/images/villa3.jpg',
+    price: 312500, // ~10M USD at $32/ASRD
+    image: 'https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=400&h=300&fit=crop',
     stats: { value: '$10,000,000', yield: '6.2%' },
     projectedRent: '$51,667/month',
     unclaimedRent: 0,
-    description: 'Stunning harbor view property with exclusive access and modern design.'
+    description: 'Stunning harbor view property with exclusive access and modern design.',
+    featured: false
   }
 ]
 
@@ -113,11 +121,11 @@ export const ownedAssets: Asset[] = [
     name: 'Desert King',
     type: 'horse',
     location: 'Dubai',
-    price: 46875, // ~1.5M USD
-    image: '/images/horse1.jpg',
+    price: 46875, // ~1.5M USD at $32/ASRD
+    image: 'https://images.unsplash.com/photo-1513279922550-250c2129b13a?w=400&h=300&fit=crop',
     stats: { wins: 6, places: 1, pedigree: 'Desert Storm lineage' },
     upcomingRace: 'Dubai World Cup',
-    unclaimedWinnings: 1000, // ~$32,000
+    unclaimedWinnings: 32000, // $32,000 USD
     description: 'Champion desert-bred horse with multiple international wins.'
   },
   {
@@ -125,11 +133,11 @@ export const ownedAssets: Asset[] = [
     name: 'Mountain Retreat',
     type: 'real-estate',
     location: 'Switzerland',
-    price: 375000, // ~12M USD
-    image: '/images/villa2.jpg',
+    price: 375000, // ~12M USD at $32/ASRD
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de62?w=400&h=300&fit=crop',
     stats: { value: '$12,000,000', yield: '4.5%' },
     projectedRent: '$45,000/month',
-    unclaimedRent: 14062, // ~$450,000
+    unclaimedRent: 450000, // $450,000 USD
     description: 'Luxury alpine retreat with stunning mountain views and premium amenities.'
   }
 ]

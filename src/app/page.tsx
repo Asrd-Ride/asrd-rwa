@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useApp } from '@/contexts/AppContext'
 import Header from '@/components/layout/Header'
 import Hero from '@/components/sections/Hero'
-import Marketplace from '@/components/sections/Marketplace'
+import FeaturedAssets from '@/components/sections/FeaturedAssets'
 import DAO from '@/components/sections/DAO'
 import Dashboard from '@/components/sections/Dashboard'
 import Treasury from '@/components/sections/Treasury'
@@ -32,7 +32,7 @@ export default function Home() {
 
       <Header />
       <Hero />
-      <Marketplace />
+      <FeaturedAssets />
       <DAO />
       <Dashboard />
       <Treasury />

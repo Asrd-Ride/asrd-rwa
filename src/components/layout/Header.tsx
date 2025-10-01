@@ -3,14 +3,15 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { useWallet } from '@/contexts/WalletContext'
 import { Menu, X, Wallet, Coins } from 'lucide-react'
+import Link from 'next/link'
 
 export default function Header() {
   const { balance, asrdBalance } = useWallet()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const menuItems = [
-    { label: 'Home', href: '#home' },
-    { label: 'Marketplace', href: '#marketplace' },
+    { label: 'Home', href: '/' },
+    { label: 'Marketplace', href: '/marketplace' },
     { label: 'Dashboard', href: '#dashboard' },
     { label: 'DAO', href: '#dao' },
     { label: 'Treasury', href: '#treasury' }
@@ -26,20 +27,22 @@ export default function Header() {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center space-x-3"
           >
-            <div className="w-8 h-8 bg-gradient-to-r from-accent-success to-accent-primary rounded-lg" />
-            <span className="text-xl font-bold text-white">Asset Ride</span>
+            <Link href="/" className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-gradient-to-r from-accent-success to-accent-primary rounded-lg" />
+              <span className="text-xl font-bold text-white">Asset Ride</span>
+            </Link>
           </motion.div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {menuItems.map((item) => (
-              <a
+              <Link
                 key={item.label}
                 href={item.href}
                 className="text-neutral-light hover:text-accent-success transition-colors font-medium"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -78,14 +81,14 @@ export default function Header() {
           >
             <nav className="flex flex-col space-y-4">
               {menuItems.map((item) => (
-                <a
+                <Link
                   key={item.label}
                   href={item.href}
                   className="text-neutral-light hover:text-accent-success transition-colors font-medium py-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.label}
-                </a>
+                </Link>
               ))}
               
               {/* Mobile Wallet Info */}

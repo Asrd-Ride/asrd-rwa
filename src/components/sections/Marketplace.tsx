@@ -2,10 +2,13 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { useApp } from '@/contexts/AppContext'
-import { Star, MapPin, Coins, Heart, Clock, Filter } from 'lucide-react'
+import { Star, MapPin, Coins, Heart, Clock, Filter, ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
+import { useWallet } from '@/contexts/WalletContext'
 
 export default function Marketplace() {
   const { assets, selectedAssetType, setSelectedAssetType, auctionTimeLeft, purchaseAsset, isLoading } = useApp()
+  const { asrdBalance } = useWallet()
   const [sortBy, setSortBy] = useState<'price' | 'name' | 'location'>('price')
 
   const formatTime = (seconds: number) => {
@@ -34,9 +37,36 @@ export default function Marketplace() {
     { value: 'real-estate', label: 'Real Estate', emoji: '🏠' }
   ]
 
+  const handlePurchase = (assetId: number) => {
+    const asset = assets.find(a => a.id === assetId)
+    if (asset && asrdBalance >= asset.price) {
+      purchaseAsset(assetId)
+    } else {
+      alert('Insufficient ASRD balance to purchase this asset')
+    }
+  }
+
   return (
     <section id="marketplace" className="py-20 relative">
       <div className="container-pro">
+        {/* Back to Home */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="mb-8"
+        >
+          <Link href="/">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center space-x-2 text-accent-success hover:text-accent-success-light transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              <span>Back to Home</span>
+            </motion.div>
+          </Link>
+        </motion.div>
+
         <motion.h2
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -52,7 +82,7 @@ export default function Marketplace() {
           whileInView={{ opacity: 1, y: 0 }}
           className="text-xl text-neutral-mid text-center mb-8"
         >
-          Discover exclusive tokenized assets with proven track records
+          Discover all our exclusive tokenized assets with proven track records
         </motion.p>
 
         {/* Auction Banner */}
@@ -100,8 +130,8 @@ export default function Marketplace() {
               onChange={(e) => setSortBy(e.target.value as any)}
               className="bg-financial-dark border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-accent-success"
             >
-              <option value="price">Price</option>
-              <option value="name">Name</option>
+              <option value="price">Price (Low to High)</option>
+              <option value="name">Name (A-Z)</option>
               <option value="location">Location</option>
             </select>
           </div>
@@ -118,8 +148,13 @@ export default function Marketplace() {
               whileHover={{ y: -8 }}
               className="glass-card rounded-2xl overflow-hidden group cursor-pointer card-hover"
             >
-              {/* Asset Image/Placeholder */}
-              <div className="relative h-48 bg-gradient-to-br from-accent-success/20 to-accent-primary/20 flex items-center justify-center">
+              {/* Asset Image */}
+              <div className="relative h-48 overflow-hidden">
+                <img 
+                  src={asset.image} 
+                  alt={asset.name}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all" />
                 
                 {/* Asset Type Badge */}
@@ -212,7 +247,7 @@ export default function Marketplace() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => purchaseAsset(asset.id)}
+                  onClick={() => handlePurchase(asset.id)}
                   disabled={isLoading}
                   className="w-full bg-gradient-to-r from-accent-success to-accent-primary text-financial-dark py-3 rounded-xl font-semibold glow-success hover:glow-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
