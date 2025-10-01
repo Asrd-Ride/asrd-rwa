@@ -1,7 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import { Check, X, Users, Clock, Coins } from 'lucide-react'
-import { mockProposals } from '@/data/mockData'
+import { mockProposals, platformStats } from '@/data/mockData'
 
 export default function DAO() {
   return (
@@ -22,7 +22,7 @@ export default function DAO() {
           whileInView={{ opacity: 1, y: 0 }}
           className="text-xl text-white/60 text-center mb-12"
         >
-          Shape the future of Asset Ride through community governance
+          Govern the future of Asset Ride. 1 ASRD = 1 Vote
         </motion.p>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -58,8 +58,8 @@ export default function DAO() {
                   ></div>
                 </div>
                 <div className="flex justify-between text-xs text-white/60 mt-1">
-                  <span>{Math.round((proposal.votesFor / (proposal.votesFor + proposal.votesAgainst)) * 100)}%</span>
-                  <span>{Math.round((proposal.votesAgainst / (proposal.votesFor + proposal.votesAgainst)) * 100)}%</span>
+                  <span>${(proposal.votesFor * platformStats.price).toLocaleString()}</span>
+                  <span>${(proposal.votesAgainst * platformStats.price).toLocaleString()}</span>
                 </div>
               </div>
 
@@ -93,18 +93,18 @@ export default function DAO() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
               <Users className="w-8 h-8 text-primary-cyan mx-auto mb-2" />
-              <div className="text-2xl font-bold text-white">2,847</div>
+              <div className="text-2xl font-bold text-white">1,247</div>
               <div className="text-white/60">DAO Members</div>
             </div>
             <div>
               <Check className="w-8 h-8 text-primary-cyan mx-auto mb-2" />
-              <div className="text-2xl font-bold text-white">42</div>
+              <div className="text-2xl font-bold text-white">18</div>
               <div className="text-white/60">Proposals Passed</div>
             </div>
             <div>
               <Coins className="w-8 h-8 text-primary-cyan mx-auto mb-2" />
-              <div className="text-2xl font-bold text-white">5.2M</div>
-              <div className="text-white/60">ASRD Staked</div>
+              <div className="text-2xl font-bold text-white">{platformStats.circulatingSupply.toLocaleString()}</div>
+              <div className="text-white/60">ASRD in Governance</div>
             </div>
           </div>
         </motion.div>
