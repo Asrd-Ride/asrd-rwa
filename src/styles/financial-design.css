@@ -1,0 +1,194 @@
+/* Professional Financial Color Palette */
+:root {
+  /* Primary Colors - Deep Financial Blue */
+  --financial-deep: #0A1429;
+  --financial-dark: #1A243F;
+  --financial-mid: #2D3B5C;
+  --financial-light: #3E5075;
+  
+  /* Accent Colors - Professional Green & Blue */
+  --accent-success: #00D4AA;
+  --accent-success-light: #33FFD6;
+  --accent-primary: #2563EB;
+  --accent-primary-light: #3B82F6;
+  --accent-secondary: #8B5CF6;
+  --accent-secondary-light: #A78BFA;
+  
+  /* Data Visualization Colors */
+  --chart-1: #00D4AA;
+  --chart-2: #2563EB;
+  --chart-3: #8B5CF6;
+  --chart-4: #F59E0B;
+  --chart-5: #EF4444;
+  
+  /* Neutral Colors - Professional Finance */
+  --neutral-white: #FFFFFF;
+  --neutral-offwhite: #F8FAFC;
+  --neutral-light: #E2E8F0;
+  --neutral-mid: #94A3B8;
+  --neutral-dark: #475569;
+  --neutral-black: #1E293B;
+  
+  /* Status Colors */
+  --success: #00D4AA;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --info: #2563EB;
+  
+  /* Gradients */
+  --gradient-financial: linear-gradient(135deg, var(--financial-deep) 0%, var(--financial-dark) 100%);
+  --gradient-success: linear-gradient(135deg, var(--accent-success) 0%, var(--accent-primary) 100%);
+  --gradient-card: linear-gradient(135deg, rgba(0, 212, 170, 0.05) 0%, rgba(37, 99, 235, 0.05) 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+}
+
+/* Professional Financial Glassmorphism */
+.glass-financial {
+  background: var(--gradient-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: var(--gradient-glass);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.glass-nav {
+  background: rgba(10, 20, 41, 0.98);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 212, 170, 0.1);
+}
+
+/* Professional Glow Effects */
+.glow-success {
+  box-shadow: 
+    0 0 20px rgba(0, 212, 170, 0.3),
+    0 0 40px rgba(0, 212, 170, 0.15);
+}
+
+.glow-primary {
+  box-shadow: 
+    0 0 20px rgba(37, 99, 235, 0.3),
+    0 0 40px rgba(37, 99, 235, 0.15);
+}
+
+/* Professional Button Styles */
+.btn-financial {
+  background: var(--gradient-success);
+  border: 1px solid rgba(0, 212, 170, 0.3);
+  color: var(--financial-deep);
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-financial::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn-financial:hover::before {
+  left: 100%;
+}
+
+.btn-financial:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(0, 212, 170, 0.3),
+    0 0 30px rgba(37, 99, 235, 0.2);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--accent-success);
+  color: var(--accent-success);
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: var(--accent-success);
+  color: var(--financial-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 212, 170, 0.25);
+}
+
+/* Professional Card Hover Effects */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 12px 32px rgba(0, 0, 0, 0.2),
+    0 0 20px rgba(0, 212, 170, 0.1);
+  border-color: rgba(0, 212, 170, 0.2);
+}
+
+/* Chart Container Styles */
+.chart-container {
+  background: var(--gradient-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+/* Professional Data Grid */
+.data-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.data-card {
+  background: var(--gradient-glass);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+/* Auction Timer */
+.auction-timer {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-family: 'Courier New', monospace;
+}
+
+/* Filter System */
+.filter-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-pill.active {
+  background: var(--accent-success);
+  color: var(--financial-deep);
+  border-color: var(--accent-success);
+}
+
+.filter-pill:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}

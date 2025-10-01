@@ -2,10 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@import '../styles/financial-design.css';
+
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 10, 15, 44;
-  --background-end-rgb: 0, 0, 0;
+  --foreground-rgb: 248, 250, 252;
+  --background-start-rgb: 10, 20, 41;
+  --background-end-rgb: 26, 36, 63;
 }
 
 * {
@@ -14,59 +16,108 @@
   margin: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  background: linear-gradient(135deg, rgb(var(--background-start-rgb)) 0%, rgb(var(--background-end-rgb)) 100%);
   min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Inter', sans-serif;
+  line-height: 1.6;
 }
 
-.glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+/* Professional background patterns */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 15% 15%, rgba(0, 212, 170, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 85% 85%, rgba(37, 99, 235, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
 }
 
-.glass-dark {
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* Typography Scale */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
-.glow-cyan {
-  box-shadow: 0 0 10px #00D1FF, 0 0 20px #00D1FF, 0 0 40px #00D1FF;
+h1 {
+  font-size: 3.5rem;
+  background: linear-gradient(135deg, var(--accent-success) 0%, var(--accent-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.glow-violet {
-  box-shadow: 0 0 10px #7B61FF, 0 0 20px #7B61FF, 0 0 40px #7B61FF;
+h2 {
+  font-size: 2.5rem;
+  color: var(--neutral-white);
 }
 
-.text-glow {
-  text-shadow: 0 0 10px #00D1FF, 0 0 20px #00D1FF;
+h3 {
+  font-size: 1.75rem;
+  color: var(--neutral-white);
 }
 
+/* Professional container */
+.container-pro {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .container-pro {
+    padding: 0 2rem;
+  }
+}
+
+/* Premium section spacing */
+.section-py {
+  padding: 5rem 0;
+}
+
+/* Utility classes */
+.bg-financial-dark {
+  background: var(--gradient-financial);
+}
+
+.text-financial-success {
+  color: var(--accent-success);
+}
+
+.text-financial-primary {
+  color: var(--accent-primary);
+}
+
+.border-financial-success {
+  border-color: var(--accent-success);
+}
+
+/* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0A0F2C;
+  background: var(--financial-dark);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #00D1FF;
-  border-radius: 4px;
+  background: var(--accent-success);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #7B61FF;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
+  background: var(--accent-success-light);
 }
