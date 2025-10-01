@@ -1,21 +1,25 @@
 'use client'
 import { motion } from 'framer-motion'
 import { useApp } from '@/contexts/AppContext'
+import { useWallet } from '@/contexts/WalletContext'
 import { useNotification } from '@/contexts/NotificationContext'
 import { ArrowRight, Play } from 'lucide-react'
 import Link from 'next/link'
 
 export default function HeroSection() {
   const { buyASRD, isLoading, platformStats } = useApp()
+  const { getAsrdValue } = useWallet()
   const { showNotification } = useNotification()
 
-  const handleBuyASRD = async () => {
-    const success = await buyASRD(1000)
+  const handleBuyASRD = async (usdAmount: number) => {
+    const asrdAmount = getAsrdValue(usdAmount)
+    
+    const success = await buyASRD(usdAmount)
     if (success) {
       showNotification({
         type: 'success',
         title: 'Purchase Successful!',
-        message: 'You have successfully purchased 31.25 ASRD tokens.'
+        message: `You have successfully purchased ${asrdAmount.toFixed(2)} ASRD tokens for $${usdAmount}.`
       })
     } else {
       showNotification({
@@ -25,6 +29,8 @@ export default function HeroSection() {
       })
     }
   }
+
+  const quickBuyAmounts = [100, 500, 1000]
 
   return (
     <section className="min-h-screen flex items-center justify-center pt-20 pb-20 relative">
@@ -81,13 +87,13 @@ export default function HeroSection() {
               </Link>
               
               <motion.button
-                onClick={handleBuyASRD}
+                onClick={() => handleBuyASRD(1000)}
                 disabled={isLoading}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="border-2 border-accent-success text-accent-success px-8 py-4 rounded-xl font-semibold text-lg hover:bg-accent-success hover:text-financial-dark transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
               >
-                <span>{isLoading ? 'Processing...' : 'Buy ASRD Tokens'}</span>
+                <span>{isLoading ? 'Processing...' : `Buy ${getAsrdValue(1000).toFixed(2)} ASRD`}</span>
                 <Play className="w-5 h-5" />
               </motion.button>
             </motion.div>
@@ -162,6 +168,27 @@ export default function HeroSection() {
                     <div className="text-neutral-mid text-sm">Circulating</div>
                   </div>
                 </div>
+              </motion.div>
+
+              {/* Quick Purchase Options */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.2 }}
+                className="mt-4 grid grid-cols-3 gap-2"
+              >
+                {quickBuyAmounts.map((amount) => (
+                  <motion.button
+                    key={amount}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handleBuyASRD(amount)}
+                    disabled={isLoading}
+                    className="text-xs bg-white/5 hover:bg-accent-success/20 text-neutral-mid hover:text-white py-2 rounded-lg transition-all duration-200 border border-white/10 hover:border-accent-success/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    ${amount}
+                  </motion.button>
+                ))}
               </motion.div>
             </div>
           </motion.div>

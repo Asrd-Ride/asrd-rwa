@@ -67,7 +67,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       showNotification({
         type: 'error',
         title: 'Insufficient Balance',
-        message: `You need ${asset?.price} ASRD to purchase this asset. You have ${Math.floor(asrdBalance)} ASRD.`
+        message: `You need ${asset?.price} ASRD to purchase this asset. You have ${asrdBalance.toFixed(2)} ASRD.`
       })
       return false
     }

@@ -60,8 +60,8 @@ export default function Header() {
             <div className="flex items-center space-x-2 glass-card rounded-lg px-4 py-2">
               <Coins className="w-4 h-4 text-accent-primary" />
               <div className="text-right">
-                <div className="text-white font-semibold">{Math.floor(asrdBalance).toLocaleString()} ASRD</div>
-                <div className="text-accent-success text-xs">${Math.floor(asrdValueUSD).toLocaleString()} USD</div>
+                <div className="text-white font-semibold">{asrdBalance.toFixed(2)} ASRD</div>
+                <div className="text-accent-success text-xs">${asrdValueUSD.toLocaleString()} USD</div>
               </div>
             </div>
           </div>
@@ -107,11 +107,11 @@ export default function Header() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-neutral-mid">ASRD Balance:</span>
-                  <span className="text-white font-semibold">{Math.floor(asrdBalance).toLocaleString()}</span>
+                  <span className="text-white font-semibold">{asrdBalance.toFixed(2)}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-neutral-mid">ASRD Value:</span>
-                  <span className="text-accent-success font-semibold">${Math.floor(asrdValueUSD).toLocaleString()}</span>
+                  <span className="text-accent-success font-semibold">${asrdValueUSD.toLocaleString()}</span>
                 </div>
               </div>
             </nav>

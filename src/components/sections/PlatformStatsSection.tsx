@@ -1,30 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
 import { useApp } from '@/contexts/AppContext'
-import { TrendingUp, Users, Coins, Package } from 'lucide-react'
-
-export default function PlatformStatsSection() {
-  const { platformStats } = useApp()
-
-  const stats = [
-    {
-      icon: Coins,
-      value: `$${platformStats.marketCap / 1000000}M`,
-      label: 'Market Cap',
-      change: '+12.5%'
-    },
-    {
-      icon: Package,
-      value: platformStats.totalAssets.toString(),
-      label: 'Total Assets',
-      change: '+8'
-    },
-    {
-      icon: TrendingUp
-cat > src/components/sections/PlatformStatsSection.tsx << 'EOF'
-'use client'
-import { motion } from 'framer-motion'
-import { useApp } from '@/contexts/AppContext'
 import { TrendingUp, Users, Coins, Package, Shield, Zap } from 'lucide-react'
 
 export default function PlatformStatsSection() {
