@@ -1,9 +1,9 @@
 'use client'
 import { motion } from 'framer-motion'
-import Dashboard from '@/components/sections/Dashboard'
+import DAO from '@/components/sections/DAO'
 import Header from '@/components/layout/Header'
 
-export default function DashboardPage() {
+export default function DAOPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-financial-deep to-black text-white overflow-x-hidden">
       {/* Enhanced Background */}
@@ -13,7 +13,7 @@ export default function DashboardPage() {
       </div>
       
       <Header />
-      <Dashboard />
+      <DAO />
       
       <footer className="glass-nav border-t border-accent-success/20 py-8 relative z-10">
         <div className="container-pro text-center">
