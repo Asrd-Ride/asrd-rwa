@@ -68,26 +68,18 @@ export default function DashboardPage() {
     averageROI: 14.2
   }
 
-  // Performance data for charts
-  const performanceData: Record<string, number[]> = {
-    '1m': [12000, 19000, 15000, 25000, 22000, 30000, 28000, 32000, 30000, 35000, 33000, 38000],
-    '3m': [45000, 52000, 48000, 62000],
-    '1y': [185000, 225000]
-    'all': [185000, 225000]
-  }
 
   // Enhanced owned assets with proper images and detailed metrics
   const enhancedAssets = ownedAssets.map(asset => ({
     ...asset,
-    monthlyEarnings: asset.category === 'Equine' 
-      ? Math.floor(Math.random() * 5000) + 2000
-      : Math.floor(Math.random() * 8000) + 3000,
-    nextPayout: '2024-04-01',
+    monthlyEarnings: asset.category === "Equine" ? Math.floor(Math.random() * 5000) + 2000 : Math.floor(Math.random() * 8000) + 3000,
+    nextPayout: "2024-04-01",
     totalEarned: Math.floor(Math.random() * 50000) + 10000,
-    performance: Math.random() > 0.5 ? 'up' : 'down',
+    performance: Math.random() > 0.5 ? "up" : "down",
     performanceValue: (Math.random() * 20 - 5).toFixed(1),
-    riskLevel: asset.category === 'Equine' ? 'Medium-High' : 'Medium',
-    liquidity: asset.category === 'Equine' ? 'Quarterly' : 'Monthly'
+    riskLevel: asset.category === "Equine" ? "Medium-High" : "Medium",
+    liquidity: asset.category === "Equine" ? "Quarterly" : "Monthly"
+  }))
   }))
 
   const totalPortfolioValue = enhancedAssets.reduce((sum, asset) => sum + ((asset as any).purchasePrice || asset.price * 32), 0)
@@ -120,10 +112,14 @@ export default function DashboardPage() {
   ]
 
   // Mock chart data
+  // Mock chart data
   useEffect(() => {
     // Simulate fetching portfolio data
-    const data = performanceData[timeframe] || performanceData['1y']
-    setPortfolioData(data)
+    const data = timeframe === "1m" ? [12000, 19000, 15000, 25000, 22000, 30000, 28000, 32000, 30000, 35000, 33000, 38000] :
+               timeframe === "3m" ? [45000, 52000, 48000, 62000] :
+               timeframe === "1y" ? [185000, 225000] :
+               [185000, 225000];
+    setPortfolioData(data);
   }, [timeframe])
 
   return (
