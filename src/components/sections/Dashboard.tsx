@@ -6,7 +6,7 @@ import { PieChart, BarChart, TrendingUp, DollarSign, Coins, Package, ArrowUpRigh
 
 export default function Dashboard() {
   const { ownedAssets, platformStats, claimEarnings, isLoading } = useApp()
-  const { balance, asrdBalance, getUsdValue } = useWallet()
+  const { cashBalance, asrdBalance, getUsdValue } = useWallet()
 
   const totalPortfolioValue = ownedAssets.reduce((sum, asset) => sum + getUsdValue(asset.price), 0)
   const totalUnclaimedEarnings = ownedAssets.reduce((sum, asset) => 
@@ -55,7 +55,7 @@ export default function Dashboard() {
           {[
             { 
               title: 'Total Portfolio', 
-              value: `$${(totalPortfolioValue).toLocaleString()}`, 
+              value: `$${totalPortfolioValue.toLocaleString()}`, 
               icon: DollarSign,
               color: 'text-accent-success',
               change: '+12.5%',
@@ -63,7 +63,7 @@ export default function Dashboard() {
             },
             { 
               title: 'ASRD Balance', 
-              value: asrdBalance.toLocaleString(), 
+              value: asrdBalance.toFixed(2), 
               icon: Coins,
               color: 'text-accent-primary',
               change: `${platformStats.price} USD`,
