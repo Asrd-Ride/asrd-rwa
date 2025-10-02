@@ -104,7 +104,7 @@ export default function EnhancedAnalytics() {
 
   // FIXED: Explicitly type Object.values to number[]
   const totalAllocation = (Object.values(assetAllocation) as number[]).reduce((sum: number, val: number) => sum + val, 0)
-  
+
   // FIXED: Explicitly type the value parameter as number
   const allocationPercentages = Object.entries(assetAllocation).reduce((acc, [type, value]) => {
     acc[type] = ((value as number) / totalAllocation) * 100
@@ -146,8 +146,9 @@ export default function EnhancedAnalytics() {
     }
   ]
 
-  const maxPortfolioValue = Math.max(...performanceData.map(d => d.portfolioValue))
-  const maxEarnings = Math.max(...performanceData.map(d => d.earnings))
+  // FIX: Ensure we have valid max values for chart scaling
+  const maxPortfolioValue = performanceData.length > 0 ? Math.max(...performanceData.map(d => d.portfolioValue)) : 1
+  const maxEarnings = performanceData.length > 0 ? Math.max(...performanceData.map(d => d.earnings)) : 1
 
   return (
     <div className="space-y-6">
@@ -239,40 +240,42 @@ export default function EnhancedAnalytics() {
             </div>
 
             {/* Chart Lines */}
-            <div className="absolute inset-0 flex items-end justify-between px-4 pb-8">
-              {performanceData.map((data, index) => (
-                <div key={data.timestamp} className="flex flex-col items-center space-y-2 relative" style={{ flex: 1 }}>
-                  {/* Portfolio Value Bar */}
-                  <motion.div
-                    initial={{ height: 0 }}
-                    animate={{ height: `${(data.portfolioValue / maxPortfolioValue) * 80}%` }}
-                    transition={{ duration: 0.8, delay: index * 0.05 }}
-                    className="w-6 bg-gradient-to-t from-emerald-500 to-emerald-600 rounded-t-lg relative group cursor-pointer"
-                    whileHover={{ scale: 1.1 }}
-                  >
-                    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                      ${getUsdValue(data.portfolioValue).toLocaleString()}
-                    </div>
-                  </motion.div>
+            {performanceData.length > 0 && (
+              <div className="absolute inset-0 flex items-end justify-between px-4 pb-8">
+                {performanceData.map((data, index) => (
+                  <div key={data.timestamp} className="flex flex-col items-center space-y-2 relative" style={{ flex: 1 }}>
+                    {/* Portfolio Value Bar */}
+                    <motion.div
+                      initial={{ height: 0 }}
+                      animate={{ height: `${(data.portfolioValue / maxPortfolioValue) * 80}%` }}
+                      transition={{ duration: 0.8, delay: index * 0.05 }}
+                      className="w-6 bg-gradient-to-t from-emerald-500 to-emerald-600 rounded-t-lg relative group cursor-pointer"
+                      whileHover={{ scale: 1.1 }}
+                    >
+                      <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                        ${getUsdValue(data.portfolioValue).toLocaleString()}
+                      </div>
+                    </motion.div>
 
-                  {/* Earnings Line */}
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: '4px' }}
-                    transition={{ duration: 0.8, delay: index * 0.05 + 0.3 }}
-                    className="w-1 bg-sapphire-400 rounded-full"
-                    style={{ height: `${(data.earnings / maxEarnings) * 40}%` }}
-                  />
+                    {/* Earnings Line */}
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: '4px' }}
+                      transition={{ duration: 0.8, delay: index * 0.05 + 0.3 }}
+                      className="w-1 bg-sapphire-400 rounded-full"
+                      style={{ height: `${(data.earnings / maxEarnings) * 40}%` }}
+                    />
 
-                  {/* Time Label */}
-                  <span className="text-slate-400 text-xs">
-                    {timeRange === '1d' ? new Date(data.timestamp).getHours() + 'h' :
-                     timeRange === '1w' ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date(data.timestamp).getDay()] :
-                     new Date(data.timestamp).getDate() + '/' + (new Date(data.timestamp).getMonth() + 1)}
-                  </span>
-                </div>
-              ))}
-            </div>
+                    {/* Time Label */}
+                    <span className="text-slate-400 text-xs">
+                      {timeRange === '1d' ? new Date(data.timestamp).getHours() + 'h' :
+                       timeRange === '1w' ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date(data.timestamp).getDay()] :
+                       new Date(data.timestamp).getDate() + '/' + (new Date(data.timestamp).getMonth() + 1)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </motion.div>
 

@@ -1,5 +1,5 @@
-'use client'
-import { useState, useEffect } from 'react'
+"use client"
+import { useState } from 'react'
 import {
   MapPin, TrendingUp, Calendar, Users, PieChart,
   DollarSign, BarChart3, Shield, Clock, Target, Sparkles,
@@ -22,48 +22,70 @@ export default function AssetDetailModal({ isOpen, onClose, asset, onPurchaseCli
   const { purchaseAsset } = useApp()
   const [activeTab, setActiveTab] = useState('overview')
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
-  const [bidAmount, setBidAmount] = useState('')
 
-  if (!asset) return null
+  // FIXED: Removed auction-related hooks to prevent conditional hook issues
+  // All hooks are now called unconditionally
 
-  // Calculate time left for auction
-  useEffect(() => {
-    if (asset.auctionEndTime) {
-      const calculateTimeLeft = () => {
-        const difference = asset.auctionEndTime - Date.now()
-        if (difference > 0) {
-          setTimeLeft({
-            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-            minutes: Math.floor((difference / 1000 / 60) % 60),
-            seconds: Math.floor((difference / 1000) % 60)
-          })
-        }
-      }
+  // Add safety check for missing asset - AFTER hooks
+  if (!asset) {
+    return (
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <div className="p-8 text-center">
+          <div className="text-6xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold text-white mb-4">Asset Not Found</h2>
+          <p className="text-neutral-mid mb-6">The requested asset could not be loaded.</p>
+          <button
+            onClick={onClose}
+            className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl"
+          >
+            Close
+          </button>
+        </div>
+      </Modal>
+    )
+  }
 
-      calculateTimeLeft()
-      const timer = setInterval(calculateTimeLeft, 1000)
-      return () => clearInterval(timer)
-    }
-  }, [asset.auctionEndTime])
-
+  // Mock slides for the asset
   const slides = [
-    { id: 'overview', label: 'Overview', icon: PieChart },
-    { id: 'financials', label: 'Financials', icon: DollarSign },
-    { id: 'performance', label: 'Performance', icon: TrendingUp },
-    { id: 'details', label: 'Asset Details', icon: BarChart3 },
+    asset.image,
+    'https://images.unsplash.com/photo-1542729173-04a963a6306d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+    'https://images.unsplash.com/photo-1509924611586-5b4c1b9b0c6f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
   ]
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length)
+  }
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+  }
+
+  // Ensure all required properties have fallbacks
+  const safeAsset = {
+    id: asset.id || 0,
+    name: asset.name || 'Unknown Asset',
+    type: asset.type || 'horse',
+    location: asset.location || 'Unknown Location',
+    price: asset.price || 0,
+    image: asset.image || slides[0],
+    description: asset.description || 'No description available.',
+    roi: asset.roi || 12,
+    stats: asset.stats || { wins: 0, places: 0, pedigree: 'Unknown' },
+    upcomingRace: asset.upcomingRace || 'No upcoming races',
+    projectedRent: asset.projectedRent || 'Not available'
+  }
+
+  const minInvestmentASRD = safeAsset.price * 0.1
+  const canAfford = asrdBalance >= minInvestmentASRD
 
   // Minimum investment check ($50 USD)
   const minimumASRD = getAsrdValue(50)
   const canInvest = asrdBalance >= minimumASRD
-  const isAuction = asset.auctionEndTime && asset.auctionEndTime > Date.now()
 
   const investmentDetails = [
     { label: 'Minimum Investment', value: `$50 USD (${minimumASRD.toFixed(2)} ASRD)`, icon: DollarSign },
-    { label: 'Projected ROI', value: `${asset.roi}% Annually`, icon: TrendingUp },
-    { label: 'Asset Valuation', value: `$${getUsdValue(asset.price).toLocaleString()} USD`, icon: BarChart3 },
+    { label: 'Projected ROI', value: `${safeAsset.roi}% Annually`, icon: TrendingUp },
+    { label: 'Asset Valuation', value: `$${getUsdValue(safeAsset.price).toLocaleString()} USD`, icon: BarChart3 },
     { label: 'Investment Term', value: '3-5 Years', icon: Calendar },
   ]
 
@@ -74,7 +96,7 @@ export default function AssetDetailModal({ isOpen, onClose, asset, onPurchaseCli
     { label: 'Management Fee', value: '2% Annual', change: 'neutral' },
   ]
 
-  const assetStats = asset.stats || {}
+  const assetStats = safeAsset.stats || {}
 
   const handleNextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length)
@@ -84,21 +106,6 @@ export default function AssetDetailModal({ isOpen, onClose, asset, onPurchaseCli
   const handlePrevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
     setActiveTab(slides[(currentSlide - 1 + slides.length) % slides.length].id)
-  }
-
-  const handlePlaceBid = async () => {
-    const bidASRD = parseFloat(bidAmount)
-    if (bidASRD && bidASRD >= (asset.minimumBid || asset.currentBid * 1.05)) {
-      const success = await purchaseAsset(asset.id, bidASRD)
-      if (success) {
-        alert(`Bid placed successfully! ${bidASRD} ASRD`)
-        setBidAmount('')
-      } else {
-        alert('Bid failed. Please check your balance.')
-      }
-    } else {
-      alert(`Bid must be at least ${asset.minimumBid || (asset.currentBid * 1.05).toFixed(2)} ASRD`)
-    }
   }
 
   return (
@@ -118,9 +125,14 @@ export default function AssetDetailModal({ isOpen, onClose, asset, onPurchaseCli
           >
             <ArrowLeft className="w-5 h-5 text-slate-300" />
           </button>
-          
+
           <div className="flex space-x-2">
-            {slides.map((slide, index) => (
+            {[
+              { id: 'overview', label: 'Overview' },
+              { id: 'financials', label: 'Financials' },
+              { id: 'performance', label: 'Performance' },
+              { id: 'details', label: 'Asset Details' },
+            ].map((slide, index) => (
               <button
                 key={slide.id}
                 onClick={() => {
@@ -128,8 +140,8 @@ export default function AssetDetailModal({ isOpen, onClose, asset, onPurchaseCli
                   setActiveTab(slide.id)
                 }}
                 className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  currentSlide === index 
-                    ? 'bg-emerald-500 scale-125' 
+                  currentSlide === index
+                    ? 'bg-emerald-500 scale-125'
                     : 'bg-slate-600 hover:bg-slate-500'
                 }`}
               />
@@ -144,20 +156,15 @@ export default function AssetDetailModal({ isOpen, onClose, asset, onPurchaseCli
           </button>
         </div>
 
-        {/* Header - Enhanced with Auction Info */}
+        {/* Header - Simplified without auction */}
         <div className="glass-3d p-6 rounded-2xl mb-6 group hover:scale-105 transition-transform duration-300">
           <div className="flex items-start space-x-6">
             <div className="relative">
               <img
-                src={asset.image || '/images/placeholder-asset.jpg'}
-                alt={asset.name}
+                src={safeAsset.image}
+                alt={safeAsset.name}
                 className="w-32 h-32 object-cover rounded-2xl border-2 border-emerald-500/30"
               />
-              {isAuction && (
-                <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-gold-glow to-orange-500 rounded-full flex items-center justify-center">
-                  <Gavel className="w-4 h-4 text-white" />
-                </div>
-              )}
               <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-emerald-500 to-green-600 rounded-full flex items-center justify-center">
                 <Target className="w-4 h-4 text-white" />
               </div>
@@ -165,112 +172,30 @@ export default function AssetDetailModal({ isOpen, onClose, asset, onPurchaseCli
             <div className="flex-1">
               <div className="flex items-start justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold text-white mb-2">{asset.name}</h2>
+                  <h2 className="text-2xl font-bold text-white mb-2">{safeAsset.name}</h2>
                   <div className="flex items-center text-emerald-300 mb-3">
                     <MapPin className="w-4 h-4 mr-2" />
-                    {asset.location}
+                    {safeAsset.location}
                   </div>
                 </div>
-                {isAuction && (
-                  <div className="text-right">
-                    <div className="flex items-center text-gold-glow mb-1">
-                      <Timer className="w-4 h-4 mr-1" />
-                      <span className="font-bold">Auction Live</span>
-                    </div>
-                    <div className="text-sm text-slate-400">
-                      {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m
-                    </div>
-                  </div>
-                )}
               </div>
-              
-              <p className="text-slate-300 mb-4">{asset.description}</p>
-              
+
+              <p className="text-slate-300 mb-4">{safeAsset.description}</p>
+
               <div className="flex flex-wrap gap-2">
                 <span className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm font-medium border border-blue-500/30">
-                  {asset.category || (asset.type === 'horse' ? 'Racehorse' : 'Real Estate')}
+                  {safeAsset.type === 'horse' ? 'Racehorse' : 'Real Estate'}
                 </span>
                 <span className="bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-sm font-medium border border-green-500/30">
-                  {asset.roi}% Projected ROI
+                  {safeAsset.roi}% Projected ROI
                 </span>
                 <span className="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm font-medium border border-purple-500/30">
                   Blockchain Verified
                 </span>
-                {isAuction && (
-                  <span className="bg-gold-glow/20 text-yellow-300 px-3 py-1 rounded-full text-sm font-medium border border-yellow-500/30">
-                    🔥 Live Auction
-                  </span>
-                )}
               </div>
             </div>
           </div>
         </div>
-
-        {/* Auction Section */}
-        {isAuction && (
-          <div className="glass-3d border border-gold-glow/20 rounded-2xl p-6 mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-gold-glow flex items-center">
-                <Gavel className="w-5 h-5 mr-2" />
-                Live Auction
-              </h3>
-              <div className="flex items-center space-x-4 text-sm">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-white">{timeLeft.days}</div>
-                  <div className="text-slate-400">Days</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-white">{timeLeft.hours}</div>
-                  <div className="text-slate-400">Hours</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-white">{timeLeft.minutes}</div>
-                  <div className="text-slate-400">Minutes</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <div className="text-center p-4 bg-slate-700/30 rounded-xl">
-                <div className="text-slate-400 text-sm mb-1">Current Bid</div>
-                <div className="text-2xl font-bold text-gold-glow">{asset.currentBid?.toLocaleString()} ASRD</div>
-                <div className="text-slate-400 text-sm">${getUsdValue(asset.currentBid || 0).toLocaleString()} USD</div>
-              </div>
-              <div className="text-center p-4 bg-slate-700/30 rounded-xl">
-                <div className="text-slate-400 text-sm mb-1">Minimum Bid</div>
-                <div className="text-2xl font-bold text-emerald-400">{asset.minimumBid?.toLocaleString()} ASRD</div>
-                <div className="text-slate-400 text-sm">${getUsdValue(asset.minimumBid || 0).toLocaleString()} USD</div>
-              </div>
-              <div className="text-center p-4 bg-slate-700/30 rounded-xl">
-                <div className="text-slate-400 text-sm mb-1">Bidders</div>
-                <div className="text-2xl font-bold text-cyan-400 flex items-center justify-center">
-                  <UsersIcon className="w-5 h-5 mr-1" />
-                  12
-                </div>
-                <div className="text-slate-400 text-sm">Active Participants</div>
-              </div>
-            </div>
-
-            <div className="flex space-x-3">
-              <div className="flex-1">
-                <input
-                  type="number"
-                  value={bidAmount}
-                  onChange={(e) => setBidAmount(e.target.value)}
-                  placeholder={`Enter bid (min ${asset.minimumBid} ASRD)`}
-                  className="w-full px-4 py-3 bg-slate-800/50 border border-gold-glow/30 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-glow"
-                />
-              </div>
-              <button
-                onClick={handlePlaceBid}
-                disabled={!bidAmount || parseFloat(bidAmount) < asset.minimumBid || asrdBalance < parseFloat(bidAmount)}
-                className="px-6 py-3 bg-gradient-to-r from-gold-glow to-orange-500 text-white font-bold rounded-xl hover:from-yellow-500 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
-              >
-                Place Bid
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* Slide Content */}
         <div className="space-y-6">
@@ -357,10 +282,10 @@ export default function AssetDetailModal({ isOpen, onClose, asset, onPurchaseCli
                       <span className="text-slate-300">Year {year}</span>
                       <div className="text-right">
                         <div className="font-bold text-cyan-400">
-                          +{((asset.price * asset.roi * year) / 100).toLocaleString()} ASRD
+                          +{((safeAsset.price * safeAsset.roi * year) / 100).toLocaleString()} ASRD
                         </div>
                         <div className="text-sm text-slate-400">
-                          ${(((asset.price * 32 * asset.roi * year) / 100)).toLocaleString()} USD
+                          ${(((safeAsset.price * 32 * safeAsset.roi * year) / 100)).toLocaleString()} USD
                         </div>
                       </div>
                     </div>
@@ -424,22 +349,20 @@ export default function AssetDetailModal({ isOpen, onClose, asset, onPurchaseCli
           >
             Close
           </button>
-          {!isAuction && (
-            <button
-              onClick={() => {
-                onClose()
-                onPurchaseClick()
-              }}
-              disabled={!canInvest}
-              className="flex-1 px-6 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl hover:from-emerald-600 hover:to-green-700 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 relative overflow-hidden group"
-            >
-              <div className="flex items-center justify-center space-x-2">
-                <DollarSign className="w-5 h-5" />
-                <span>Invest in this Asset</span>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-            </button>
-          )}
+          <button
+            onClick={() => {
+              onClose()
+              onPurchaseClick()
+            }}
+            disabled={!canInvest}
+            className="flex-1 px-6 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl hover:from-emerald-600 hover:to-green-700 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 relative overflow-hidden group"
+          >
+            <div className="flex items-center justify-center space-x-2">
+              <DollarSign className="w-5 h-5" />
+              <span>Invest in this Asset</span>
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+          </button>
         </div>
 
         {/* Balance Display */}
@@ -448,7 +371,7 @@ export default function AssetDetailModal({ isOpen, onClose, asset, onPurchaseCli
             Your Balance: <span className="text-emerald-400 font-semibold">{asrdBalance.toFixed(2)} ASRD</span>
             <span className="text-slate-500 ml-2">(${getUsdValue(asrdBalance).toLocaleString()} USD)</span>
           </p>
-          {!canInvest && !isAuction && (
+          {!canInvest && (
             <p className="text-red-400 text-sm mt-1">
               Minimum $50 USD ({minimumASRD.toFixed(2)} ASRD) required to invest
             </p>

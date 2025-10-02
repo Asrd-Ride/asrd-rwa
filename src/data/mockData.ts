@@ -14,83 +14,28 @@ export interface Asset {
   featured: boolean;
   roi: number;
   category?: string;
-  auctionEndTime?: number; // Timestamp for auction end
-  currentBid?: number; // Current bid in ASRD
-  minimumBid?: number; // Minimum bid in ASRD
 }
 
 export const mockAssets: Asset[] = [
-  // Auction Assets
-  {
-    id: 10,
-    name: 'Desert Lightning',
-    type: 'horse',
-    location: 'Dubai, UAE',
-    price: 4687.5, // $150,000 USD
-    image: 'https://images.unsplash.com/photo-1542729173-04a963a6306d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
-    stats: { 
-      wins: 15, 
-      places: 2, 
-      pedigree: 'Pure Arabian Bloodline',
-      age: '4 years',
-      trainer: 'Mohammed Al Maktoum Stables',
-      earnings: '$2.8M'
-    },
-    upcomingRace: 'Dubai World Cup 2024',
-    unclaimedWinnings: 0,
-    description: 'Champion Arabian thoroughbred with undefeated record in desert racing. Multiple Group 1 winner with exceptional speed and stamina. Owned by royal stables.',
-    featured: true,
-    roi: 22,
-    category: 'Premium Racehorse',
-    auctionEndTime: Date.now() + (48 * 60 * 60 * 1000), // 48 hours from now
-    currentBid: 4250,
-    minimumBid: 4500
-  },
-  {
-    id: 11,
-    name: 'Manhattan Skyline Penthouse',
-    type: 'real-estate',
-    location: 'New York, USA',
-    price: 156250, // $5,000,000 USD
-    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    stats: { 
-      value: '$5,000,000', 
-      yield: '7.8%',
-      bedrooms: 4,
-      bathrooms: 5,
-      squareFeet: 4500,
-      yearBuilt: 2022
-    },
-    projectedRent: '$32,500/month',
-    unclaimedRent: 0,
-    description: 'Luxury penthouse in Manhattan with panoramic views of Central Park. Features private elevator, smart home system, and premium finishes throughout.',
-    featured: true,
-    roi: 18,
-    category: 'Luxury Residential',
-    auctionEndTime: Date.now() + (72 * 60 * 60 * 1000), // 72 hours from now
-    currentBid: 140625,
-    minimumBid: 150000
-  },
-
-  // Regular Assets - Horses ($25k - $150k)
+  // Horse Racing Assets - Australia, UK, Dubai
   {
     id: 1,
-    name: 'Thunder Sovereign',
+    name: 'Sydney Speedster',
     type: 'horse',
-    location: 'Kentucky, USA',
+    location: 'Sydney, Australia',
     price: 3125, // $100,000 USD
-    image: 'https://images.unsplash.com/photo-1599140780245-99dce06649c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    stats: { 
-      wins: 12, 
-      places: 3, 
-      pedigree: 'American Thoroughbred',
+    image: 'https://placehold.co/600x400/4A5568/FFFFFF?text=Racehorse+1',
+    stats: {
+      wins: 12,
+      places: 3,
+      pedigree: 'Australian Thoroughbred',
       age: '5 years',
-      trainer: 'Churchill Downs Stables',
+      trainer: 'Royal Randwick Stables',
       earnings: '$1.2M'
     },
-    upcomingRace: 'Kentucky Derby 2024',
+    upcomingRace: 'Melbourne Cup 2024',
     unclaimedWinnings: 0,
-    description: 'Elite American thoroughbred with multiple championship wins. Known for explosive speed and consistent performance in major derbies.',
+    description: 'Elite Australian thoroughbred with multiple championship wins. Known for explosive speed and consistent performance in major derbies.',
     featured: true,
     roi: 19
   },
@@ -98,12 +43,12 @@ export const mockAssets: Asset[] = [
     id: 2,
     name: 'Royal Ascot Champion',
     type: 'horse',
-    location: 'Newmarket, UK',
+    location: 'Ascot, UK',
     price: 2500, // $80,000 USD
-    image: 'https://images.unsplash.com/photo-1513279922550-250c2129b13a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    stats: { 
-      wins: 8, 
-      places: 4, 
+    image: 'https://placehold.co/600x400/2D3748/FFFFFF?text=Racehorse+2',
+    stats: {
+      wins: 8,
+      places: 4,
       pedigree: 'British Thoroughbred',
       age: '6 years',
       trainer: 'Royal Ascot Stables',
@@ -117,57 +62,78 @@ export const mockAssets: Asset[] = [
   },
   {
     id: 3,
-    name: 'Australian Desert Storm',
+    name: 'Dubai Desert King',
+    type: 'horse',
+    location: 'Dubai, UAE',
+    price: 4687.5, // $150,000 USD
+    image: 'https://placehold.co/600x400/1A365D/FFFFFF?text=Arabian+Thoroughbred',
+    stats: {
+      wins: 15,
+      places: 2,
+      pedigree: 'Pure Arabian Bloodline',
+      age: '4 years',
+      trainer: 'Meydan Racing Stables',
+      earnings: '$2.8M'
+    },
+    upcomingRace: 'Dubai World Cup 2024',
+    unclaimedWinnings: 0,
+    description: 'Champion Arabian thoroughbred with undefeated record in desert racing. Multiple Group 1 winner with exceptional speed and stamina.',
+    featured: true,
+    roi: 22
+  },
+  {
+    id: 4,
+    name: 'Melbourne Marvel',
     type: 'horse',
     location: 'Melbourne, Australia',
     price: 1875, // $60,000 USD
-    image: 'https://images.unsplash.com/photo-1500479773-e3c8ee3d9c2e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
-    stats: { 
-      wins: 6, 
-      places: 5, 
+    image: 'https://placehold.co/600x400/2C5282/FFFFFF?text=Stock+Horse',
+    stats: {
+      wins: 6,
+      places: 5,
       pedigree: 'Australian Stock Horse',
       age: '4 years',
-      trainer: 'Melbourne Racing Club',
+      trainer: 'Flemington Stables',
       earnings: '$450K'
     },
-    upcomingRace: 'Melbourne Cup 2024',
+    upcomingRace: 'Caulfield Cup 2024',
     unclaimedWinnings: 0,
     description: 'Powerful Australian stock horse known for exceptional endurance and speed. Perfect for long-distance racing and championship events.',
     featured: false,
     roi: 16
   },
   {
-    id: 4,
-    name: 'Kentucky Derby Star',
+    id: 5,
+    name: 'Golden Thunder',
     type: 'horse',
-    location: 'Kentucky, USA',
-    price: 781.25, // $25,000 USD
-    image: 'https://images.unsplash.com/photo-1599140780245-99dce06649c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    stats: { 
-      wins: 4, 
-      places: 3, 
-      pedigree: 'American Quarter Horse',
-      age: '3 years',
-      trainer: 'Bluegrass Stables',
-      earnings: '$180K'
+    location: 'Dubai, UAE',
+    price: 4375, // $140,000 USD
+    image: 'https://placehold.co/600x400/744210/FFFFFF?text=Golden+Bloodline',
+    stats: {
+      wins: 7,
+      places: 1,
+      pedigree: 'Golden Bloodline',
+      age: '5 years',
+      trainer: 'Jebel Ali Stables',
+      earnings: '$950K'
     },
-    upcomingRace: 'Kentucky Derby 2024',
-    unclaimedWinnings: 0,
-    description: 'Promising American quarter horse with explosive acceleration. Showing great potential in preliminary races with strong lineage.',
+    upcomingRace: 'Dubai Derby',
+    unclaimedWinnings: 150,
+    description: 'Champion racehorse with multiple international wins and consistent performance. Known for exceptional speed and racing intelligence.',
     featured: false,
-    roi: 21
+    roi: 20
   },
 
-  // Real Estate Assets ($300k - $5M)
+  // Real Estate Assets - Dubai, UK, Australia
   {
-    id: 5,
-    name: 'Marina Bay Penthouse',
+    id: 6,
+    name: 'Dubai Marina Penthouse',
     type: 'real-estate',
     location: 'Dubai Marina, UAE',
     price: 9375, // $300,000 USD
-    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    stats: { 
-      value: '$300,000', 
+    image: 'https://placehold.co/600x400/2C5282/FFFFFF?text=Dubai+Marina+View',
+    stats: {
+      value: '$300,000',
       yield: '8.5%',
       bedrooms: 2,
       bathrooms: 2,
@@ -181,14 +147,14 @@ export const mockAssets: Asset[] = [
     roi: 15
   },
   {
-    id: 6,
-    name: 'Kensington Luxury Villa',
+    id: 7,
+    name: 'London Kensington Villa',
     type: 'real-estate',
     location: 'London, UK',
     price: 15625, // $500,000 USD
-    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80',
-    stats: { 
-      value: '$500,000', 
+    image: 'https://placehold.co/600x400/4A5568/FFFFFF?text=London+Villa',
+    stats: {
+      value: '$500,000',
       yield: '7.2%',
       bedrooms: 3,
       bathrooms: 3,
@@ -202,14 +168,14 @@ export const mockAssets: Asset[] = [
     roi: 14
   },
   {
-    id: 7,
+    id: 8,
     name: 'Sydney Harbour Mansion',
     type: 'real-estate',
     location: 'Sydney, Australia',
     price: 31250, // $1,000,000 USD
-    image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80',
-    stats: { 
-      value: '$1,000,000', 
+    image: 'https://placehold.co/600x400/1A365D/FFFFFF?text=Sydney+Opera+View',
+    stats: {
+      value: '$1,000,000',
       yield: '8.8%',
       bedrooms: 4,
       bathrooms: 4,
@@ -223,14 +189,14 @@ export const mockAssets: Asset[] = [
     roi: 16
   },
   {
-    id: 8,
-    name: 'Beverly Hills Estate',
+    id: 9,
+    name: 'Dubai Palm Residence',
     type: 'real-estate',
-    location: 'Los Angeles, USA',
+    location: 'Dubai, UAE',
     price: 62500, // $2,000,000 USD
-    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    stats: { 
-      value: '$2,000,000', 
+    image: 'https://placehold.co/600x400/2D3748/FFFFFF?text=Palm+Jumeirah',
+    stats: {
+      value: '$2,000,000',
       yield: '9.2%',
       bedrooms: 5,
       bathrooms: 6,
@@ -239,42 +205,42 @@ export const mockAssets: Asset[] = [
     },
     projectedRent: '$15,333/month',
     unclaimedRent: 0,
-    description: 'Luxury modern estate in exclusive Beverly Hills. Features home theater, wine cellar, gym, and panoramic city views with premium security.',
+    description: 'Luxury modern estate on Palm Jumeirah. Features home theater, wine cellar, gym, and panoramic sea views with premium security.',
     featured: false,
     roi: 18
   },
   {
-    id: 9,
-    name: 'Golden Thunder',
-    type: 'horse',
-    location: 'Dubai, UAE',
-    price: 4375, // $140,000 USD
-    image: 'https://images.unsplash.com/photo-1542729173-04a963a6306d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
-    stats: { 
-      wins: 7, 
-      places: 1, 
-      pedigree: 'Golden Bloodline',
-      age: '5 years',
-      trainer: 'Dubai Racing Club',
-      earnings: '$950K'
+    id: 10,
+    name: 'London Mayfair Penthouse',
+    type: 'real-estate',
+    location: 'London, UK',
+    price: 156250, // $5,000,000 USD
+    image: 'https://placehold.co/600x400/744210/FFFFFF?text=Mayfair+London',
+    stats: {
+      value: '$5,000,000',
+      yield: '7.8%',
+      bedrooms: 4,
+      bathrooms: 5,
+      squareFeet: 4500,
+      yearBuilt: 2022
     },
-    upcomingRace: 'Dubai Derby',
-    unclaimedWinnings: 150,
-    description: 'Champion racehorse with multiple international wins and consistent performance. Known for exceptional speed and racing intelligence.',
-    featured: false,
-    roi: 20
+    projectedRent: '$32,500/month',
+    unclaimedRent: 0,
+    description: 'Luxury penthouse in exclusive Mayfair with panoramic views of London. Features private elevator, smart home system, and premium finishes.',
+    featured: true,
+    roi: 18
   }
 ]
 
 // Sample owned assets for demo
 export const ownedAssets: Asset[] = [
   {
-    id: 9,
+    id: 5,
     name: 'Golden Thunder',
     type: 'horse',
     location: 'Dubai, UAE',
     price: 4375,
-    image: 'https://images.unsplash.com/photo-1542729173-04a963a6306d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
+    image: 'https://placehold.co/600x400/744210/FFFFFF?text=Golden+Bloodline',
     stats: { wins: 7, places: 1, pedigree: 'Golden Bloodline' },
     upcomingRace: 'Dubai Derby',
     unclaimedWinnings: 150,

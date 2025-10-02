@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { TrendingUp, PieChart, DollarSign, Calendar, MapPin, Trophy, Home, Coins, Sparkles, Filter, Search, BarChart3, Target, Users, Zap, Crown, Gem, LogIn, Wallet, Shield } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import EnhancedAnalytics from '@/components/ui/EnhancedAnalytics';
+import PerformanceMetrics from '@/components/ui/PerformanceMetrics';
 
 export default function Dashboard() {
   const { ownedAssets, claimEarnings, claimAllEarnings } = useApp();
@@ -498,14 +499,7 @@ export default function Dashboard() {
 
           {activeTab === 'analytics' && <EnhancedAnalytics />}
 
-          {activeTab === 'performance' && (
-            <div className="glass-3d p-8 text-center">
-              <BarChart3 className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-white mb-2">Performance Analytics</h3>
-              <p className="text-slate-400">Advanced performance tracking coming soon</p>
-              <p className="text-slate-500 text-sm mt-2">Track your investment growth with detailed analytics</p>
-            </div>
-          )}
+          {activeTab === 'performance' && <PerformanceMetrics />}
         </div>
       </div>
     </div>

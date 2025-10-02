@@ -30,8 +30,10 @@ export default function MarketplacePage() {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // FIXED: Updated price range to accommodate all assets (up to 200,000 ASRD)
   const [advancedFilters, setAdvancedFilters] = useState<FilterState>({
-    priceRange: [0, 1000],
+    priceRange: [0, 200000],  // ✅ Fixed: Now includes all assets up to $6.4M USD
     roiRange: [5, 25],
     locations: [],
     assetTypes: [],
@@ -57,13 +59,13 @@ export default function MarketplacePage() {
       const matchesType = selectedAssetType === 'all' || asset.type === selectedAssetType;
       const matchesSearch = asset.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            asset.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesPrice = asset.price >= advancedFilters.priceRange[0] && 
+      const matchesPrice = asset.price >= advancedFilters.priceRange[0] &&
                           asset.price <= advancedFilters.priceRange[1];
-      const matchesROI = asset.roi >= advancedFilters.roiRange[0] && 
+      const matchesROI = asset.roi >= advancedFilters.roiRange[0] &&
                         asset.roi <= advancedFilters.roiRange[1];
-      const matchesLocation = advancedFilters.locations.length === 0 || 
+      const matchesLocation = advancedFilters.locations.length === 0 ||
                              advancedFilters.locations.includes(asset.location);
-      const matchesAssetType = advancedFilters.assetTypes.length === 0 || 
+      const matchesAssetType = advancedFilters.assetTypes.length === 0 ||
                               advancedFilters.assetTypes.includes(asset.type);
 
       return matchesType && matchesSearch && matchesPrice && matchesROI && matchesLocation && matchesAssetType;
@@ -72,7 +74,7 @@ export default function MarketplacePage() {
     // Apply sorting
     filtered.sort((a, b) => {
       let aValue, bValue;
-      
+
       switch (advancedFilters.sortBy) {
         case 'price':
           aValue = a.price;
@@ -95,11 +97,11 @@ export default function MarketplacePage() {
       }
 
       if (typeof aValue === 'string') {
-        return advancedFilters.sortOrder === 'asc' 
+        return advancedFilters.sortOrder === 'asc'
           ? aValue.localeCompare(bValue)
           : bValue.localeCompare(aValue);
       } else {
-        return advancedFilters.sortOrder === 'asc' 
+        return advancedFilters.sortOrder === 'asc'
           ? aValue - bValue
           : bValue - aValue;
       }
@@ -162,8 +164,8 @@ export default function MarketplacePage() {
       : 'from-sapphire-glow to-amethyst-glow text-sapphire-glow';
   };
 
-  const activeFilterCount = 
-    (advancedFilters.priceRange[0] > 0 || advancedFilters.priceRange[1] < 1000 ? 1 : 0) +
+  const activeFilterCount =
+    (advancedFilters.priceRange[0] > 0 || advancedFilters.priceRange[1] < 200000 ? 1 : 0) +
     (advancedFilters.roiRange[0] > 5 || advancedFilters.roiRange[1] < 25 ? 1 : 0) +
     advancedFilters.locations.length +
     advancedFilters.assetTypes.length;
@@ -247,7 +249,7 @@ export default function MarketplacePage() {
               className="mt-6 pt-6 border-t border-white/10"
             >
               <div className="flex flex-wrap gap-2">
-                {advancedFilters.priceRange[0] > 0 || advancedFilters.priceRange[1] < 1000 ? (
+                {advancedFilters.priceRange[0] > 0 || advancedFilters.priceRange[1] < 200000 ? (
                   <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 text-sm rounded-full border border-emerald-500/30">
                     Price: {advancedFilters.priceRange[0]}-{advancedFilters.priceRange[1]} ASRD
                   </span>
@@ -445,7 +447,7 @@ export default function MarketplacePage() {
               onClick={() => {
                 setSearchQuery('');
                 setAdvancedFilters({
-                  priceRange: [0, 1000],
+                  priceRange: [0, 200000],
                   roiRange: [5, 25],
                   locations: [],
                   assetTypes: [],
