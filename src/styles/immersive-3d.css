@@ -303,3 +303,43 @@
     linear-gradient(90deg, rgba(0, 255, 170, 0.15) 1px, transparent 1px);
   background-size: 50px 50px;
 }
+
+/* Advanced Filter Slider Styles */
+.slider-3d {
+  background: linear-gradient(90deg, var(--luxury-dark) 0%, var(--emerald-glow) 100%);
+  border-radius: 10px;
+  outline: none;
+}
+
+.slider-3d::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--emerald-glow);
+  cursor: pointer;
+  border: 2px solid var(--luxury-deep);
+  box-shadow: 0 0 20px var(--emerald-glow);
+  transition: all 0.3s ease;
+}
+
+.slider-3d::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 30px var(--emerald-glow);
+}
+
+.slider-3d::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--emerald-glow);
+  cursor: pointer;
+  border: 2px solid var(--luxury-deep);
+  box-shadow: 0 0 20px var(--emerald-glow);
+  transition: all 0.3s ease;
+}
+
+.slider-3d::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 30px var(--emerald-glow);
+}

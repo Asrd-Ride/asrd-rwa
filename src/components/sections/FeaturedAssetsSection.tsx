@@ -13,7 +13,7 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 export default function FeaturedAssetsSection() {
   const { assets, purchaseAsset, isLoading } = useApp()
-  const { asrdBalance } = useWallet()
+  const { asrdBalance, getUsdValue, getAsrdValue } = useWallet()
   const { user } = useAuth()
   const [selectedAsset, setSelectedAsset] = useState<any>(null)
   const [showPurchaseModal, setShowPurchaseModal] = useState(false)
@@ -23,7 +23,6 @@ export default function FeaturedAssetsSection() {
 
   const handlePurchaseClick = (asset: any) => {
     if (!user) {
-      // Redirect to dashboard/login if not authenticated
       window.location.href = '/portfolio'
       return
     }
@@ -45,12 +44,14 @@ export default function FeaturedAssetsSection() {
     setShowPurchaseModal(true)
   }
 
-  const confirmPurchase = async (fraction: number) => {
+  const confirmPurchase = async (investmentASRD: number) => {
     if (!selectedAsset) return
 
-    const success = await purchaseAsset(selectedAsset.id, fraction)
+    const success = await purchaseAsset(selectedAsset.id, investmentASRD)
     if (success) {
-      alert(`Success! You purchased ${(fraction * 100).toFixed(0)}% of ${selectedAsset.name}`)
+      const investmentUSD = getUsdValue(investmentASRD)
+      const ownershipPercentage = (investmentUSD / getUsdValue(selectedAsset.price)) * 100
+      alert(`Success! You purchased ${ownershipPercentage.toFixed(2)}% of ${selectedAsset.name} for $${investmentUSD.toLocaleString()}`)
     } else {
       alert('Purchase failed. Please try again.')
     }
@@ -116,7 +117,7 @@ export default function FeaturedAssetsSection() {
           {featuredAssets.map((asset, index) => {
             const AssetTypeIcon = getAssetTypeIcon(asset.type);
             const gradientClass = getAssetTypeColor(asset.type);
-            const minInvestmentASRD = asset.price * 0.1;
+            const minInvestmentASRD = getAsrdValue(50); // $50 USD minimum
             const { ref, isInView } = useScrollAnimation()
 
             return (
@@ -190,7 +191,7 @@ export default function FeaturedAssetsSection() {
                       <span className="text-neutral-mid">Total Value</span>
                       <div className="text-right">
                         <div className="text-2xl font-black text-emerald-glow">{asset.price.toLocaleString()} ASRD</div>
-                        <div className="text-neutral-mid text-sm">${(asset.price * 32).toLocaleString()} USD</div>
+                        <div className="text-neutral-mid text-sm">${getUsdValue(asset.price).toLocaleString()} USD</div>
                       </div>
                     </div>
 
@@ -211,8 +212,8 @@ export default function FeaturedAssetsSection() {
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-emerald-glow font-bold">Minimum Investment:</span>
                       <div className="text-right">
-                        <div className="font-black text-white">{minInvestmentASRD.toFixed(0)} ASRD</div>
-                        <div className="text-sapphire-glow">${(minInvestmentASRD * 32).toLocaleString()} USD</div>
+                        <div className="font-black text-white">{minInvestmentASRD.toFixed(2)} ASRD</div>
+                        <div className="text-sapphire-glow">$50 USD</div>
                       </div>
                     </div>
                   </div>
@@ -248,7 +249,7 @@ export default function FeaturedAssetsSection() {
 
                   {user && asrdBalance < minInvestmentASRD && (
                     <p className="text-ruby-glow text-xs text-center mt-3 font-semibold">
-                      Need {minInvestmentASRD.toFixed(0)} ASRD minimum
+                      Need {minInvestmentASRD.toFixed(2)} ASRD minimum
                     </p>
                   )}
                 </div>

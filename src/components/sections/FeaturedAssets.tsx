@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import { motion } from 'framer-motion'
 import { useApp } from '@/contexts/AppContext'
 import { useWallet } from '@/contexts/WalletContext'
@@ -9,13 +9,14 @@ import Image from 'next/image'
 export default function FeaturedAssets() {
   const { assets, purchaseAsset, isLoading } = useApp()
   const { asrdBalance } = useWallet()
-  
+
   const featuredAssets = assets.filter(asset => asset.featured).slice(0, 3)
 
   const handlePurchase = (assetId: number) => {
     const asset = assets.find(a => a.id === assetId)
     if (asset && asrdBalance >= asset.price) {
-      purchaseAsset(assetId)
+      // FIXED: Now passing 2 arguments - assetId and investment amount (full price for featured assets)
+      purchaseAsset(assetId, asset.price)
     } else {
       alert('Insufficient ASRD balance to purchase this asset')
     }
@@ -52,18 +53,18 @@ export default function FeaturedAssets() {
             >
               {/* Asset Image */}
               <div className="relative h-48 overflow-hidden">
-                <Image 
-                  src={asset.image} 
+                <Image
+                  src={asset.image}
                   alt={asset.name}
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all" />
-                
+
                 {/* Asset Type Badge */}
                 <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-sm font-semibold ${
-                  asset.type === 'horse' 
-                    ? 'bg-accent-success/20 text-accent-success' 
+                  asset.type === 'horse'
+                    ? 'bg-accent-success/20 text-accent-success'
                     : 'bg-accent-primary/20 text-accent-primary'
                 }`}>
                   {asset.type === 'horse' ? '🐎 Horse' : '🏠 Real Estate'}

@@ -14,13 +14,18 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
 
+  // Menu items - Dashboard only shows when logged in
   const menuItems = [
     { label: 'Home', href: '/' },
     { label: 'Marketplace', href: '/marketplace' },
-    { label: 'Dashboard', href: '/portfolio' },
     { label: 'DAO', href: '/dao' },
     { label: 'Treasury', href: '/treasury' }
   ]
+
+  // Add Dashboard to menu items only when user is logged in
+  const filteredMenuItems = user 
+    ? [...menuItems, { label: 'Dashboard', href: '/portfolio' }]
+    : menuItems
 
   const asrdValueUSD = getUsdValue(asrdBalance)
 
@@ -80,7 +85,7 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-2">
-            {menuItems.map((item) => (
+            {filteredMenuItems.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
@@ -123,7 +128,7 @@ export default function Header() {
                 </div>
               </>
             )}
-            
+
             {/* Login/User Button */}
             {user ? (
               <Link href="/portfolio">
@@ -136,18 +141,16 @@ export default function Header() {
                 </div>
               </Link>
             ) : (
-              <Link href="/portfolio">
-                <button
-                  onClick={handleDemoLogin}
-                  className="flex items-center space-x-2 glass-3d rounded-xl px-4 py-2 hover:bg-emerald-500/20 transition-all duration-300 group"
-                >
-                  <LogIn className="w-4 h-4 text-emerald-glow group-hover:text-white" />
-                  <div className="text-right">
-                    <div className="text-white font-semibold text-sm">Login</div>
-                    <div className="text-emerald-glow text-xs group-hover:text-white">Access Dashboard</div>
-                  </div>
-                </button>
-              </Link>
+              <button
+                onClick={handleDemoLogin}
+                className="flex items-center space-x-2 glass-3d rounded-xl px-4 py-2 hover:bg-emerald-500/20 transition-all duration-300 group"
+              >
+                <LogIn className="w-4 h-4 text-emerald-glow group-hover:text-white" />
+                <div className="text-right">
+                  <div className="text-white font-semibold text-sm">Login</div>
+                  <div className="text-emerald-glow text-xs group-hover:text-white">Access Dashboard</div>
+                </div>
+              </button>
             )}
           </div>
 
@@ -176,7 +179,7 @@ export default function Header() {
               className="md:hidden glass-3d rounded-2xl mt-2 overflow-hidden mobile-menu-container"
             >
               <nav className="flex flex-col space-y-1 p-4">
-                {menuItems.map((item) => (
+                {filteredMenuItems.map((item) => (
                   <Link
                     key={item.label}
                     href={item.href}
@@ -214,21 +217,19 @@ export default function Header() {
                       </div>
                     </>
                   )}
-                  
+
                   {/* Mobile Login Button */}
                   {!user && (
-                    <Link href="/portfolio">
-                      <button
-                        onClick={() => {
-                          handleDemoLogin()
-                          setIsMenuOpen(false)
-                        }}
-                        className="w-full py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-300 flex items-center justify-center space-x-2 mt-4"
-                      >
-                        <LogIn className="w-5 h-5" />
-                        <span>Login to Dashboard</span>
-                      </button>
-                    </Link>
+                    <button
+                      onClick={() => {
+                        handleDemoLogin()
+                        setIsMenuOpen(false)
+                      }}
+                      className="w-full py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-300 flex items-center justify-center space-x-2 mt-4"
+                    >
+                      <LogIn className="w-5 h-5" />
+                      <span>Login to Dashboard</span>
+                    </button>
                   )}
                 </div>
               </nav>

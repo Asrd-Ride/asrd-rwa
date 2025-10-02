@@ -7,7 +7,7 @@ import { useWallet } from '@/contexts/WalletContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { TrendingUp, PieChart, DollarSign, Calendar, MapPin, Trophy, Home, Coins, Sparkles, Filter, Search, BarChart3, Target, Users, Zap, Crown, Gem, LogIn, Wallet, Shield } from 'lucide-react';
 import Header from '@/components/layout/Header';
-import AnalyticsChart from '@/components/ui/AnalyticsChart';
+import EnhancedAnalytics from '@/components/ui/EnhancedAnalytics';
 
 export default function Dashboard() {
   const { ownedAssets, claimEarnings, claimAllEarnings } = useApp();
@@ -152,7 +152,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen immersive-bg">
       <Header />
-      
+
       {/* Claim Success Animation */}
       {showClaimSuccess && (
         <motion.div
@@ -267,7 +267,7 @@ export default function Dashboard() {
           >
             <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
               <h3 className="text-xl font-bold text-white">Your Assets</h3>
-              
+
               <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
                 {/* Search */}
                 <div className="relative flex-1 lg:flex-none lg:w-64">
@@ -330,7 +330,7 @@ export default function Dashboard() {
                 }`}
               >
                 <TrendingUp className="w-4 h-4" />
-                <span>Analytics</span>
+                <span>Advanced Analytics</span>
               </button>
               <button
                 onClick={() => setActiveTab('performance')}
@@ -480,8 +480,8 @@ export default function Dashboard() {
                   <PieChart className="w-16 h-16 text-slate-600 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold text-slate-400 mb-2">No assets found</h3>
                   <p className="text-slate-500 mb-6">
-                    {searchQuery || assetTypeFilter !== 'all' 
-                      ? 'Try adjusting your search criteria' 
+                    {searchQuery || assetTypeFilter !== 'all'
+                      ? 'Try adjusting your search criteria'
                       : 'Start building your portfolio in the marketplace'
                     }
                   </p>
@@ -496,8 +496,8 @@ export default function Dashboard() {
             </div>
           )}
 
-          {activeTab === 'analytics' && <AnalyticsChart />}
-          
+          {activeTab === 'analytics' && <EnhancedAnalytics />}
+
           {activeTab === 'performance' && (
             <div className="glass-3d p-8 text-center">
               <BarChart3 className="w-16 h-16 text-slate-600 mx-auto mb-4" />

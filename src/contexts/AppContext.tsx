@@ -12,7 +12,7 @@ interface AppContextType {
   selectedAssetType: 'all' | 'horse' | 'real-estate'
   auctionTimeLeft: number
   buyASRD: (usdAmount: number) => Promise<boolean>
-  purchaseAsset: (assetId: number, fraction?: number) => Promise<boolean>
+  purchaseAsset: (assetId: number, investmentASRD: number) => Promise<boolean>
   claimEarnings: (assetId: number) => Promise<{ success: boolean; amount: number }>
   claimAllEarnings: () => Promise<{ success: boolean; totalAmount: number }>
   voteOnProposal: (proposalId: number, support: boolean) => Promise<void>
@@ -85,7 +85,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const purchaseAsset = async (assetId: number, fraction: number = 1): Promise<boolean> => {
+  const purchaseAsset = async (assetId: number, investmentASRD: number): Promise<boolean> => {
     setIsLoading(true)
     try {
       await new Promise(resolve => setTimeout(resolve, 1500))
@@ -95,21 +95,21 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         return false
       }
 
-      const purchasePrice = asset.price * fraction
-
-      if (asrdBalance >= purchasePrice) {
+      if (asrdBalance >= investmentASRD) {
+        const ownershipPercentage = (investmentASRD / asset.price) * 100
+        
         const purchase = {
           ...asset,
           purchaseDate: new Date().toISOString(),
-          fractionOwned: fraction,
-          purchasePrice: purchasePrice,
+          fractionOwned: ownershipPercentage / 100,
+          purchasePrice: investmentASRD,
           originalPrice: asset.price,
           unclaimedWinnings: 0,
           unclaimedRent: 0
         }
 
         setUserAssets(prev => [...prev, purchase])
-        updateAsrdBalance(asrdBalance - purchasePrice)
+        updateAsrdBalance(asrdBalance - investmentASRD)
         return true
       } else {
         return false
@@ -126,7 +126,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true)
     try {
       await new Promise(resolve => setTimeout(resolve, 1000))
-      
+
       const asset = userAssets.find(a => a.id === assetId)
       if (!asset) {
         return { success: false, amount: 0 }
@@ -138,9 +138,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (earningsAmount > 0) {
         // Transfer earnings to wallet
         updateAsrdBalance(asrdBalance + earningsAmount)
-        
+
         // Reset unclaimed earnings
-        setUserAssets(prev => prev.map(a => 
+        setUserAssets(prev => prev.map(a =>
           a.id === assetId ? { ...a, [earningsType]: 0 } : a
         ))
 
@@ -160,13 +160,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true)
     try {
       await new Promise(resolve => setTimeout(resolve, 1500))
-      
+
       let totalEarnings = 0
       const updatedAssets = userAssets.map(asset => {
         const earningsType = asset.type === 'horse' ? 'unclaimedWinnings' : 'unclaimedRent'
         const earningsAmount = asset[earningsType] || 0
         totalEarnings += earningsAmount
-        
+
         return {
           ...asset,
           [earningsType]: 0

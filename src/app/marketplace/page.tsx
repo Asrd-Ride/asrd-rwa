@@ -1,15 +1,25 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useApp } from '@/contexts/AppContext';
 import { useWallet } from '@/contexts/WalletContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { Filter, Search, TrendingUp, Clock, Gem, Crown, Coins, MapPin, Eye, LogIn } from 'lucide-react';
+import { Filter, Search, TrendingUp, Clock, Gem, Crown, Coins, MapPin, Eye, LogIn, SlidersHorizontal } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import PurchaseModal from '@/components/ui/PurchaseModal';
 import AssetDetailModal from '@/components/ui/AssetDetailModal';
+import AdvancedFilters from '@/components/ui/AdvancedFilters';
 import Link from 'next/link';
+
+interface FilterState {
+  priceRange: [number, number]
+  roiRange: [number, number]
+  locations: string[]
+  assetTypes: string[]
+  sortBy: 'name' | 'price' | 'roi' | 'recent'
+  sortOrder: 'asc' | 'desc'
+}
 
 export default function MarketplacePage() {
   const { assets, selectedAssetType, setSelectedAssetType, ownedAssets, purchaseAsset } = useApp();
@@ -18,7 +28,16 @@ export default function MarketplacePage() {
   const [selectedAsset, setSelectedAsset] = useState<any>(null);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [advancedFilters, setAdvancedFilters] = useState<FilterState>({
+    priceRange: [0, 1000],
+    roiRange: [5, 25],
+    locations: [],
+    assetTypes: [],
+    sortBy: 'price',
+    sortOrder: 'desc'
+  });
 
   // Get user's purchased assets from ownedAssets
   const purchasedAssets = ownedAssets || [];
@@ -27,12 +46,67 @@ export default function MarketplacePage() {
     !purchasedAssets.some(owned => owned?.id === asset.id)
   );
 
-  const filteredAssets = availableAssets.filter(asset => {
-    const matchesType = selectedAssetType === 'all' || asset.type === selectedAssetType;
-    const matchesSearch = asset.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         asset.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesType && matchesSearch;
-  });
+  // Get unique locations for filters
+  const availableLocations = useMemo(() => {
+    return [...new Set(assets.map(asset => asset.location))];
+  }, [assets]);
+
+  // Apply advanced filtering
+  const filteredAssets = useMemo(() => {
+    let filtered = availableAssets.filter(asset => {
+      const matchesType = selectedAssetType === 'all' || asset.type === selectedAssetType;
+      const matchesSearch = asset.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           asset.description.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesPrice = asset.price >= advancedFilters.priceRange[0] && 
+                          asset.price <= advancedFilters.priceRange[1];
+      const matchesROI = asset.roi >= advancedFilters.roiRange[0] && 
+                        asset.roi <= advancedFilters.roiRange[1];
+      const matchesLocation = advancedFilters.locations.length === 0 || 
+                             advancedFilters.locations.includes(asset.location);
+      const matchesAssetType = advancedFilters.assetTypes.length === 0 || 
+                              advancedFilters.assetTypes.includes(asset.type);
+
+      return matchesType && matchesSearch && matchesPrice && matchesROI && matchesLocation && matchesAssetType;
+    });
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      let aValue, bValue;
+      
+      switch (advancedFilters.sortBy) {
+        case 'price':
+          aValue = a.price;
+          bValue = b.price;
+          break;
+        case 'roi':
+          aValue = a.roi;
+          bValue = b.roi;
+          break;
+        case 'name':
+          aValue = a.name;
+          bValue = b.name;
+          break;
+        case 'recent':
+          aValue = a.id; // Using ID as proxy for recentness
+          bValue = b.id;
+          break;
+        default:
+          return 0;
+      }
+
+      if (typeof aValue === 'string') {
+        return advancedFilters.sortOrder === 'asc' 
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
+      } else {
+        return advancedFilters.sortOrder === 'asc' 
+          ? aValue - bValue
+          : bValue - aValue;
+      }
+    });
+
+    return filtered;
+  }, [availableAssets, selectedAssetType, searchQuery, advancedFilters]);
 
   const assetTypes = ['all', 'horse', 'real-estate'] as const;
 
@@ -42,7 +116,6 @@ export default function MarketplacePage() {
 
   const handlePurchaseClick = (asset: any) => {
     if (!user) {
-      // Redirect to dashboard/login if not authenticated
       window.location.href = '/portfolio'
       return
     }
@@ -75,6 +148,10 @@ export default function MarketplacePage() {
     }
   };
 
+  const handleApplyAdvancedFilters = (filters: FilterState) => {
+    setAdvancedFilters(filters);
+  };
+
   const getAssetTypeIcon = (type: string) => {
     return type === 'horse' ? Crown : Gem;
   };
@@ -84,6 +161,12 @@ export default function MarketplacePage() {
       ? 'from-emerald-glow to-sapphire-glow text-emerald-glow'
       : 'from-sapphire-glow to-amethyst-glow text-sapphire-glow';
   };
+
+  const activeFilterCount = 
+    (advancedFilters.priceRange[0] > 0 || advancedFilters.priceRange[1] < 1000 ? 1 : 0) +
+    (advancedFilters.roiRange[0] > 5 || advancedFilters.roiRange[1] < 25 ? 1 : 0) +
+    advancedFilters.locations.length +
+    advancedFilters.assetTypes.length;
 
   return (
     <div className="min-h-screen immersive-bg">
@@ -140,8 +223,69 @@ export default function MarketplacePage() {
                 ))}
               </select>
             </div>
+
+            {/* Advanced Filters Button */}
+            <button
+              onClick={() => setShowAdvancedFilters(true)}
+              className="flex items-center space-x-2 px-6 py-4 bg-gradient-to-r from-sapphire-glow to-amethyst-glow text-luxury-deep font-semibold rounded-2xl hover:shadow-lg hover:shadow-sapphire-glow/30 transition-all duration-300 relative"
+            >
+              <SlidersHorizontal className="w-5 h-5" />
+              <span>Advanced Filters</span>
+              {activeFilterCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-ruby-glow text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
           </div>
+
+          {/* Active Filters Display */}
+          {activeFilterCount > 0 && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              className="mt-6 pt-6 border-t border-white/10"
+            >
+              <div className="flex flex-wrap gap-2">
+                {advancedFilters.priceRange[0] > 0 || advancedFilters.priceRange[1] < 1000 ? (
+                  <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 text-sm rounded-full border border-emerald-500/30">
+                    Price: {advancedFilters.priceRange[0]}-{advancedFilters.priceRange[1]} ASRD
+                  </span>
+                ) : null}
+                {advancedFilters.roiRange[0] > 5 || advancedFilters.roiRange[1] < 25 ? (
+                  <span className="px-3 py-1 bg-sapphire-500/20 text-sapphire-300 text-sm rounded-full border border-sapphire-500/30">
+                    ROI: {advancedFilters.roiRange[0]}-{advancedFilters.roiRange[1]}%
+                  </span>
+                ) : null}
+                {advancedFilters.locations.map(location => (
+                  <span key={location} className="px-3 py-1 bg-amethyst-500/20 text-amethyst-300 text-sm rounded-full border border-amethyst-500/30">
+                    📍 {location}
+                  </span>
+                ))}
+                {advancedFilters.assetTypes.map(type => (
+                  <span key={type} className="px-3 py-1 bg-gold-glow/20 text-yellow-300 text-sm rounded-full border border-yellow-500/30">
+                    {type === 'horse' ? '🐎 Racehorses' : '🏠 Real Estate'}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          )}
         </div>
+      </div>
+
+      {/* Results Summary */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center"
+        >
+          <p className="text-neutral-light">
+            Showing <span className="text-emerald-glow font-semibold">{filteredAssets.length}</span> of{' '}
+            <span className="text-sapphire-glow font-semibold">{availableAssets.length}</span> available assets
+            {activeFilterCount > 0 && ' with applied filters'}
+          </p>
+        </motion.div>
       </div>
 
       {/* Assets Grid */}
@@ -295,8 +439,24 @@ export default function MarketplacePage() {
             className="text-center py-20"
           >
             <TrendingUp className="w-24 h-24 text-neutral-mid mx-auto mb-6" />
-            <h3 className="text-2xl font-bold text-neutral-light mb-4">No Premium Assets Found</h3>
-            <p className="text-neutral-mid text-lg">Try adjusting your search criteria or explore all asset categories</p>
+            <h3 className="text-2xl font-bold text-neutral-light mb-4">No Assets Match Your Criteria</h3>
+            <p className="text-neutral-mid text-lg mb-6">Try adjusting your filters or search terms</p>
+            <button
+              onClick={() => {
+                setSearchQuery('');
+                setAdvancedFilters({
+                  priceRange: [0, 1000],
+                  roiRange: [5, 25],
+                  locations: [],
+                  assetTypes: [],
+                  sortBy: 'price',
+                  sortOrder: 'desc'
+                });
+              }}
+              className="btn-3d px-8 py-4"
+            >
+              Reset All Filters
+            </button>
           </motion.div>
         )}
       </div>
@@ -314,6 +474,14 @@ export default function MarketplacePage() {
         onClose={() => setShowDetailModal(false)}
         asset={selectedAsset}
         onPurchaseClick={handlePurchaseFromDetail}
+      />
+
+      {/* Advanced Filters Modal */}
+      <AdvancedFilters
+        isOpen={showAdvancedFilters}
+        onClose={() => setShowAdvancedFilters(false)}
+        onApplyFilters={handleApplyAdvancedFilters}
+        availableLocations={availableLocations}
       />
     </div>
   );

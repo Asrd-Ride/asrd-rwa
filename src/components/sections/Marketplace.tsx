@@ -36,7 +36,11 @@ export default function Marketplace() {
   ]
 
   const handlePurchase = async (assetId: number) => {
-    await purchaseAsset(assetId)
+    const asset = assets.find(a => a.id === assetId)
+    if (asset) {
+      // FIXED: Now passing 2 arguments - assetId and investment amount (full price)
+      await purchaseAsset(assetId, asset.price)
+    }
   }
 
   return (
@@ -118,7 +122,7 @@ export default function Marketplace() {
           {/* Sort Options */}
           <div className="flex items-center space-x-4">
             <span className="text-neutral-mid text-sm">Sort by:</span>
-            <select 
+            <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
               className="bg-financial-dark border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-accent-success"
@@ -144,11 +148,11 @@ export default function Marketplace() {
               {/* Asset Image/Placeholder */}
               <div className="relative h-48 bg-gradient-to-br from-accent-success/20 to-accent-primary/20 flex items-center justify-center">
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all" />
-                
+
                 {/* Asset Type Badge */}
                 <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-sm font-semibold ${
-                  asset.type === 'horse' 
-                    ? 'bg-accent-success/20 text-accent-success' 
+                  asset.type === 'horse'
+                    ? 'bg-accent-success/20 text-accent-success'
                     : 'bg-accent-primary/20 text-accent-primary'
                 }`}>
                   {asset.type === 'horse' ? '🐎 Horse' : '🏠 Real Estate'}
