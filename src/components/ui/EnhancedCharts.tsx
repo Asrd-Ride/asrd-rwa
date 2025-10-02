@@ -1,7 +1,20 @@
 'use client'
 import { motion } from 'framer-motion'
 
-export const GradientBarChart = ({ data, maxValue, colorFrom, colorTo }) => {
+interface ChartDataItem {
+  value: number
+  label: string
+  month?: string
+}
+
+interface GradientBarChartProps {
+  data: ChartDataItem[]
+  maxValue: number
+  colorFrom: string
+  colorTo: string
+}
+
+export const GradientBarChart = ({ data, maxValue, colorFrom, colorTo }: GradientBarChartProps) => {
   return (
     <div className="h-64 relative">
       <div className="absolute inset-0 flex items-end justify-between px-4 pb-8">
@@ -25,7 +38,7 @@ export const GradientBarChart = ({ data, maxValue, colorFrom, colorTo }) => {
                 {item.label}
               </div>
             </motion.div>
-            <span className="text-slate-400 text-xs">{item.month}</span>
+            <span className="text-slate-400 text-xs">{item.month || ''}</span>
           </div>
         ))}
       </div>
