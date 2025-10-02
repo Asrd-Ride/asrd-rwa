@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useApp } from '@/contexts/AppContext';
 import { useWallet } from '@/contexts/WalletContext';
-import { Filter, Search, TrendingUp, Clock } from 'lucide-react';
+import { Filter, Search, TrendingUp, Clock, Gem, Crown, Coins, MapPin } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import PurchaseModal from '@/components/ui/PurchaseModal';
 
@@ -46,10 +46,20 @@ export default function MarketplacePage() {
     }
   };
 
+  const getAssetTypeIcon = (type: string) => {
+    return type === 'horse' ? Crown : Gem;
+  };
+
+  const getAssetTypeColor = (type: string) => {
+    return type === 'horse' 
+      ? 'from-emerald-glow to-sapphire-glow text-emerald-glow' 
+      : 'from-sapphire-glow to-amethyst-glow text-sapphire-glow';
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen immersive-bg">
       <Header />
-      
+
       {/* Header */}
       <div className="relative overflow-hidden pt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -59,43 +69,44 @@ export default function MarketplacePage() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              Asset Marketplace
+            <h1 className="text-5xl md:text-7xl font-black text-3d mb-6">
+              PREMIUM MARKETPLACE
             </h1>
-            <p className="text-xl text-purple-200 max-w-3xl mx-auto">
-              Discover and invest in premium real-world assets with fractional ownership
+            <p className="text-xl text-neutral-light max-w-3xl mx-auto">
+              Discover and invest in <span className="text-emerald-glow font-semibold">elite thoroughbreds</span> and{' '}
+              <span className="text-sapphire-glow font-semibold">luxury real estate</span> with fractional ownership
             </p>
           </motion.div>
         </div>
       </div>
 
       {/* Filters and Search */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-        <div className="bg-slate-800/50 rounded-2xl p-6 backdrop-blur-sm border border-slate-600/30">
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div className="glass-3d p-8">
+          <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
             {/* Search */}
             <div className="relative flex-1 w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-neutral-mid w-5 h-5" />
               <input
                 type="text"
-                placeholder="Search assets..."
+                placeholder="Search premium assets..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-slate-700/50 border border-slate-600/30 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full pl-12 pr-6 py-4 bg-luxury-dark/50 border border-emerald-glow/20 rounded-2xl text-white placeholder-neutral-mid focus:outline-none focus:ring-2 focus:ring-emerald-glow focus:border-transparent text-lg backdrop-blur-sm"
               />
             </div>
 
             {/* Asset Type Filter */}
-            <div className="flex items-center space-x-2">
-              <Filter className="w-5 h-5 text-slate-400" />
+            <div className="flex items-center space-x-3">
+              <Filter className="w-5 h-5 text-neutral-mid" />
               <select
                 value={selectedAssetType}
                 onChange={(e) => handleAssetTypeChange(e.target.value)}
-                className="bg-slate-700/50 border border-slate-600/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="bg-luxury-dark/50 border border-emerald-glow/20 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-emerald-glow focus:border-transparent text-lg backdrop-blur-sm"
               >
                 {assetTypes.map(type => (
-                  <option key={type} value={type} className="capitalize">
-                    {type === 'all' ? 'All Assets' : type.replace('-', ' ')}
+                  <option key={type} value={type} className="capitalize bg-luxury-dark">
+                    {type === 'all' ? '🎯 All Assets' : type === 'horse' ? '🐎 Racehorses' : '🏠 Real Estate'}
                   </option>
                 ))}
               </select>
@@ -105,79 +116,111 @@ export default function MarketplacePage() {
       </div>
 
       {/* Assets Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {filteredAssets.map((asset, index) => (
-            <motion.div
-              key={asset.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-gradient-to-br from-slate-800/50 to-slate-700/30 rounded-2xl overflow-hidden border border-slate-600/30 hover:border-purple-500/50 transition-all duration-300 hover:transform hover:scale-105 backdrop-blur-sm"
-            >
-              <div className="relative">
-                <img
-                  src={asset.image}
-                  alt={asset.name}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="absolute top-4 right-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                    asset.type === 'horse'
-                      ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-                      : 'bg-green-500/20 text-green-300 border border-green-500/30'
-                  }`}>
-                    {asset.type === 'horse' ? '🐎 Horse' : '🏠 Real Estate'}
-                  </span>
-                </div>
-              </div>
-
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-2">{asset.name}</h3>
-                <p className="text-slate-300 text-sm mb-4 line-clamp-2">{asset.description}</p>
-
-                <div className="space-y-3 mb-6">
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-400">Price</span>
-                    <span className="text-white font-semibold">{asset.price.toLocaleString()} ASRD</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-400">Available</span>
-                    <span className="text-green-400 font-semibold">100%</span>
-                  </div>
-                  {asset.dividends && (
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-400">Dividends</span>
-                      <span className="text-yellow-400 font-semibold">${asset.dividends}</span>
+          {filteredAssets.map((asset, index) => {
+            const AssetTypeIcon = getAssetTypeIcon(asset.type);
+            const gradientClass = getAssetTypeColor(asset.type);
+            
+            return (
+              <motion.div
+                key={asset.id}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="glass-3d group cursor-pointer"
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+              >
+                <div className="relative overflow-hidden rounded-t-2xl">
+                  <motion.img
+                    src={asset.image}
+                    alt={asset.name}
+                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                    whileHover={{ scale: 1.05 }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-luxury-deep/80 via-transparent to-transparent" />
+                  
+                  {/* Asset Type Badge */}
+                  <div className="absolute top-4 right-4">
+                    <div className={`bg-gradient-to-r ${gradientClass} rounded-2xl px-4 py-2 backdrop-blur-sm border border-white/20`}>
+                      <AssetTypeIcon className="w-4 h-4 inline mr-2" />
+                      <span className="text-sm font-bold">
+                        {asset.type === 'horse' ? 'ELITE RACEHORSE' : 'LUXURY PROPERTY'}
+                      </span>
                     </div>
-                  )}
+                  </div>
+
+                  {/* Quick Info Overlay */}
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <h3 className="text-2xl font-black text-white mb-2 text-glow">{asset.name}</h3>
+                    <div className="flex items-center text-emerald-glow text-sm">
+                      <MapPin className="w-4 h-4 mr-2" />
+                      <span className="font-semibold">{asset.location}</span>
+                    </div>
+                  </div>
                 </div>
 
-                <button
-                  onClick={() => {
-                    setSelectedAsset(asset);
-                    setShowPurchaseModal(true);
-                  }}
-                  className="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition-all duration-200"
-                >
-                  Invest Now
-                </button>
-              </div>
-            </motion.div>
-          ))}
+                <div className="p-6">
+                  <p className="text-neutral-light text-sm mb-6 leading-relaxed">{asset.description}</p>
+
+                  {/* Investment Metrics */}
+                  <div className="space-y-4 mb-6">
+                    <div className="flex justify-between items-center p-4 bg-luxury-dark/30 rounded-xl border border-white/10">
+                      <span className="text-neutral-mid">Total Value</span>
+                      <div className="text-right">
+                        <div className="text-2xl font-black text-emerald-glow">{asset.price.toLocaleString()} ASRD</div>
+                        <div className="text-neutral-mid text-sm">${(asset.price * 32).toLocaleString()} USD</div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="text-center p-3 bg-luxury-dark/30 rounded-xl border border-white/10">
+                        <div className="text-sapphire-glow text-lg font-black">100%</div>
+                        <div className="text-neutral-mid text-xs">Available</div>
+                      </div>
+                      <div className="text-center p-3 bg-luxury-dark/30 rounded-xl border border-white/10">
+                        <div className="text-amethyst-glow text-lg font-black">
+                          {asset.type === 'horse' ? '18%' : '9%'}
+                        </div>
+                        <div className="text-neutral-mid text-xs">Projected ROI</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Invest Button */}
+                  <motion.button
+                    onClick={() => {
+                      setSelectedAsset(asset);
+                      setShowPurchaseModal(true);
+                    }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full py-4 px-6 bg-gradient-to-r from-emerald-glow to-sapphire-glow text-luxury-deep font-black rounded-2xl transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-glow/30 text-lg"
+                  >
+                    <Coins className="w-5 h-5 inline mr-2" />
+                    INVEST NOW
+                  </motion.button>
+                </div>
+              </motion.div>
+            );
+          })}
         </motion.div>
 
         {filteredAssets.length === 0 && (
-          <div className="text-center py-16">
-            <TrendingUp className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-slate-400 mb-2">No assets found</h3>
-            <p className="text-slate-500">Try adjusting your search or filters</p>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center py-20"
+          >
+            <TrendingUp className="w-24 h-24 text-neutral-mid mx-auto mb-6" />
+            <h3 className="text-2xl font-bold text-neutral-light mb-4">No Premium Assets Found</h3>
+            <p className="text-neutral-mid text-lg">Try adjusting your search criteria or explore all asset categories</p>
+          </motion.div>
         )}
       </div>
 
