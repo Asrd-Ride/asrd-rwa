@@ -19,8 +19,8 @@ const ASRD_TOKEN_PRICE = 32 // $32 per ASRD token
 export function WalletProvider({ children }: { children: React.ReactNode }) {
   // Start with $10,000 USD cash
   const [cashBalance, setCashBalance] = useState(10000)
-  // Start with 0 ASRD tokens (users need to buy them)
-  const [asrdBalance, setAsrdBalance] = useState(0)
+  // Start with 5000 ASRD tokens (equivalent to $160,000 USD)
+  const [asrdBalance, setAsrdBalance] = useState(5000)
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -28,7 +28,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     if (saved) {
       const { cash, asrd } = JSON.parse(saved)
       setCashBalance(cash || 10000)
-      setAsrdBalance(asrd || 0)
+      setAsrdBalance(asrd || 5000)
     }
   }, [])
 
@@ -64,7 +64,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       const asrdToBuy = getAsrdValue(usdAmount)
       setCashBalance(prev => prev - usdAmount)
       setAsrdBalance(prev => prev + asrdToBuy)
-      
+
       // Show browser alert for now (we'll add proper modals later)
       alert(`Success! You bought ${asrdToBuy.toFixed(2)} ASRD tokens for $${usdAmount}`)
       return true

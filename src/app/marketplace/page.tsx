@@ -5,9 +5,11 @@ import { motion } from 'framer-motion';
 import { useApp } from '@/contexts/AppContext';
 import { useWallet } from '@/contexts/WalletContext';
 import { Filter, Search, TrendingUp, Clock } from 'lucide-react';
+import Header from '@/components/layout/Header';
+import PurchaseModal from '@/components/ui/PurchaseModal';
 
 export default function MarketplacePage() {
-  const { assets, selectedAssetType, setSelectedAssetType, ownedAssets } = useApp();
+  const { assets, selectedAssetType, setSelectedAssetType, ownedAssets, purchaseAsset } = useApp();
   const { asrdBalance } = useWallet();
   const [selectedAsset, setSelectedAsset] = useState<any>(null);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
@@ -33,10 +35,23 @@ export default function MarketplacePage() {
     setSelectedAssetType(value as 'all' | 'horse' | 'real-estate');
   };
 
+  const handlePurchase = async (fraction: number) => {
+    if (selectedAsset) {
+      const success = await purchaseAsset(selectedAsset.id, fraction);
+      if (success) {
+        alert(`Successfully purchased ${(fraction * 100).toFixed(0)}% of ${selectedAsset.name}!`);
+      } else {
+        alert('Purchase failed: Insufficient ASRD balance');
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <Header />
+      
       {/* Header */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden pt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -107,7 +122,7 @@ export default function MarketplacePage() {
             >
               <div className="relative">
                 <img
-                  src={asset.imageUrl}
+                  src={asset.image}
                   alt={asset.name}
                   className="w-full h-48 object-cover"
                 />
@@ -133,7 +148,7 @@ export default function MarketplacePage() {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-slate-400">Available</span>
-                    <span className="text-green-400 font-semibold">{asset.available}%</span>
+                    <span className="text-green-400 font-semibold">100%</span>
                   </div>
                   {asset.dividends && (
                     <div className="flex justify-between items-center">
@@ -148,14 +163,9 @@ export default function MarketplacePage() {
                     setSelectedAsset(asset);
                     setShowPurchaseModal(true);
                   }}
-                  disabled={asset.available === 0}
-                  className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 ${
-                    asset.available === 0
-                      ? 'bg-slate-600 text-slate-400 cursor-not-allowed'
-                      : 'bg-purple-600 hover:bg-purple-700 text-white'
-                  }`}
+                  className="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition-all duration-200"
                 >
-                  {asset.available === 0 ? 'Sold Out' : 'Invest Now'}
+                  Invest Now
                 </button>
               </div>
             </motion.div>
@@ -171,7 +181,13 @@ export default function MarketplacePage() {
         )}
       </div>
 
-      {/* Purchase Modal would go here */}
+      {/* Purchase Modal */}
+      <PurchaseModal
+        isOpen={showPurchaseModal}
+        onClose={() => setShowPurchaseModal(false)}
+        onConfirm={handlePurchase}
+        asset={selectedAsset}
+      />
     </div>
   );
 }
