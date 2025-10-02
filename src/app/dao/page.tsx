@@ -1,23 +1,25 @@
 'use client'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Users, Vote, Clock, CheckCircle, XCircle, 
+import {
+  Users, Vote, Clock, CheckCircle, XCircle,
   TrendingUp, PieChart, BarChart3, Calendar,
   ArrowUpRight, ArrowDownRight, Eye, Award,
-  Target, Shield, Zap, Building, Coins, FileCheck
+  Target, Shield, Zap, Building, Coins, FileCheck,
+  Crown, Gem, Rocket
 } from 'lucide-react'
+import Header from '@/components/layout/Header'
 
 export default function DAOPage() {
   const [activeTab, setActiveTab] = useState('active')
 
   // DAO Data with project-specific proposals
   const daoData = {
-    totalMembers: 15234,
+    totalMembers: 45231,
     activeProposalsCount: 3,
     totalProposals: 28,
     participationRate: 68.5,
-    
+
     // Active Proposals - Project Specific
     activeProposalsList: [
       {
@@ -85,45 +87,6 @@ export default function DAOPage() {
         status: 'passed',
         executionDate: '2024-03-05',
         impact: 'ASRD staking launched with 15% APY rewards'
-      },
-      {
-        id: 6,
-        title: 'Minimum Investment Reduction to $50',
-        description: 'Lower the minimum investment threshold from $100 to $50 to make fractional ownership more accessible to smaller investors.',
-        votesFor: 7123,
-        votesAgainst: 5890,
-        totalVotes: 13013,
-        endDate: '2024-02-15',
-        category: 'Accessibility',
-        status: 'rejected',
-        executionDate: null,
-        impact: 'Minimum investment remains at $100'
-      },
-      {
-        id: 7,
-        title: 'Platform Feature: Auto-Reinvestment',
-        description: 'Develop and implement auto-reinvestment feature allowing investors to automatically reinvest their earnings into new assets.',
-        votesFor: 11245,
-        votesAgainst: 2345,
-        totalVotes: 13590,
-        endDate: '2024-01-30',
-        category: 'Platform Features',
-        status: 'passed',
-        executionDate: '2024-02-10',
-        impact: 'Auto-reinvestment feature launched in Q1 2024'
-      },
-      {
-        id: 8,
-        title: 'Horse Racing Event Revenue Sharing',
-        description: 'Implement revenue sharing from horse racing events where Asset Ride Pro owned horses compete, distributing 60% of winnings to fractional owners.',
-        votesFor: 9876,
-        votesAgainst: 3210,
-        totalVotes: 13086,
-        endDate: '2024-01-15',
-        category: 'Revenue Model',
-        status: 'passed',
-        executionDate: '2024-01-25',
-        impact: 'Race winnings now distributed to horse NFT owners'
       }
     ]
   }
@@ -143,132 +106,126 @@ export default function DAOPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-green-50/30 to-blue-50/20">
-      {/* Header with 3D Effect */}
-      <div className="relative bg-gradient-to-r from-green-900 via-emerald-900 to-blue-900">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-500/20 via-transparent to-transparent"></div>
-        <div className="relative container mx-auto px-4 py-8">
+    <div className="min-h-screen immersive-bg">
+      <Header />
+
+      {/* Header */}
+      <div className="relative overflow-hidden pt-16">
+        <div className="container-pro py-12">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col lg:flex-row lg:items-center lg:justify-between"
+            className="text-center"
           >
-            <div className="text-white">
-              <h1 className="text-4xl font-bold mb-2">DAO Governance</h1>
-              <p className="text-green-200 text-lg">
-                Community-driven governance for the Asset Ride Pro ecosystem
-              </p>
-            </div>
-            <div className="flex items-center space-x-6 mt-4 lg:mt-0">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-white">{formatNumber(daoData.totalMembers)}</div>
-                <div className="text-green-200 text-sm">DAO Members</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-white">{daoData.totalProposals}</div>
-                <div className="text-green-200 text-sm">Total Proposals</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-white">{daoData.participationRate}%</div>
-                <div className="text-green-200 text-sm">Participation</div>
-              </div>
-            </div>
+            <h1 className="text-5xl md:text-7xl font-black text-3d mb-6">
+              DAO <span className="text-glow text-emerald-glow">GOVERNANCE</span>
+            </h1>
+            <p className="text-xl text-neutral-light max-w-3xl mx-auto">
+              Community-driven governance for the <span className="text-emerald-glow font-semibold">Asset Ride Pro ecosystem</span>. 
+              Your vote shapes platform evolution.
+            </p>
           </motion.div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        {/* Quick Stats */}
+      {/* Quick Stats */}
+      <div className="container-pro mb-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
         >
+          {/* Total Members */}
           <motion.div
             whileHover={{ scale: 1.02, y: -5 }}
-            className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl p-6 text-white shadow-2xl"
+            className="glass-3d p-6 text-center group hover:neon-glow"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                <Users className="w-6 h-6" />
+              <div className="p-3 bg-gradient-to-r from-emerald-glow to-sapphire-glow rounded-2xl">
+                <Users className="w-6 h-6 text-luxury-deep" />
               </div>
-              <div className="flex items-center text-green-300">
+              <div className="flex items-center text-emerald-glow">
                 <ArrowUpRight className="w-4 h-4" />
-                <span className="text-sm font-semibold ml-1">+12.5%</span>
+                <span className="text-sm font-black ml-1">+12.5%</span>
               </div>
             </div>
-            <h3 className="text-2xl font-bold mb-1">{formatNumber(daoData.totalMembers)}</h3>
-            <p className="text-green-100 text-sm">DAO Members</p>
+            <h3 className="text-2xl font-black text-emerald-glow mb-1">{formatNumber(daoData.totalMembers)}</h3>
+            <p className="text-neutral-mid text-sm font-semibold">DAO MEMBERS</p>
           </motion.div>
 
+          {/* Active Proposals */}
           <motion.div
             whileHover={{ scale: 1.02, y: -5 }}
-            className="bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl p-6 text-white shadow-2xl"
+            className="glass-3d p-6 text-center group hover:neon-glow"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                <Vote className="w-6 h-6" />
+              <div className="p-3 bg-gradient-to-r from-sapphire-glow to-amethyst-glow rounded-2xl">
+                <Vote className="w-6 h-6 text-luxury-deep" />
               </div>
             </div>
-            <h3 className="text-2xl font-bold mb-1">{daoData.activeProposalsCount}</h3>
-            <p className="text-blue-100 text-sm">Active Proposals</p>
+            <h3 className="text-2xl font-black text-sapphire-glow mb-1">{daoData.activeProposalsCount}</h3>
+            <p className="text-neutral-mid text-sm font-semibold">ACTIVE PROPOSALS</p>
           </motion.div>
 
+          {/* Participation Rate */}
           <motion.div
             whileHover={{ scale: 1.02, y: -5 }}
-            className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-6 text-white shadow-2xl"
+            className="glass-3d p-6 text-center group hover:neon-glow"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                <Coins className="w-6 h-6" />
+              <div className="p-3 bg-gradient-to-r from-amethyst-glow to-ruby-glow rounded-2xl">
+                <Coins className="w-6 h-6 text-luxury-deep" />
               </div>
-              <div className="flex items-center text-green-300">
+              <div className="flex items-center text-emerald-glow">
                 <ArrowUpRight className="w-4 h-4" />
-                <span className="text-sm font-semibold ml-1">+8.2%</span>
+                <span className="text-sm font-black ml-1">+8.2%</span>
               </div>
             </div>
-            <h3 className="text-2xl font-bold mb-1">{daoData.participationRate}%</h3>
-            <p className="text-purple-100 text-sm">Participation Rate</p>
+            <h3 className="text-2xl font-black text-amethyst-glow mb-1">{daoData.participationRate}%</h3>
+            <p className="text-neutral-mid text-sm font-semibold">PARTICIPATION RATE</p>
           </motion.div>
 
+          {/* Total Proposals */}
           <motion.div
             whileHover={{ scale: 1.02, y: -5 }}
-            className="bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl p-6 text-white shadow-2xl"
+            className="glass-3d p-6 text-center group hover:neon-glow"
           >
             <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                <FileCheck className="w-6 h-6" />
+              <div className="p-3 bg-gradient-to-r from-gold-glow to-emerald-glow rounded-2xl">
+                <FileCheck className="w-6 h-6 text-luxury-deep" />
               </div>
             </div>
-            <h3 className="text-2xl font-bold mb-1">{daoData.totalProposals}</h3>
-            <p className="text-orange-100 text-sm">Total Proposals</p>
+            <h3 className="text-2xl font-black text-gold-glow mb-1">{daoData.totalProposals}</h3>
+            <p className="text-neutral-mid text-sm font-semibold">TOTAL PROPOSALS</p>
           </motion.div>
         </motion.div>
+      </div>
 
+      {/* Main Content */}
+      <div className="container-pro pb-20">
         {/* Tabs Navigation */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white rounded-2xl shadow-2xl border border-gray-100 mb-8"
+          className="glass-3d mb-8"
         >
-          <div className="border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+          <div className="border-b border-white/10">
             <div className="flex space-x-8 px-6">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-black text-sm transition-colors ${
                     activeTab === tab.id
-                      ? 'border-green-500 text-green-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                      ? 'border-emerald-glow text-emerald-glow'
+                      : 'border-transparent text-neutral-mid hover:text-white'
                   }`}
                 >
                   <span>{tab.label}</span>
                   {tab.count > 0 && (
-                    <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs">
+                    <span className="bg-luxury-dark text-emerald-glow px-2 py-1 rounded-full text-xs">
                       {tab.count}
                     </span>
                   )}
@@ -285,34 +242,39 @@ export default function DAOPage() {
                 {daoData.activeProposalsList.map((proposal, index) => {
                   const forPercentage = getVotePercentage(proposal.votesFor, proposal.totalVotes)
                   const againstPercentage = getVotePercentage(proposal.votesAgainst, proposal.totalVotes)
-                  
+
                   return (
                     <motion.div
                       key={proposal.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="bg-gradient-to-r from-white to-blue-50 rounded-2xl p-6 border border-blue-200 hover:shadow-xl transition-shadow"
+                      className="glass-3d p-8 group hover:neon-glow"
                     >
-                      <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-start justify-between mb-6">
                         <div className="flex-1">
-                          <div className="flex items-center space-x-3 mb-2">
-                            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                          {/* Proposal Header */}
+                          <div className="flex items-center space-x-3 mb-4">
+                            <span className="bg-gradient-to-r from-sapphire-glow to-amethyst-glow text-luxury-deep px-4 py-2 rounded-2xl text-sm font-black">
                               {proposal.category}
                             </span>
-                            <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                              Active
+                            <span className="bg-gradient-to-r from-emerald-glow to-sapphire-glow text-luxury-deep px-4 py-2 rounded-2xl text-sm font-black">
+                              ACTIVE
                             </span>
-                            <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">
+                            <span className="bg-gradient-to-r from-gold-glow to-ruby-glow text-luxury-deep px-4 py-2 rounded-2xl text-sm font-black">
                               Voting Ends {proposal.endDate}
                             </span>
                           </div>
-                          <h3 className="text-xl font-bold text-gray-900 mb-2">{proposal.title}</h3>
-                          <p className="text-gray-600 mb-4">{proposal.description}</p>
-                          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
-                            <div className="flex items-center space-x-2 text-blue-800">
+
+                          {/* Proposal Title & Description */}
+                          <h3 className="text-2xl font-black text-white mb-3 text-glow">{proposal.title}</h3>
+                          <p className="text-neutral-light mb-4 leading-relaxed">{proposal.description}</p>
+
+                          {/* Impact */}
+                          <div className="bg-luxury-dark/50 border border-emerald-glow/30 rounded-2xl p-4 mb-6">
+                            <div className="flex items-center space-x-2 text-emerald-glow">
                               <Zap className="w-4 h-4" />
-                              <span className="font-semibold">Platform Impact:</span>
+                              <span className="font-black">PLATFORM IMPACT:</span>
                               <span>{proposal.impact}</span>
                             </div>
                           </div>
@@ -322,24 +284,24 @@ export default function DAOPage() {
                       {/* Voting Progress */}
                       <div className="space-y-4">
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-gray-600">Voting Progress</span>
-                          <span className="font-semibold">{formatNumber(proposal.totalVotes)} votes</span>
+                          <span className="text-neutral-mid">VOTING PROGRESS</span>
+                          <span className="font-black text-white">{formatNumber(proposal.totalVotes)} VOTES</span>
                         </div>
-                        
+
                         {/* For Votes */}
                         <div>
-                          <div className="flex items-center justify-between mb-1">
+                          <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center space-x-2">
-                              <CheckCircle className="w-4 h-4 text-green-500" />
-                              <span className="font-medium text-gray-900">For</span>
+                              <CheckCircle className="w-4 h-4 text-emerald-glow" />
+                              <span className="font-black text-white">FOR</span>
                             </div>
-                            <span className="text-sm text-gray-600">
+                            <span className="text-sm text-neutral-mid">
                               {formatNumber(proposal.votesFor)} votes ({forPercentage.toFixed(1)}%)
                             </span>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-3">
-                            <div 
-                              className="bg-green-500 h-3 rounded-full transition-all duration-500" 
+                          <div className="w-full bg-luxury-dark rounded-full h-3">
+                            <div
+                              className="bg-gradient-to-r from-emerald-glow to-sapphire-glow h-3 rounded-full transition-all duration-500"
                               style={{ width: `${forPercentage}%` }}
                             ></div>
                           </div>
@@ -347,18 +309,18 @@ export default function DAOPage() {
 
                         {/* Against Votes */}
                         <div>
-                          <div className="flex items-center justify-between mb-1">
+                          <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center space-x-2">
-                              <XCircle className="w-4 h-4 text-red-500" />
-                              <span className="font-medium text-gray-900">Against</span>
+                              <XCircle className="w-4 h-4 text-ruby-glow" />
+                              <span className="font-black text-white">AGAINST</span>
                             </div>
-                            <span className="text-sm text-gray-600">
+                            <span className="text-sm text-neutral-mid">
                               {formatNumber(proposal.votesAgainst)} votes ({againstPercentage.toFixed(1)}%)
                             </span>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-3">
-                            <div 
-                              className="bg-red-500 h-3 rounded-full transition-all duration-500" 
+                          <div className="w-full bg-luxury-dark rounded-full h-3">
+                            <div
+                              className="bg-gradient-to-r from-ruby-glow to-amethyst-glow h-3 rounded-full transition-all duration-500"
                               style={{ width: `${againstPercentage}%` }}
                             ></div>
                           </div>
@@ -367,128 +329,17 @@ export default function DAOPage() {
 
                       {/* Action Buttons */}
                       <div className="flex space-x-3 mt-6">
-                        <button className="flex-1 bg-green-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-green-600 transition-colors flex items-center justify-center shadow-lg">
+                        <button className="flex-1 bg-gradient-to-r from-emerald-glow to-sapphire-glow text-luxury-deep py-4 px-6 rounded-2xl font-black hover:shadow-2xl hover:shadow-emerald-glow/30 transition-all duration-300 flex items-center justify-center">
                           <CheckCircle className="w-5 h-5 mr-2" />
-                          Vote For
+                          VOTE FOR
                         </button>
-                        <button className="flex-1 bg-red-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-red-600 transition-colors flex items-center justify-center shadow-lg">
+                        <button className="flex-1 bg-gradient-to-r from-ruby-glow to-amethyst-glow text-luxury-deep py-4 px-6 rounded-2xl font-black hover:shadow-2xl hover:shadow-ruby-glow/30 transition-all duration-300 flex items-center justify-center">
                           <XCircle className="w-5 h-5 mr-2" />
-                          Vote Against
+                          VOTE AGAINST
                         </button>
-                        <button className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors">
+                        <button className="px-6 py-4 border border-emerald-glow text-emerald-glow rounded-2xl hover:bg-emerald-glow hover:text-luxury-deep transition-all duration-300">
                           <Eye className="w-5 h-5" />
                         </button>
-                      </div>
-                    </motion.div>
-                  )
-                })}
-              </div>
-            )}
-
-            {/* Closed Proposals */}
-            {activeTab === 'closed' && (
-              <div className="space-y-6">
-                {daoData.closedProposals.map((proposal, index) => {
-                  const forPercentage = getVotePercentage(proposal.votesFor, proposal.totalVotes)
-                  const againstPercentage = getVotePercentage(proposal.votesAgainst, proposal.totalVotes)
-                  const isPassed = proposal.status === 'passed'
-                  
-                  return (
-                    <motion.div
-                      key={proposal.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="bg-gradient-to-r from-white to-gray-50 rounded-2xl p-6 border border-gray-200 hover:shadow-xl transition-shadow"
-                    >
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-3 mb-2">
-                            <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
-                              {proposal.category}
-                            </span>
-                            <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                              isPassed 
-                                ? 'bg-green-100 text-green-800' 
-                                : 'bg-red-100 text-red-800'
-                            }`}>
-                              {isPassed ? 'Passed' : 'Rejected'}
-                            </span>
-                          </div>
-                          <h3 className="text-xl font-bold text-gray-900 mb-2">{proposal.title}</h3>
-                          <p className="text-gray-600 mb-4">{proposal.description}</p>
-                          
-                          {/* Execution Details */}
-                          {isPassed && proposal.executionDate && (
-                            <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-4">
-                              <div className="flex items-center space-x-2 text-green-800 mb-2">
-                                <CheckCircle className="w-5 h-5" />
-                                <span className="font-semibold">Executed on {proposal.executionDate}</span>
-                              </div>
-                              <p className="text-green-700 text-sm">{proposal.impact}</p>
-                            </div>
-                          )}
-
-                          {!isPassed && (
-                            <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
-                              <div className="flex items-center space-x-2 text-red-800">
-                                <XCircle className="w-5 h-5" />
-                                <span className="font-semibold">Proposal Rejected by Community</span>
-                              </div>
-                              <p className="text-red-700 text-sm">{proposal.impact}</p>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Final Results */}
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-gray-600">Final Results</span>
-                          <span className="font-semibold">{formatNumber(proposal.totalVotes)} total votes</span>
-                        </div>
-                        
-                        {/* For Votes */}
-                        <div>
-                          <div className="flex items-center justify-between mb-1">
-                            <div className="flex items-center space-x-2">
-                              <CheckCircle className="w-4 h-4 text-green-500" />
-                              <span className="font-medium text-gray-900">For</span>
-                            </div>
-                            <span className="text-sm text-gray-600">
-                              {formatNumber(proposal.votesFor)} votes ({forPercentage.toFixed(1)}%)
-                            </span>
-                          </div>
-                          <div className="w-full bg-gray-200 rounded-full h-3">
-                            <div 
-                              className={`h-3 rounded-full ${
-                                isPassed ? 'bg-green-500' : 'bg-gray-400'
-                              }`} 
-                              style={{ width: `${forPercentage}%` }}
-                            ></div>
-                          </div>
-                        </div>
-
-                        {/* Against Votes */}
-                        <div>
-                          <div className="flex items-center justify-between mb-1">
-                            <div className="flex items-center space-x-2">
-                              <XCircle className="w-4 h-4 text-red-500" />
-                              <span className="font-medium text-gray-900">Against</span>
-                            </div>
-                            <span className="text-sm text-gray-600">
-                              {formatNumber(proposal.votesAgainst)} votes ({againstPercentage.toFixed(1)}%)
-                            </span>
-                          </div>
-                          <div className="w-full bg-gray-200 rounded-full h-3">
-                            <div 
-                              className={`h-3 rounded-full ${
-                                !isPassed ? 'bg-red-500' : 'bg-gray-400'
-                              }`} 
-                              style={{ width: `${againstPercentage}%` }}
-                            ></div>
-                          </div>
-                        </div>
                       </div>
                     </motion.div>
                   )
@@ -500,75 +351,53 @@ export default function DAOPage() {
             {activeTab === 'metrics' && (
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-gradient-to-br from-blue-50 to-purple-100 rounded-2xl p-6">
-                    <h4 className="font-semibold text-gray-900 mb-4">Voting Participation</h4>
+                  <div className="glass-3d p-6">
+                    <h4 className="font-black text-white mb-4 text-glow">VOTING PARTICIPATION</h4>
                     <div className="space-y-4">
                       <div>
                         <div className="flex justify-between text-sm mb-2">
-                          <span className="text-gray-600">Average Participation</span>
-                          <span className="font-semibold">{daoData.participationRate}%</span>
+                          <span className="text-neutral-mid">Average Participation</span>
+                          <span className="font-black text-emerald-glow">{daoData.participationRate}%</span>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-3">
-                          <div className="bg-blue-500 h-3 rounded-full" style={{ width: `${daoData.participationRate}%` }}></div>
+                        <div className="w-full bg-luxury-dark rounded-full h-3">
+                          <div className="bg-gradient-to-r from-emerald-glow to-sapphire-glow h-3 rounded-full" style={{ width: `${daoData.participationRate}%` }}></div>
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
-                          <div className="text-gray-600">Active Voters</div>
-                          <div className="font-semibold">10,234</div>
+                          <div className="text-neutral-mid">Active Voters</div>
+                          <div className="font-black text-white">10,234</div>
                         </div>
                         <div>
-                          <div className="text-gray-600">Total Votes Cast</div>
-                          <div className="font-semibold">286,541</div>
+                          <div className="text-neutral-mid">Total Votes Cast</div>
+                          <div className="font-black text-white">286,541</div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-2xl p-6">
-                    <h4 className="font-semibold text-gray-900 mb-4">Proposal Success Rate</h4>
+                  <div className="glass-3d p-6">
+                    <h4 className="font-black text-white mb-4 text-glow">PROPOSAL SUCCESS RATE</h4>
                     <div className="space-y-4">
                       <div>
                         <div className="flex justify-between text-sm mb-2">
-                          <span className="text-gray-600">Proposals Passed</span>
-                          <span className="font-semibold">68%</span>
+                          <span className="text-neutral-mid">Proposals Passed</span>
+                          <span className="font-black text-emerald-glow">68%</span>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-3">
-                          <div className="bg-green-500 h-3 rounded-full" style={{ width: '68%' }}></div>
+                        <div className="w-full bg-luxury-dark rounded-full h-3">
+                          <div className="bg-gradient-to-r from-emerald-glow to-sapphire-glow h-3 rounded-full" style={{ width: '68%' }}></div>
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
-                          <div className="text-gray-600">Total Proposals</div>
-                          <div className="font-semibold">{daoData.totalProposals}</div>
+                          <div className="text-neutral-mid">Total Proposals</div>
+                          <div className="font-black text-white">{daoData.totalProposals}</div>
                         </div>
                         <div>
-                          <div className="text-gray-600">Passed</div>
-                          <div className="font-semibold">19</div>
+                          <div className="text-neutral-mid">Passed</div>
+                          <div className="font-black text-white">19</div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-purple-50 to-pink-100 rounded-2xl p-6">
-                  <h4 className="font-semibold text-gray-900 mb-4">Platform Governance Impact</h4>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-green-600">2.0%</div>
-                      <div className="text-sm text-gray-600">Platform Fee</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-600">15% APY</div>
-                      <div className="text-sm text-gray-600">Staking Rewards</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-purple-600">60%</div>
-                      <div className="text-sm text-gray-600">Race Winnings Share</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-orange-600">$100</div>
-                      <div className="text-sm text-gray-600">Min Investment</div>
                     </div>
                   </div>
                 </div>
@@ -582,27 +411,28 @@ export default function DAOPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-gradient-to-r from-green-600 via-emerald-600 to-blue-600 rounded-2xl p-8 text-white shadow-2xl"
+          className="glass-3d p-8 text-center"
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="mb-6 lg:mb-0">
-              <h3 className="text-2xl font-bold mb-2">Shape the Future of Asset Ride Pro</h3>
-              <p className="text-green-100 text-lg">
-                Your vote directly impacts platform fees, asset offerings, and investor benefits. Participate in governance to shape the RWA NFT marketplace.
+              <h3 className="text-2xl font-black text-white mb-2 text-glow">SHAPE THE FUTURE OF ASSET RIDE PRO</h3>
+              <p className="text-neutral-light text-lg">
+                Your vote directly impacts platform fees, asset offerings, and investor benefits. 
+                <span className="text-emerald-glow font-semibold"> Participate in governance</span> to shape the RWA NFT marketplace.
               </p>
             </div>
             <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 text-emerald-glow">
                 <Coins className="w-5 h-5" />
-                <span>Platform Economics</span>
+                <span className="font-semibold">Platform Economics</span>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 text-sapphire-glow">
                 <Shield className="w-5 h-5" />
-                <span>Security & Audits</span>
+                <span className="font-semibold">Security & Audits</span>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 text-amethyst-glow">
                 <TrendingUp className="w-5 h-5" />
-                <span>Investor Returns</span>
+                <span className="font-semibold">Investor Returns</span>
               </div>
             </div>
           </div>
