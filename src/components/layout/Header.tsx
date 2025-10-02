@@ -12,7 +12,7 @@ export default function Header() {
   const menuItems = [
     { label: 'Home', href: '/' },
     { label: 'Marketplace', href: '/marketplace' },
-    { label: 'Dashboard', href: '/dashboard' },
+    { label: 'Portfolio', href: '/portfolio' },
     { label: 'DAO', href: '/dao' },
     { label: 'Treasury', href: '/treasury' }
   ]
@@ -98,7 +98,7 @@ export default function Header() {
                   {item.label}
                 </Link>
               ))}
-              
+
               {/* Mobile Wallet Info */}
               <div className="pt-4 border-t border-white/10 space-y-3">
                 <div className="flex items-center justify-between">
