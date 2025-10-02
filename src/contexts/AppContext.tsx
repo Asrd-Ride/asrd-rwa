@@ -23,7 +23,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined)
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const { asrdBalance, buyASRDTokens, cashBalance } = useWallet()
-  
+
   const [assets, setAssets] = useState(mockAssets)
   const [userAssets, setUserAssets] = useState(ownedAssets)
   const [proposals, setProposals] = useState(mockProposals)
@@ -46,9 +46,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('assetRidePurchases', JSON.stringify(userAssets))
   }, [userAssets])
 
-  const filteredAssets = selectedAssetType === 'all' 
-    ? assets 
-    : assets.filter(asset => asset.category.toLowerCase() === selectedAssetType)
+  const filteredAssets = selectedAssetType === 'all'
+    ? assets
+    : assets.filter(asset => asset.type.toLowerCase() === selectedAssetType)
 
   const buyASRD = async (usdAmount: number): Promise<boolean> => {
     setIsLoading(true)
@@ -68,7 +68,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true)
     try {
       await new Promise(resolve => setTimeout(resolve, 1500))
-      
+
       const asset = assets.find(a => a.id === assetId)
       if (!asset) {
         return false
@@ -84,7 +84,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           purchasePrice: purchasePrice,
           originalPrice: asset.price
         }
-        
+
         setUserAssets(prev => [...prev, purchase])
         return true
       } else {
@@ -114,14 +114,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true)
     try {
       await new Promise(resolve => setTimeout(resolve, 800))
-      setProposals(prev => prev.map(p => 
-        p.id === proposalId 
-          ? { 
-              ...p, 
-              votes: support ? p.votes + 1 : p.votes,
+      setProposals(prev => prev.map(p =>
+        p.id === proposalId
+          ? {
+              ...p,
+              votesFor: support ? p.votesFor + 1 : p.votesFor,
+              votesAgainst: !support ? p.votesAgainst + 1 : p.votesAgainst,
               userVoted: true,
               userSupport: support
-            } 
+            }
           : p
       ))
     } catch (error) {
