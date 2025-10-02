@@ -1,14 +1,16 @@
-"use client";
-
-import { WalletProvider } from '@/contexts/WalletContext';
-import { AppProvider } from '@/contexts/AppContext';
+'use client'
+import { AppProvider } from '@/contexts/AppContext'
+import { WalletProvider } from '@/contexts/WalletContext'
+import { AuthProvider } from '@/contexts/AuthContext'
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <WalletProvider>
-      <AppProvider>
-        {children}
-      </AppProvider>
-    </WalletProvider>
-  );
+    <AuthProvider>
+      <WalletProvider>
+        <AppProvider>
+          {children}
+        </AppProvider>
+      </WalletProvider>
+    </AuthProvider>
+  )
 }

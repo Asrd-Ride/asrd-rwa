@@ -15,6 +15,7 @@ export interface Asset {
   roi?: number;
 }
 
+// Fixed image URLs - using reliable Unsplash sources
 export const mockAssets: Asset[] = [
   {
     id: 1,
@@ -22,7 +23,7 @@ export const mockAssets: Asset[] = [
     type: 'horse',
     location: 'Dubai, UAE',
     price: 180, // 180 ASRD = $5,760 USD
-    image: 'https://images.unsplash.com/photo-1546182993-3d73147d3e7c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80',
+    image: 'https://images.unsplash.com/photo-1542729173-04a963a6306d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
     stats: { wins: 12, places: 3, pedigree: 'Arabian Champion Bloodline' },
     upcomingRace: 'Dubai World Cup 2024',
     unclaimedWinnings: 0,
@@ -156,7 +157,7 @@ export const ownedAssets: Asset[] = [
     type: 'horse',
     location: 'Dubai, UAE',
     price: 160,
-    image: 'https://images.unsplash.com/photo-1546182993-3d73147d3e7c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80',
+    image: 'https://images.unsplash.com/photo-1542729173-04a963a6306d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
     stats: { wins: 7, places: 1, pedigree: 'Golden Bloodline' },
     upcomingRace: 'Dubai Derby',
     unclaimedWinnings: 150,

@@ -1,8 +1,8 @@
 'use client'
 import { useState } from 'react'
-import { 
-  MapPin, TrendingUp, Calendar, Users, PieChart, 
-  DollarSign, BarChart3, Shield, Clock, Target
+import {
+  MapPin, TrendingUp, Calendar, Users, PieChart,
+  DollarSign, BarChart3, Shield, Clock, Target, Sparkles
 } from 'lucide-react'
 import Modal from './Modal'
 import { useWallet } from '@/contexts/WalletContext'
@@ -11,10 +11,11 @@ interface AssetDetailModalProps {
   isOpen: boolean
   onClose: () => void
   asset: any
+  onPurchaseClick: () => void
 }
 
-export default function AssetDetailModal({ isOpen, onClose, asset }: AssetDetailModalProps) {
-  const { asrdBalance } = useWallet()
+export default function AssetDetailModal({ isOpen, onClose, asset, onPurchaseClick }: AssetDetailModalProps) {
+  const { asrdBalance, getUsdValue, getAsrdValue } = useWallet()
   const [activeTab, setActiveTab] = useState('overview')
 
   if (!asset) return null
@@ -25,10 +26,14 @@ export default function AssetDetailModal({ isOpen, onClose, asset }: AssetDetail
     { id: 'performance', label: 'Performance', icon: TrendingUp },
   ]
 
+  // Minimum investment check ($50 USD)
+  const minimumASRD = getAsrdValue(50) // $50 minimum in ASRD
+  const canInvest = asrdBalance >= minimumASRD
+
   const investmentDetails = [
-    { label: 'Minimum Investment', value: `${(asset.price * 0.1).toFixed(0)} ASRD`, icon: DollarSign },
+    { label: 'Minimum Investment', value: `$50 USD (${minimumASRD.toFixed(2)} ASRD)`, icon: DollarSign },
     { label: 'Projected ROI', value: `${asset.roi}% Annually`, icon: TrendingUp },
-    { label: 'Asset Valuation', value: `$${asset.valuation?.toLocaleString()}`, icon: BarChart3 },
+    { label: 'Asset Valuation', value: `$${getUsdValue(asset.price).toLocaleString()} USD`, icon: BarChart3 },
     { label: 'Investment Term', value: '3-5 Years', icon: Calendar },
   ]
 
@@ -40,55 +45,62 @@ export default function AssetDetailModal({ isOpen, onClose, asset }: AssetDetail
   ]
 
   return (
-    <Modal 
-      isOpen={isOpen} 
+    <Modal
+      isOpen={isOpen}
       onClose={onClose}
       title="Asset Details"
       type="info"
       size="xl"
     >
       <div className="p-6">
-        {/* Header */}
-        <div className="flex items-start space-x-6 mb-6">
-          <img 
-            src={asset.image || '/images/placeholder-asset.jpg'} 
-            alt={asset.name}
-            className="w-32 h-32 object-cover rounded-2xl"
-          />
-          <div className="flex-1">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">{asset.name}</h2>
-            <div className="flex items-center text-gray-600 mb-3">
-              <MapPin className="w-4 h-4 mr-2" />
-              {asset.location}
+        {/* Header - 3D Enhanced */}
+        <div className="glass-3d p-6 rounded-2xl mb-6 group hover:scale-105 transition-transform duration-300">
+          <div className="flex items-start space-x-6">
+            <div className="relative">
+              <img
+                src={asset.image || '/images/placeholder-asset.jpg'}
+                alt={asset.name}
+                className="w-32 h-32 object-cover rounded-2xl border-2 border-emerald-500/30"
+              />
+              <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-emerald-500 to-green-600 rounded-full flex items-center justify-center">
+                <Target className="w-4 h-4 text-white" />
+              </div>
             </div>
-            <p className="text-gray-700 mb-4">{asset.description}</p>
-            <div className="flex flex-wrap gap-2">
-              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                {asset.category}
-              </span>
-              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                {asset.roi}% Projected ROI
-              </span>
-              <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
-                Blockchain Verified
-              </span>
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold text-white mb-2">{asset.name}</h2>
+              <div className="flex items-center text-emerald-300 mb-3">
+                <MapPin className="w-4 h-4 mr-2" />
+                {asset.location}
+              </div>
+              <p className="text-slate-300 mb-4">{asset.description}</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm font-medium border border-blue-500/30">
+                  {asset.category}
+                </span>
+                <span className="bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-sm font-medium border border-green-500/30">
+                  {asset.roi}% Projected ROI
+                </span>
+                <span className="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm font-medium border border-purple-500/30">
+                  Blockchain Verified
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="border-b border-gray-200 mb-6">
-          <div className="flex space-x-8">
+        {/* Tabs - 3D Enhanced */}
+        <div className="glass-3d p-1 rounded-2xl mb-6">
+          <div className="flex space-x-1">
             {tabs.map((tab) => {
               const Icon = tab.icon
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center space-x-2 py-3 px-1 border-b-2 font-medium text-sm ${
+                  className={`flex items-center space-x-2 py-3 px-4 rounded-xl font-medium text-sm transition-all duration-300 flex-1 justify-center ${
                     activeTab === tab.id
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                      ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg'
+                      : 'text-slate-400 hover:text-slate-300 hover:bg-slate-700/50'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -104,18 +116,21 @@ export default function AssetDetailModal({ isOpen, onClose, asset }: AssetDetail
           {activeTab === 'overview' && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Investment Details */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Investment Details</h3>
+              <div className="glass-3d p-6 rounded-2xl">
+                <h3 className="text-lg font-bold text-white mb-4 flex items-center">
+                  <DollarSign className="w-5 h-5 mr-2 text-emerald-400" />
+                  Investment Details
+                </h3>
                 <div className="space-y-3">
                   {investmentDetails.map((detail, index) => {
                     const Icon = detail.icon
                     return (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div key={index} className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg group hover:bg-slate-600/30 transition-colors">
                         <div className="flex items-center space-x-3">
-                          <Icon className="w-5 h-5 text-gray-600" />
-                          <span className="text-gray-700">{detail.label}</span>
+                          <Icon className="w-5 h-5 text-emerald-400" />
+                          <span className="text-slate-300">{detail.label}</span>
                         </div>
-                        <span className="font-semibold text-gray-900">{detail.value}</span>
+                        <span className="font-semibold text-white">{detail.value}</span>
                       </div>
                     )
                   })}
@@ -123,28 +138,31 @@ export default function AssetDetailModal({ isOpen, onClose, asset }: AssetDetail
               </div>
 
               {/* Key Features */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Key Features</h3>
+              <div className="glass-3d p-6 rounded-2xl">
+                <h3 className="text-lg font-bold text-white mb-4 flex items-center">
+                  <Sparkles className="w-5 h-5 mr-2 text-cyan-400" />
+                  Key Features
+                </h3>
                 <div className="space-y-3">
-                  <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
-                    <Shield className="w-5 h-5 text-blue-600" />
+                  <div className="flex items-center space-x-3 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
+                    <Shield className="w-5 h-5 text-blue-400" />
                     <div>
-                      <div className="font-semibold text-gray-900">Blockchain Security</div>
-                      <div className="text-sm text-gray-600">All transactions recorded on-chain</div>
+                      <div className="font-semibold text-white">Blockchain Security</div>
+                      <div className="text-sm text-slate-400">All transactions recorded on-chain</div>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
-                    <Users className="w-5 h-5 text-green-600" />
+                  <div className="flex items-center space-x-3 p-3 bg-green-500/10 rounded-lg border border-green-500/20">
+                    <Users className="w-5 h-5 text-green-400" />
                     <div>
-                      <div className="font-semibold text-gray-900">Fractional Ownership</div>
-                      <div className="text-sm text-gray-600">Own a percentage of the asset</div>
+                      <div className="font-semibold text-white">Fractional Ownership</div>
+                      <div className="text-sm text-slate-400">Own any percentage from 10% to 100%</div>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
-                    <Target className="w-5 h-5 text-purple-600" />
+                  <div className="flex items-center space-x-3 p-3 bg-purple-500/10 rounded-lg border border-purple-500/20">
+                    <Target className="w-5 h-5 text-purple-400" />
                     <div>
-                      <div className="font-semibold text-gray-900">Professional Management</div>
-                      <div className="text-sm text-gray-600">Managed by industry experts</div>
+                      <div className="font-semibold text-white">Professional Management</div>
+                      <div className="text-sm text-slate-400">Managed by industry experts</div>
                     </div>
                   </div>
                 </div>
@@ -156,11 +174,11 @@ export default function AssetDetailModal({ isOpen, onClose, asset }: AssetDetail
             <div className="space-y-6">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {performanceMetrics.map((metric, index) => (
-                  <div key={index} className="bg-gray-50 p-4 rounded-lg text-center">
-                    <div className="text-sm text-gray-600 mb-1">{metric.label}</div>
-                    <div className={`text-lg font-semibold ${
-                      metric.change === 'positive' ? 'text-green-600' : 
-                      metric.change === 'negative' ? 'text-red-600' : 'text-gray-900'
+                  <div key={index} className="glass-3d p-4 rounded-2xl text-center group hover:scale-105 transition-transform duration-300">
+                    <div className="text-sm text-slate-400 mb-1">{metric.label}</div>
+                    <div className={`text-lg font-bold ${
+                      metric.change === 'positive' ? 'text-green-400' :
+                      metric.change === 'negative' ? 'text-red-400' : 'text-white'
                     }`}>
                       {metric.value}
                     </div>
@@ -169,17 +187,18 @@ export default function AssetDetailModal({ isOpen, onClose, asset }: AssetDetail
               </div>
 
               {/* Financial Projections */}
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6">
-                <h4 className="font-semibold text-gray-900 mb-4">5-Year Projection</h4>
+              <div className="glass-3d border border-cyan-500/20 rounded-2xl p-6 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-20 h-20 bg-cyan-500/10 rounded-full blur-xl"></div>
+                <h4 className="font-bold text-white mb-4">5-Year Projection</h4>
                 <div className="space-y-3">
                   {[1, 2, 3, 4, 5].map((year) => (
-                    <div key={year} className="flex justify-between items-center">
-                      <span className="text-gray-700">Year {year}</span>
+                    <div key={year} className="flex justify-between items-center p-3 bg-slate-700/30 rounded-lg group hover:bg-slate-600/30 transition-colors">
+                      <span className="text-slate-300">Year {year}</span>
                       <div className="text-right">
-                        <div className="font-semibold text-gray-900">
+                        <div className="font-bold text-cyan-400">
                           +{((asset.price * asset.roi * year) / 100).toLocaleString()} ASRD
                         </div>
-                        <div className="text-sm text-gray-600">
+                        <div className="text-sm text-slate-400">
                           ${(((asset.price * 32 * asset.roi * year) / 100)).toLocaleString()} USD
                         </div>
                       </div>
@@ -192,29 +211,29 @@ export default function AssetDetailModal({ isOpen, onClose, asset }: AssetDetail
 
           {activeTab === 'performance' && (
             <div className="space-y-4">
-              <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <h4 className="font-semibold text-gray-900 mb-4">Historical Performance</h4>
+              <div className="glass-3d p-6 rounded-2xl">
+                <h4 className="font-bold text-white mb-4">Historical Performance</h4>
                 <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span>Q1 2024</span>
-                    <span className="text-green-600 font-semibold">+4.2%</span>
+                  <div className="flex justify-between p-3 bg-slate-700/30 rounded-lg">
+                    <span className="text-slate-300">Q1 2024</span>
+                    <span className="text-green-400 font-semibold">+4.2%</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Q4 2023</span>
-                    <span className="text-green-600 font-semibold">+3.8%</span>
+                  <div className="flex justify-between p-3 bg-slate-700/30 rounded-lg">
+                    <span className="text-slate-300">Q4 2023</span>
+                    <span className="text-green-400 font-semibold">+3.8%</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Q3 2023</span>
-                    <span className="text-green-600 font-semibold">+4.1%</span>
+                  <div className="flex justify-between p-3 bg-slate-700/30 rounded-lg">
+                    <span className="text-slate-300">Q3 2023</span>
+                    <span className="text-green-400 font-semibold">+4.1%</span>
                   </div>
                 </div>
               </div>
-              
-              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-                <h4 className="font-semibold text-gray-900 mb-2">Important Notice</h4>
-                <p className="text-yellow-800 text-sm">
-                  Past performance is not indicative of future results. All investments carry risk, 
-                  including the possible loss of principal. Projected returns are estimates based on 
+
+              <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-2xl p-6">
+                <h4 className="font-semibold text-yellow-300 mb-2">Important Notice</h4>
+                <p className="text-yellow-200 text-sm">
+                  Past performance is not indicative of future results. All investments carry risk,
+                  including the possible loss of principal. Projected returns are estimates based on
                   historical data and market analysis.
                 </p>
               </div>
@@ -222,24 +241,43 @@ export default function AssetDetailModal({ isOpen, onClose, asset }: AssetDetail
           )}
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex space-x-3 pt-6 border-t border-gray-200 mt-6">
+        {/* Action Buttons - 3D Enhanced */}
+        <div className="flex space-x-3 pt-6 border-t border-slate-600/30 mt-6">
           <button
             onClick={onClose}
-            className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors"
+            className="flex-1 px-6 py-4 border border-slate-600 text-slate-300 font-bold rounded-xl hover:bg-slate-700/50 transition-all duration-300 hover:scale-105"
           >
             Close
           </button>
           <button
             onClick={() => {
               onClose()
-              // This would trigger the purchase modal in the parent component
+              onPurchaseClick()
             }}
-            disabled={asrdBalance < (asset.price * 0.1)}
-            className="flex-1 px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            disabled={!canInvest}
+            className="flex-1 px-6 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl hover:from-emerald-600 hover:to-green-700 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 relative overflow-hidden group"
           >
-            Invest in this Asset
+            <div className="flex items-center justify-center space-x-2">
+              <DollarSign className="w-5 h-5" />
+              <span>Invest in this Asset</span>
+            </div>
+            
+            {/* Shine effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
           </button>
+        </div>
+
+        {/* Balance Display */}
+        <div className="text-center pt-4">
+          <p className="text-slate-400 text-sm">
+            Your Balance: <span className="text-emerald-400 font-semibold">{asrdBalance.toFixed(2)} ASRD</span>
+            <span className="text-slate-500 ml-2">(${getUsdValue(asrdBalance).toLocaleString()} USD)</span>
+          </p>
+          {!canInvest && (
+            <p className="text-red-400 text-sm mt-1">
+              Minimum $50 USD ({minimumASRD.toFixed(2)} ASRD) required to invest
+            </p>
+          )}
         </div>
       </div>
     </Modal>

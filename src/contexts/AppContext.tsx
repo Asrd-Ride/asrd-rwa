@@ -13,7 +13,8 @@ interface AppContextType {
   auctionTimeLeft: number
   buyASRD: (usdAmount: number) => Promise<boolean>
   purchaseAsset: (assetId: number, fraction?: number) => Promise<boolean>
-  claimEarnings: (assetId: number) => Promise<void>
+  claimEarnings: (assetId: number) => Promise<{ success: boolean; amount: number }>
+  claimAllEarnings: () => Promise<{ success: boolean; totalAmount: number }>
   voteOnProposal: (proposalId: number, support: boolean) => Promise<void>
   setSelectedAssetType: (type: 'all' | 'horse' | 'real-estate') => void
   isLoading: boolean
@@ -22,7 +23,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined)
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const { asrdBalance, buyASRDTokens, cashBalance } = useWallet()
+  const { asrdBalance, buyASRDTokens, cashBalance, updateAsrdBalance } = useWallet()
 
   const [assets, setAssets] = useState(mockAssets)
   const [userAssets, setUserAssets] = useState(ownedAssets)
@@ -45,6 +46,26 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     localStorage.setItem('assetRidePurchases', JSON.stringify(userAssets))
   }, [userAssets])
+
+  // Generate earnings for owned assets every 30 seconds
+  useEffect(() => {
+    const generateEarnings = () => {
+      setUserAssets(prev => prev.map(asset => {
+        if (Math.random() > 0.7) { // 30% chance to generate earnings
+          const earningsType = asset.type === 'horse' ? 'unclaimedWinnings' : 'unclaimedRent'
+          const earningsAmount = Math.floor(Math.random() * 20) + 5 // 5-25 ASRD
+          return {
+            ...asset,
+            [earningsType]: (asset[earningsType] || 0) + earningsAmount
+          }
+        }
+        return asset
+      }))
+    }
+
+    const interval = setInterval(generateEarnings, 30000) // Every 30 seconds
+    return () => clearInterval(interval)
+  }, [])
 
   const filteredAssets = selectedAssetType === 'all'
     ? assets
@@ -82,10 +103,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           purchaseDate: new Date().toISOString(),
           fractionOwned: fraction,
           purchasePrice: purchasePrice,
-          originalPrice: asset.price
+          originalPrice: asset.price,
+          unclaimedWinnings: 0,
+          unclaimedRent: 0
         }
 
         setUserAssets(prev => [...prev, purchase])
+        updateAsrdBalance(asrdBalance - purchasePrice)
         return true
       } else {
         return false
@@ -98,13 +122,68 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const claimEarnings = async (assetId: number): Promise<void> => {
+  const claimEarnings = async (assetId: number): Promise<{ success: boolean; amount: number }> => {
     setIsLoading(true)
     try {
       await new Promise(resolve => setTimeout(resolve, 1000))
-      console.log('Earnings claimed for asset:', assetId)
+      
+      const asset = userAssets.find(a => a.id === assetId)
+      if (!asset) {
+        return { success: false, amount: 0 }
+      }
+
+      const earningsType = asset.type === 'horse' ? 'unclaimedWinnings' : 'unclaimedRent'
+      const earningsAmount = asset[earningsType] || 0
+
+      if (earningsAmount > 0) {
+        // Transfer earnings to wallet
+        updateAsrdBalance(asrdBalance + earningsAmount)
+        
+        // Reset unclaimed earnings
+        setUserAssets(prev => prev.map(a => 
+          a.id === assetId ? { ...a, [earningsType]: 0 } : a
+        ))
+
+        return { success: true, amount: earningsAmount }
+      } else {
+        return { success: false, amount: 0 }
+      }
     } catch (error) {
       console.error('Claim failed:', error)
+      return { success: false, amount: 0 }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const claimAllEarnings = async (): Promise<{ success: boolean; totalAmount: number }> => {
+    setIsLoading(true)
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      
+      let totalEarnings = 0
+      const updatedAssets = userAssets.map(asset => {
+        const earningsType = asset.type === 'horse' ? 'unclaimedWinnings' : 'unclaimedRent'
+        const earningsAmount = asset[earningsType] || 0
+        totalEarnings += earningsAmount
+        
+        return {
+          ...asset,
+          [earningsType]: 0
+        }
+      })
+
+      if (totalEarnings > 0) {
+        // Transfer all earnings to wallet
+        updateAsrdBalance(asrdBalance + totalEarnings)
+        setUserAssets(updatedAssets)
+        return { success: true, totalAmount: totalEarnings }
+      } else {
+        return { success: false, totalAmount: 0 }
+      }
+    } catch (error) {
+      console.error('Claim all failed:', error)
+      return { success: false, totalAmount: 0 }
     } finally {
       setIsLoading(false)
     }
@@ -151,6 +230,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       buyASRD,
       purchaseAsset,
       claimEarnings,
+      claimAllEarnings,
       voteOnProposal,
       setSelectedAssetType,
       isLoading

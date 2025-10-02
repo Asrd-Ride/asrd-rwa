@@ -1,5 +1,5 @@
 'use client'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { useApp } from '@/contexts/AppContext'
 import Header from '@/components/layout/Header'
 import ImmersiveHero from '@/components/sections/ImmersiveHero'
@@ -7,12 +7,32 @@ import FeaturedAssetsSection from '@/components/sections/FeaturedAssetsSection'
 import HowItWorksSection from '@/components/sections/HowItWorksSection'
 import PlatformStatsSection from '@/components/sections/PlatformStatsSection'
 import CTASection from '@/components/sections/CTASection'
+import { useScrollProgress } from '@/hooks/useScrollAnimation'
 
 export default function Home() {
   const { isLoading } = useApp()
+  const { scrollYProgress } = useScroll()
+  const scrollProgress = useScrollProgress()
+
+  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1])
+  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0])
 
   return (
     <main className="min-h-screen bg-luxury-deep text-white overflow-x-hidden">
+      {/* Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-glow to-sapphire-glow z-50 origin-left"
+        style={{ scaleX }}
+      />
+
+      {/* Scroll Progress Indicator */}
+      <motion.div
+        className="fixed top-4 right-4 z-50 glass-3d px-3 py-2 rounded-xl text-xs font-bold text-emerald-glow"
+        style={{ opacity }}
+      >
+        {Math.round(scrollProgress)}%
+      </motion.div>
+
       {/* Loading Overlay */}
       {isLoading && (
         <motion.div
@@ -29,11 +49,11 @@ export default function Home() {
       )}
 
       <Header />
-      
+
       {/* Immersive Hero Section */}
       <ImmersiveHero />
 
-      {/* Other Sections */}
+      {/* Auto-scrolling Sections with Enhanced Animations */}
       <HowItWorksSection />
       <FeaturedAssetsSection />
       <PlatformStatsSection />

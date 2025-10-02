@@ -3,14 +3,18 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useApp } from '@/contexts/AppContext'
 import { useWallet } from '@/contexts/WalletContext'
-import { Star, MapPin, Coins, TrendingUp, Gem, Crown, Eye } from 'lucide-react'
+import { useAuth } from '@/contexts/AuthContext'
+import { Star, MapPin, Coins, TrendingUp, Gem, Crown, Eye, LogIn } from 'lucide-react'
 import Link from 'next/link'
 import PurchaseModal from '@/components/ui/PurchaseModal'
 import AssetDetailModal from '@/components/ui/AssetDetailModal'
+import OptimizedImage from '@/components/ui/OptimizedImage'
+import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 export default function FeaturedAssetsSection() {
   const { assets, purchaseAsset, isLoading } = useApp()
   const { asrdBalance } = useWallet()
+  const { user } = useAuth()
   const [selectedAsset, setSelectedAsset] = useState<any>(null)
   const [showPurchaseModal, setShowPurchaseModal] = useState(false)
   const [showDetailModal, setShowDetailModal] = useState(false)
@@ -18,6 +22,11 @@ export default function FeaturedAssetsSection() {
   const featuredAssets = assets.filter(asset => asset.featured).slice(0, 3)
 
   const handlePurchaseClick = (asset: any) => {
+    if (!user) {
+      // Redirect to dashboard/login if not authenticated
+      window.location.href = '/portfolio'
+      return
+    }
     setSelectedAsset(asset)
     setShowPurchaseModal(true)
   }
@@ -25,6 +34,15 @@ export default function FeaturedAssetsSection() {
   const handleViewDetails = (asset: any) => {
     setSelectedAsset(asset)
     setShowDetailModal(true)
+  }
+
+  const handlePurchaseFromDetail = () => {
+    if (!user) {
+      window.location.href = '/portfolio'
+      return
+    }
+    setShowDetailModal(false)
+    setShowPurchaseModal(true)
   }
 
   const confirmPurchase = async (fraction: number) => {
@@ -43,8 +61,8 @@ export default function FeaturedAssetsSection() {
   };
 
   const getAssetTypeColor = (type: string) => {
-    return type === 'horse' 
-      ? 'from-emerald-glow to-sapphire-glow text-emerald-glow' 
+    return type === 'horse'
+      ? 'from-emerald-glow to-sapphire-glow text-emerald-glow'
       : 'from-sapphire-glow to-amethyst-glow text-sapphire-glow';
   };
 
@@ -88,8 +106,8 @@ export default function FeaturedAssetsSection() {
             FEATURED <span className="text-glow text-emerald-glow">PREMIUM</span> ASSETS
           </h2>
           <p className="text-xl text-neutral-light max-w-3xl mx-auto">
-            Exclusive investment opportunities in high-value real-world assets with 
-            <span className="text-emerald-glow font-semibold"> transparent returns</span> and 
+            Exclusive investment opportunities in high-value real-world assets with
+            <span className="text-emerald-glow font-semibold"> transparent returns</span> and
             <span className="text-sapphire-glow font-semibold"> blockchain security</span>
           </p>
         </motion.div>
@@ -99,26 +117,30 @@ export default function FeaturedAssetsSection() {
             const AssetTypeIcon = getAssetTypeIcon(asset.type);
             const gradientClass = getAssetTypeColor(asset.type);
             const minInvestmentASRD = asset.price * 0.1;
+            const { ref, isInView } = useScrollAnimation()
 
             return (
               <motion.div
+                ref={ref}
                 key={asset.id}
                 initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="glass-3d group cursor-pointer"
                 whileHover={{ y: -10, transition: { duration: 0.3 } }}
               >
                 {/* Asset Image with Overlay */}
                 <div className="relative overflow-hidden rounded-t-2xl">
-                  <motion.img
+                  <OptimizedImage
                     src={asset.image}
                     alt={asset.name}
-                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-                    whileHover={{ scale: 1.05 }}
+                    width={400}
+                    height={256}
+                    className="w-full h-64 group-hover:scale-110 transition-transform duration-500"
+                    quality={85}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-luxury-deep/80 via-transparent to-transparent" />
-                  
+
                   {/* Asset Type Badge */}
                   <div className="absolute top-4 left-4">
                     <div className={`bg-gradient-to-r ${gradientClass} rounded-2xl px-4 py-2 backdrop-blur-sm border border-white/20`}>
@@ -203,17 +225,28 @@ export default function FeaturedAssetsSection() {
                     >
                       View Details
                     </button>
-                    <button
-                      onClick={() => handlePurchaseClick(asset)}
-                      disabled={isLoading || asrdBalance < minInvestmentASRD}
-                      className="flex-1 px-4 py-3 bg-gradient-to-r from-emerald-glow to-sapphire-glow text-luxury-deep font-bold rounded-xl transition-all duration-300 flex items-center justify-center text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-emerald-glow/30"
-                    >
-                      <Coins className="w-4 h-4 mr-2" />
-                      Invest Now
-                    </button>
+                    {user ? (
+                      <button
+                        onClick={() => handlePurchaseClick(asset)}
+                        disabled={isLoading || asrdBalance < minInvestmentASRD}
+                        className="flex-1 px-4 py-3 bg-gradient-to-r from-emerald-glow to-sapphire-glow text-luxury-deep font-bold rounded-xl transition-all duration-300 flex items-center justify-center text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-emerald-glow/30"
+                      >
+                        <Coins className="w-4 h-4 mr-2" />
+                        Invest Now
+                      </button>
+                    ) : (
+                      <Link href="/portfolio">
+                        <button
+                          className="flex-1 px-4 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-luxury-deep font-bold rounded-xl transition-all duration-300 flex items-center justify-center text-sm hover:shadow-lg hover:shadow-amber-500/30"
+                        >
+                          <LogIn className="w-4 h-4 mr-2" />
+                          Login to Purchase
+                        </button>
+                      </Link>
+                    )}
                   </div>
 
-                  {asrdBalance < minInvestmentASRD && (
+                  {user && asrdBalance < minInvestmentASRD && (
                     <p className="text-ruby-glow text-xs text-center mt-3 font-semibold">
                       Need {minInvestmentASRD.toFixed(0)} ASRD minimum
                     </p>
@@ -253,6 +286,7 @@ export default function FeaturedAssetsSection() {
         isOpen={showDetailModal}
         onClose={() => setShowDetailModal(false)}
         asset={selectedAsset}
+        onPurchaseClick={handlePurchaseFromDetail}
       />
     </section>
   )

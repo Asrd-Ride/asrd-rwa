@@ -4,15 +4,20 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useApp } from '@/contexts/AppContext';
 import { useWallet } from '@/contexts/WalletContext';
-import { Filter, Search, TrendingUp, Clock, Gem, Crown, Coins, MapPin } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Filter, Search, TrendingUp, Clock, Gem, Crown, Coins, MapPin, Eye, LogIn } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import PurchaseModal from '@/components/ui/PurchaseModal';
+import AssetDetailModal from '@/components/ui/AssetDetailModal';
+import Link from 'next/link';
 
 export default function MarketplacePage() {
   const { assets, selectedAssetType, setSelectedAssetType, ownedAssets, purchaseAsset } = useApp();
   const { asrdBalance } = useWallet();
+  const { user } = useAuth();
   const [selectedAsset, setSelectedAsset] = useState<any>(null);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Get user's purchased assets from ownedAssets
@@ -35,7 +40,31 @@ export default function MarketplacePage() {
     setSelectedAssetType(value as 'all' | 'horse' | 'real-estate');
   };
 
-  const handlePurchase = async (fraction: number) => {
+  const handlePurchaseClick = (asset: any) => {
+    if (!user) {
+      // Redirect to dashboard/login if not authenticated
+      window.location.href = '/portfolio'
+      return
+    }
+    setSelectedAsset(asset);
+    setShowPurchaseModal(true);
+  };
+
+  const handleViewDetails = (asset: any) => {
+    setSelectedAsset(asset);
+    setShowDetailModal(true);
+  };
+
+  const handlePurchaseFromDetail = () => {
+    if (!user) {
+      window.location.href = '/portfolio'
+      return
+    }
+    setShowDetailModal(false);
+    setShowPurchaseModal(true);
+  };
+
+  const confirmPurchase = async (fraction: number) => {
     if (selectedAsset) {
       const success = await purchaseAsset(selectedAsset.id, fraction);
       if (success) {
@@ -51,8 +80,8 @@ export default function MarketplacePage() {
   };
 
   const getAssetTypeColor = (type: string) => {
-    return type === 'horse' 
-      ? 'from-emerald-glow to-sapphire-glow text-emerald-glow' 
+    return type === 'horse'
+      ? 'from-emerald-glow to-sapphire-glow text-emerald-glow'
       : 'from-sapphire-glow to-amethyst-glow text-sapphire-glow';
   };
 
@@ -126,7 +155,8 @@ export default function MarketplacePage() {
           {filteredAssets.map((asset, index) => {
             const AssetTypeIcon = getAssetTypeIcon(asset.type);
             const gradientClass = getAssetTypeColor(asset.type);
-            
+            const minInvestmentASRD = asset.price * 0.1;
+
             return (
               <motion.div
                 key={asset.id}
@@ -144,15 +174,32 @@ export default function MarketplacePage() {
                     whileHover={{ scale: 1.05 }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-luxury-deep/80 via-transparent to-transparent" />
-                  
+
                   {/* Asset Type Badge */}
-                  <div className="absolute top-4 right-4">
+                  <div className="absolute top-4 left-4">
                     <div className={`bg-gradient-to-r ${gradientClass} rounded-2xl px-4 py-2 backdrop-blur-sm border border-white/20`}>
                       <AssetTypeIcon className="w-4 h-4 inline mr-2" />
                       <span className="text-sm font-bold">
                         {asset.type === 'horse' ? 'ELITE RACEHORSE' : 'LUXURY PROPERTY'}
                       </span>
                     </div>
+                  </div>
+
+                  {/* ROI Badge */}
+                  <div className="absolute top-4 right-4">
+                    <div className="bg-gradient-to-r from-gold-glow to-ruby-glow rounded-2xl px-4 py-2 backdrop-blur-sm border border-white/20">
+                      <span className="text-sm font-bold text-luxury-deep">{asset.roi}% ROI</span>
+                    </div>
+                  </div>
+
+                  {/* Quick Actions */}
+                  <div className="absolute top-16 right-4">
+                    <button
+                      onClick={() => handleViewDetails(asset)}
+                      className="bg-white/90 backdrop-blur-sm rounded-full p-3 hover:bg-white transition-all duration-300 hover:scale-110"
+                    >
+                      <Eye className="w-5 h-5 text-luxury-deep" />
+                    </button>
                   </div>
 
                   {/* Quick Info Overlay */}
@@ -184,27 +231,57 @@ export default function MarketplacePage() {
                         <div className="text-neutral-mid text-xs">Available</div>
                       </div>
                       <div className="text-center p-3 bg-luxury-dark/30 rounded-xl border border-white/10">
-                        <div className="text-amethyst-glow text-lg font-black">
-                          {asset.type === 'horse' ? '18%' : '9%'}
-                        </div>
+                        <div className="text-amethyst-glow text-lg font-black">{asset.roi}%</div>
                         <div className="text-neutral-mid text-xs">Projected ROI</div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Invest Button */}
-                  <motion.button
-                    onClick={() => {
-                      setSelectedAsset(asset);
-                      setShowPurchaseModal(true);
-                    }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full py-4 px-6 bg-gradient-to-r from-emerald-glow to-sapphire-glow text-luxury-deep font-black rounded-2xl transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-glow/30 text-lg"
-                  >
-                    <Coins className="w-5 h-5 inline mr-2" />
-                    INVEST NOW
-                  </motion.button>
+                  {/* Minimum Investment */}
+                  <div className="bg-gradient-to-r from-emerald-glow/20 to-sapphire-glow/20 border border-emerald-glow/30 rounded-xl p-4 mb-6">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-emerald-glow font-bold">Minimum Investment:</span>
+                      <div className="text-right">
+                        <div className="font-black text-white">{minInvestmentASRD.toFixed(0)} ASRD</div>
+                        <div className="text-sapphire-glow">${(minInvestmentASRD * 32).toLocaleString()} USD</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex space-x-3">
+                    <button
+                      onClick={() => handleViewDetails(asset)}
+                      className="flex-1 px-4 py-3 border border-emerald-glow text-emerald-glow font-bold rounded-xl hover:bg-emerald-glow hover:text-luxury-deep transition-all duration-300 text-sm"
+                    >
+                      View Details
+                    </button>
+                    {user ? (
+                      <button
+                        onClick={() => handlePurchaseClick(asset)}
+                        disabled={asrdBalance < minInvestmentASRD}
+                        className="flex-1 px-4 py-3 bg-gradient-to-r from-emerald-glow to-sapphire-glow text-luxury-deep font-bold rounded-xl transition-all duration-300 flex items-center justify-center text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-emerald-glow/30"
+                      >
+                        <Coins className="w-4 h-4 mr-2" />
+                        Invest Now
+                      </button>
+                    ) : (
+                      <Link href="/portfolio">
+                        <button
+                          className="flex-1 px-4 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-luxury-deep font-bold rounded-xl transition-all duration-300 flex items-center justify-center text-sm hover:shadow-lg hover:shadow-amber-500/30"
+                        >
+                          <LogIn className="w-4 h-4 mr-2" />
+                          Login to Purchase
+                        </button>
+                      </Link>
+                    )}
+                  </div>
+
+                  {user && asrdBalance < minInvestmentASRD && (
+                    <p className="text-ruby-glow text-xs text-center mt-3 font-semibold">
+                      Need {minInvestmentASRD.toFixed(0)} ASRD minimum
+                    </p>
+                  )}
                 </div>
               </motion.div>
             );
@@ -224,12 +301,19 @@ export default function MarketplacePage() {
         )}
       </div>
 
-      {/* Purchase Modal */}
+      {/* Modals */}
       <PurchaseModal
         isOpen={showPurchaseModal}
         onClose={() => setShowPurchaseModal(false)}
-        onConfirm={handlePurchase}
+        onConfirm={confirmPurchase}
         asset={selectedAsset}
+      />
+
+      <AssetDetailModal
+        isOpen={showDetailModal}
+        onClose={() => setShowDetailModal(false)}
+        asset={selectedAsset}
+        onPurchaseClick={handlePurchaseFromDetail}
       />
     </div>
   );
