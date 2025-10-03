@@ -2,65 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Reference Theme Colors - Exact match from https://5ee07a7b-7937-465d-904b-f6058d3403c4-00-2r33fyikcd5fe.worf.replit.dev/ */
+/* Professional Financial Design System */
 :root {
-  --space-dark: #0A0F2C;
-  --space-deep: #050517;
-  --electric-cyan: #00D1FF;
-  --neon-purple: #7B61FF;
-  --matrix-green: #00FF88;
-  --hologram-blue: #0066FF;
+  /* Primary Colors - Sophisticated & Trustworthy */
+  --deep-navy: #0A1128;
+  --space-blue: #1C2541;
+  --midnight: #2A3D66;
+  --steel-blue: #3A506B;
+  
+  /* Accent Colors - Professional & Energetic */
+  --ocean-teal: #00B4D8;
+  --royal-blue: #4361EE;
+  --emerald: #06D6A0;
+  --gold: #FFD166;
+  
+  /* Neutral Colors */
+  --pure-white: #FFFFFF;
+  --light-gray: #F8F9FA;
+  --mid-gray: #E9ECEF;
+  --dark-gray: #6C757D;
 }
 
-.bg-space-dark {
-  background-color: var(--space-dark);
+/* Professional Backgrounds */
+.bg-professional-dark {
+  background: linear-gradient(135deg, var(--deep-navy) 0%, var(--space-blue) 100%);
 }
 
-.bg-space-deep {
-  background-color: var(--space-deep);
+.bg-professional-card {
+  background: linear-gradient(135deg, var(--space-blue) 0%, var(--midnight) 100%);
 }
 
-.text-electric-cyan {
-  color: var(--electric-cyan);
+.bg-professional-light {
+  background: linear-gradient(135deg, var(--midnight) 0%, var(--steel-blue) 100%);
 }
 
-.text-neon-purple {
-  color: var(--neon-purple);
-}
-
-.text-matrix-green {
-  color: var(--matrix-green);
-}
-
-.bg-gradient-space {
-  background: linear-gradient(135deg, var(--space-dark) 0%, var(--space-deep) 100%);
-}
-
-.bg-gradient-cyber {
-  background: linear-gradient(135deg, var(--electric-cyan) 0%, var(--neon-purple) 100%);
-}
-
-/* Glass morphism effects from reference */
-.glass-ref {
-  background: rgba(255, 255, 255, 0.05);
+/* Professional Glass Morphism */
+.glass-professional {
+  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 8px 32px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
 }
 
-.glass-ref:hover {
-  border-color: var(--electric-cyan);
+.glass-professional:hover {
+  border-color: var(--ocean-teal);
   box-shadow: 
-    0 8px 32px rgba(0, 209, 255, 0.2),
+    0 12px 40px rgba(0, 180, 216, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
 }
 
-/* Base styles for better mobile experience */
+/* Professional Gradients */
+.gradient-primary {
+  background: linear-gradient(135deg, var(--ocean-teal) 0%, var(--royal-blue) 100%);
+}
+
+.gradient-success {
+  background: linear-gradient(135deg, var(--emerald) 0%, var(--ocean-teal) 100%);
+}
+
+.gradient-premium {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--emerald) 100%);
+}
+
+/* Base styles */
 html {
   scroll-behavior: smooth;
 }
@@ -69,26 +78,9 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background: var(--space-dark);
-  color: white;
-}
-
-/* Custom scrollbar for webkit browsers */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--space-deep);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--electric-cyan);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--neon-purple);
+  background: var(--deep-navy);
+  color: var(--pure-white);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* Container utilities */
@@ -104,6 +96,25 @@ body {
   }
 }
 
+/* Typography scale */
+.text-hero {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.text-display {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.text-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
 /* Animation utilities */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
@@ -113,3 +124,40 @@ body {
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* Color Classes for Tailwind */
+.bg-deep-navy { background-color: var(--deep-navy); }
+.bg-space-blue { background-color: var(--space-blue); }
+.bg-midnight { background-color: var(--midnight); }
+.bg-steel-blue { background-color: var(--steel-blue); }
+.bg-ocean-teal { background-color: var(--ocean-teal); }
+.bg-royal-blue { background-color: var(--royal-blue); }
+.bg-emerald { background-color: var(--emerald); }
+.bg-gold { background-color: var(--gold); }
+
+.text-ocean-teal { color: var(--ocean-teal); }
+.text-royal-blue { color: var(--royal-blue); }
+.text-emerald { color: var(--emerald); }
+.text-gold { color: var(--gold); }
+
+.border-ocean-teal { border-color: var(--ocean-teal); }
+.border-royal-blue { border-color: var(--royal-blue); }
+.border-emerald { border-color: var(--emerald); }
+
+.from-ocean-teal { --tw-gradient-from: var(--ocean-teal); }
+.to-royal-blue { --tw-gradient-to: var(--royal-blue); }
