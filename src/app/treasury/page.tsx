@@ -8,7 +8,6 @@ import {
   Building2, Wallet, Landmark, CreditCard,
   Crown, Gem, Zap, Rocket
 } from 'lucide-react'
-import Header from '@/components/layout/Header'
 
 export default function TreasuryPage() {
   const [activeTab, setActiveTab] = useState('overview')
@@ -80,7 +79,6 @@ export default function TreasuryPage() {
 
   return (
     <div className="min-h-screen immersive-bg">
-      <Header />
 
       {/* Header */}
       <div className="relative overflow-hidden pt-16">

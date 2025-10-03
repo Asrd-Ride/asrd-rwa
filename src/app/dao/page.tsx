@@ -8,7 +8,6 @@ import {
   Target, Shield, Zap, Building, Coins, FileCheck,
   Crown, Gem, Rocket
 } from 'lucide-react'
-import Header from '@/components/layout/Header'
 
 export default function DAOPage() {
   const [activeTab, setActiveTab] = useState('active')
@@ -107,7 +106,6 @@ export default function DAOPage() {
 
   return (
     <div className="min-h-screen immersive-bg">
-      <Header />
 
       {/* Header */}
       <div className="relative overflow-hidden pt-16">

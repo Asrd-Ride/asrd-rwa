@@ -6,7 +6,6 @@ import { useApp } from '@/contexts/AppContext';
 import { useWallet } from '@/contexts/WalletContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Filter, Search, TrendingUp, Clock, Gem, Crown, Coins, MapPin, Eye, LogIn, SlidersHorizontal } from 'lucide-react';
-import Header from '@/components/layout/Header';
 import PurchaseModal from '@/components/ui/PurchaseModal';
 import AssetDetailModal from '@/components/ui/AssetDetailModal';
 import AdvancedFilters from '@/components/ui/AdvancedFilters';
@@ -172,7 +171,6 @@ export default function MarketplacePage() {
 
   return (
     <div className="min-h-screen immersive-bg">
-      <Header />
 
       {/* Header */}
       <div className="relative overflow-hidden pt-16">

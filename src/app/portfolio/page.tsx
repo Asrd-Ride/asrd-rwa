@@ -2,7 +2,6 @@
 import { useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
-import Header from '@/components/layout/Header'
 import Dashboard from '@/components/sections/Dashboard'
 
 export default function PortfolioPage() {
@@ -28,7 +27,6 @@ export default function PortfolioPage() {
 
   return (
     <div className="min-h-screen immersive-bg">
-      <Header />
       <Dashboard />
     </div>
   )

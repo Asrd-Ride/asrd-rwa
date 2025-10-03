@@ -36,7 +36,7 @@ export default function ImmersiveHero() {
       {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-luxury-deep via-luxury-mid to-luxury-light" />
-        
+
         {/* Animated Grid */}
         <div className="absolute inset-0 opacity-20">
           <div className="grid grid-cols-12 gap-4 h-full w-full">
@@ -130,7 +130,7 @@ export default function ImmersiveHero() {
                 Connect Wallet to Invest
               </motion.button>
             )}
-            
+
             <motion.a
               href="/marketplace"
               className="glass-3d px-8 py-4 text-lg font-semibold border border-emerald-glow/30 text-emerald-glow hover:bg-emerald-glow hover:text-luxury-deep transition-all duration-300 rounded-2xl"
@@ -169,11 +169,11 @@ export default function ImmersiveHero() {
         </motion.div>
       </div>
 
-      {/* Token Purchase Modal */}
+      {/* Token Purchase Modal - FIXED: onPurchase changed to onConfirm */}
       <TokenPurchaseModal
         isOpen={showTokenModal}
         onClose={() => setShowTokenModal(false)}
-        onPurchase={handleBuyASRD}
+        onConfirm={handleBuyASRD}
       />
     </section>
   )

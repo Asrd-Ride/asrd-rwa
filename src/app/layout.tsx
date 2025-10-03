@@ -3,8 +3,9 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Providers from '@/components/Providers'
 import PerformanceOptimizer from '@/components/PerformanceOptimizer'
+import Header from '@/components/layout/Header'
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   preload: true,
@@ -32,21 +33,19 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        {/* Preload critical resources */}
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
-        
-        {/* Theme color for mobile browsers */}
         <meta name="theme-color" content="#0A0B1A" />
-        
-        {/* PWA meta tags */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className={inter.className}>
         <PerformanceOptimizer>
           <Providers>
-            {children}
+            <Header />
+            <main className="min-h-screen bg-luxury-deep text-white overflow-x-hidden">
+              {children}
+            </main>
           </Providers>
         </PerformanceOptimizer>
       </body>

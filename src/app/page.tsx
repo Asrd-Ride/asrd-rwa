@@ -1,8 +1,6 @@
 "use client"
-import { motion, useScroll, useTransform } from 'framer-motion'
 import { useApp } from '@/contexts/AppContext'
 import { useAuth } from '@/contexts/AuthContext'
-import Header from '@/components/layout/Header'
 import ImmersiveHero from '@/components/sections/ImmersiveHero'
 import FeaturedAssetsSection from '@/components/sections/FeaturedAssetsSection'
 import HowItWorksSection from '@/components/sections/HowItWorksSection'
@@ -14,9 +12,7 @@ export default function Home() {
   const { isAuthenticated } = useAuth()
 
   return (
-    <main className="min-h-screen bg-luxury-deep text-white overflow-x-hidden">
-      <Header />
-
+    <>
       {/* Immersive Hero Section */}
       <ImmersiveHero />
 
@@ -77,6 +73,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-    </main>
+    </>
   )
 }
