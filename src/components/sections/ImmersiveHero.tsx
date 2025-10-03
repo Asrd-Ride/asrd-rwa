@@ -12,17 +12,17 @@ const ImmersiveHero = () => {
     {
       title: "Tokenize Real World Assets",
       subtitle: "Fractional ownership of premium assets through blockchain technology",
-      gradient: "from-electric-cyan to-neon-purple"
+      gradient: "from-[#00D1FF] to-[#7B61FF]"
     },
     {
       title: "UK Real Estate & Race Horses",
       subtitle: "Invest in premium UK properties and thoroughbred racehorses",
-      gradient: "from-neon-purple to-electric-cyan"
+      gradient: "from-[#7B61FF] to-[#00D1FF]"
     },
     {
       title: "Dubai & Australia Markets",
       subtitle: "Diversify with international real estate opportunities",
-      gradient: "from-electric-cyan to-matrix-green"
+      gradient: "from-[#00D1FF] to-[#00FF88]"
     }
   ]
 
@@ -39,16 +39,16 @@ const ImmersiveHero = () => {
   }
 
   return (
-    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-space">
+    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0F2C]">
       {/* Enhanced Space Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-space-dark to-space-deep" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0A0F2C] to-[#050517]" />
       
       {/* Subtle Star Field */}
       <div className="absolute inset-0 opacity-30">
         {Array.from({ length: 50 }).map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-electric-cyan rounded-full animate-pulse"
+            className="absolute w-1 h-1 bg-[#00D1FF] rounded-full animate-pulse"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -66,9 +66,9 @@ const ImmersiveHero = () => {
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ duration: 1, type: "spring" }}
-            className="glass-ref inline-block px-6 py-3 rounded-2xl mb-8 border border-electric-cyan/30"
+            className="bg-white/5 backdrop-blur-lg border border-white/10 inline-block px-6 py-3 rounded-2xl mb-8 border-[#00D1FF]/30 shadow-lg"
           >
-            <span className="bg-gradient-to-r from-electric-cyan to-neon-purple bg-clip-text text-transparent font-semibold">
+            <span className="bg-gradient-to-r from-[#00D1FF] to-[#7B61FF] bg-clip-text text-transparent font-semibold">
               ASRD Price: $32.00 ↗
             </span>
           </motion.div>
@@ -105,11 +105,11 @@ const ImmersiveHero = () => {
           >
             <button
               onClick={() => setIsModalOpen(true)}
-              className="glass-ref px-8 py-4 text-lg font-semibold border border-electric-cyan/30 text-electric-cyan hover:bg-electric-cyan hover:text-space-dark transition-all duration-300 rounded-2xl hover:scale-105"
+              className="bg-white/5 backdrop-blur-lg border border-[#00D1FF]/30 text-[#00D1FF] hover:bg-[#00D1FF] hover:text-[#0A0F2C] px-8 py-4 text-lg font-semibold transition-all duration-300 rounded-2xl hover:scale-105 shadow-lg"
             >
               Buy ASRD Tokens
             </button>
-            <button className="glass-ref px-8 py-4 text-lg font-semibold border border-neon-purple/30 text-neon-purple hover:bg-neon-purple hover:text-white transition-all duration-300 rounded-2xl hover:scale-105">
+            <button className="bg-white/5 backdrop-blur-lg border border-[#7B61FF]/30 text-[#7B61FF] hover:bg-[#7B61FF] hover:text-white px-8 py-4 text-lg font-semibold transition-all duration-300 rounded-2xl hover:scale-105 shadow-lg">
               Explore Assets
             </button>
           </motion.div>
@@ -129,9 +129,9 @@ const ImmersiveHero = () => {
             ].map((stat, index) => (
               <div
                 key={index}
-                className="glass-ref p-6 rounded-2xl text-center border border-electric-cyan/10 hover:border-electric-cyan/30 transition-all duration-300"
+                className="bg-white/5 backdrop-blur-lg border border-white/10 p-6 rounded-2xl text-center hover:border-[#00D1FF]/30 transition-all duration-300 shadow-lg"
               >
-                <div className="text-2xl md:text-3xl font-bold text-electric-cyan mb-2">
+                <div className="text-2xl md:text-3xl font-bold text-[#00D1FF] mb-2">
                   {stat.value}
                 </div>
                 <div className="text-gray-400 text-sm md:text-base">

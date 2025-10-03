@@ -31,19 +31,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth bg-space-dark">
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
-        <meta name="theme-color" content="#3B82F6" />
+        <meta name="theme-color" content="#0A0F2C" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-space-dark`}>
         <PerformanceOptimizer>
           <Providers>
             <Header />
-            <main className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-100 text-gray-800 overflow-x-hidden">
+            <main className="min-h-screen bg-space-dark text-white overflow-x-hidden">
               {children}
             </main>
           </Providers>
