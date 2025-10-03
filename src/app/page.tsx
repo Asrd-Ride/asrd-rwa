@@ -1,53 +1,20 @@
-'use client'
+"use client"
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useApp } from '@/contexts/AppContext'
+import { useAuth } from '@/contexts/AuthContext'
 import Header from '@/components/layout/Header'
 import ImmersiveHero from '@/components/sections/ImmersiveHero'
 import FeaturedAssetsSection from '@/components/sections/FeaturedAssetsSection'
 import HowItWorksSection from '@/components/sections/HowItWorksSection'
 import PlatformStatsSection from '@/components/sections/PlatformStatsSection'
 import CTASection from '@/components/sections/CTASection'
-import { useScrollProgress } from '@/hooks/useScrollAnimation'
 
 export default function Home() {
   const { isLoading } = useApp()
-  const { scrollYProgress } = useScroll()
-  const scrollProgress = useScrollProgress()
-
-  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1])
-  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0])
+  const { isAuthenticated } = useAuth()
 
   return (
     <main className="min-h-screen bg-luxury-deep text-white overflow-x-hidden">
-      {/* Progress Bar */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-glow to-sapphire-glow z-50 origin-left"
-        style={{ scaleX }}
-      />
-
-      {/* Scroll Progress Indicator */}
-      <motion.div
-        className="fixed top-4 right-4 z-50 glass-3d px-3 py-2 rounded-xl text-xs font-bold text-emerald-glow"
-        style={{ opacity }}
-      >
-        {Math.round(scrollProgress)}%
-      </motion.div>
-
-      {/* Loading Overlay */}
-      {isLoading && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center"
-        >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            className="w-16 h-16 border-4 border-emerald-glow border-t-transparent rounded-full"
-          />
-        </motion.div>
-      )}
-
       <Header />
 
       {/* Immersive Hero Section */}
@@ -77,7 +44,9 @@ export default function Home() {
               <h4 className="text-white font-bold text-xl mb-6">Platform</h4>
               <div className="space-y-3 text-lg">
                 <a href="/marketplace" className="text-neutral-mid hover:text-emerald-glow transition-all duration-300 block hover:translate-x-2">Marketplace</a>
-                <a href="/portfolio" className="text-neutral-mid hover:text-sapphire-glow transition-all duration-300 block hover:translate-x-2">Portfolio</a>
+                {isAuthenticated && (
+                  <a href="/portfolio" className="text-neutral-mid hover:text-sapphire-glow transition-all duration-300 block hover:translate-x-2">Portfolio</a>
+                )}
                 <a href="/dao" className="text-neutral-mid hover:text-amethyst-glow transition-all duration-300 block hover:translate-x-2">DAO Governance</a>
               </div>
             </div>

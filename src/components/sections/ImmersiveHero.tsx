@@ -2,12 +2,14 @@
 import { motion, useScroll, useTransform, useSpring, useMotionValueEvent } from 'framer-motion'
 import { useState, useRef, useEffect } from 'react'
 import { useApp } from '@/contexts/AppContext'
+import { useAuth } from '@/contexts/AuthContext'
 import { platformStats } from '@/data/mockData'
 import TokenPurchaseModal from '../ui/TokenPurchaseModal'
 import { ArrowRight, Play, Star, TrendingUp, Coins, Gem, Crown, Sparkles } from 'lucide-react'
 
 export default function ImmersiveHero() {
   const { buyASRD, isLoading } = useApp()
+  const { isAuthenticated } = useAuth()
   const [showTokenModal, setShowTokenModal] = useState(false)
   const containerRef = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -29,262 +31,150 @@ export default function ImmersiveHero() {
     }
   }
 
-  // Particle system
-  const Particle = ({ style, delay }: any) => (
-    <motion.div
-      className="particle"
-      style={style}
-      initial={{ opacity: 0, y: 100 }}
-      animate={{
-        opacity: [0, 1, 0],
-        y: [-100, -500],
-        x: [0, Math.random() * 100 - 50]
-      }}
-      transition={{
-        duration: Math.random() * 3 + 2,
-        delay,
-        repeat: Infinity,
-        ease: "linear"
-      }}
-    />
-  )
-
   return (
-    <>
-      <section ref={containerRef} className="min-h-screen immersive-bg relative overflow-hidden">
-        {/* Animated Particles */}
-        <div className="particles">
-          {[...Array(20)].map((_, i) => (
-            <Particle
-              key={i}
-              style={{
-                left: `${Math.random() * 100}%`,
-                width: `${Math.random() * 6 + 2}px`,
-                height: `${Math.random() * 6 + 2}px`,
-                background: i % 3 === 0 ? 'var(--emerald-glow)' : i % 3 === 1 ? 'var(--sapphire-glow)' : 'var(--amethyst-glow)'
-              }}
-              delay={Math.random() * 2}
-            />
-          ))}
-        </div>
-
-        {/* Floating Orbs */}
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-glow rounded-full blur-3xl opacity-20"
-          animate={{
-            scale: [1, 1.2, 1],
-            x: [0, 50, 0],
-            y: [0, -30, 0],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-sapphire-glow rounded-full blur-3xl opacity-20"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            x: [0, -40, 0],
-            y: [0, 40, 0],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
-          }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/2 w-64 h-64 bg-amethyst-glow rounded-full blur-3xl opacity-15"
-          animate={{
-            scale: [1, 1.3, 1],
-            x: [0, 30, 0],
-            y: [0, 20, 0],
-          }}
-          transition={{
-            duration: 7,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2
-          }}
-        />
-
-        <div className="container-pro relative z-10">
-          <div className="min-h-screen flex items-center justify-center pt-20">
-            <div className="text-center max-w-6xl mx-auto">
-              {/* Premium Badge */}
+    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-luxury-deep via-luxury-mid to-luxury-light" />
+        
+        {/* Animated Grid */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="grid grid-cols-12 gap-4 h-full w-full">
+            {Array.from({ length: 144 }).map((_, i) => (
               <motion.div
-                initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="inline-flex items-center glass-3d px-6 py-3 mb-8"
-              >
-                <Crown className="w-5 h-5 text-gold-glow mr-2" />
-                <span className="text-gold-glow text-sm font-bold tracking-wider">
-                  PREMIUM REAL-WORLD ASSETS
-                </span>
-                <Sparkles className="w-4 h-4 text-gold-glow ml-2" />
-              </motion.div>
-
-              {/* Main Heading */}
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.4 }}
-              >
-                <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-6 text-3d leading-tight">
-                  ASSET RIDE
-                </h1>
-                <motion.p
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
-                  className="text-2xl md:text-3xl text-neutral-light mb-8 max-w-4xl mx-auto leading-relaxed"
-                >
-                  Where <span className="text-glow text-emerald-glow">Elite Thoroughbreds</span> meet{' '}
-                  <span className="text-glow text-sapphire-glow">Luxury Real Estate</span> in the{' '}
-                  <span className="text-glow text-amethyst-glow">Blockchain Revolution</span>
-                </motion.p>
-              </motion.div>
-
-              {/* ASRD Token Showcase */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.8 }}
-                className="glass-3d inline-block px-8 py-6 mb-12 neon-glow"
-              >
-                <div className="flex items-center justify-center space-x-8">
-                  <div className="text-center">
-                    <div className="text-3xl font-black text-3d mb-2">ASRD</div>
-                    <div className="text-emerald-glow text-lg font-semibold">Utility Token</div>
-                  </div>
-                  <div className="h-16 w-px bg-gradient-to-b from-emerald-glow to-sapphire-glow"></div>
-                  <div className="text-center">
-                    <div className="text-3xl font-black text-sapphire-glow mb-2">${platformStats.price}</div>
-                    <div className="text-neutral-mid text-sm">Per Token</div>
-                  </div>
-                  <div className="h-16 w-px bg-gradient-to-b from-sapphire-glow to-amethyst-glow"></div>
-                  <div className="text-center">
-                    <div className="text-2xl font-black text-amethyst-glow mb-2">
-                      ${(platformStats.marketCap / 1000000).toFixed(0)}M
-                    </div>
-                    <div className="text-neutral-mid text-sm">Market Cap</div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* CTA Buttons */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 1 }}
-                className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
-              >
-                <motion.button
-                  onClick={() => setShowTokenModal(true)}
-                  disabled={isLoading}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn-3d text-lg px-12 py-6"
-                >
-                  <Coins className="w-6 h-6 mr-3" />
-                  {isLoading ? 'PROCESSING...' : 'BUY ASRD TOKENS'}
-                </motion.button>
-
-                <motion.a
-                  href="/marketplace"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn-3d-outline text-lg px-12 py-6"
-                >
-                  <Gem className="w-6 h-6 mr-3" />
-                  EXPLORE ASSETS
-                </motion.a>
-              </motion.div>
-
-              {/* Real Asset Previews */}
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 1.2 }}
-                className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
-              >
-                {/* Racehorse Card */}
-                <motion.div
-                  className="glass-3d p-6 text-center group cursor-pointer"
-                  whileHover={{ y: -10 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-emerald-glow to-sapphire-glow rounded-2xl flex items-center justify-center">
-                    <TrendingUp className="w-10 h-10 text-luxury-deep" />
-                  </div>
-                  <h3 className="text-xl font-bold text-emerald-glow mb-2">Elite Racehorses</h3>
-                  <p className="text-neutral-mid text-sm mb-4">Champion thoroughbreds with proven track records</p>
-                  <div className="text-emerald-glow font-semibold">15-25% ROI</div>
-                </motion.div>
-
-                {/* Real Estate Card */}
-                <motion.div
-                  className="glass-3d p-6 text-center group cursor-pointer"
-                  whileHover={{ y: -10 }}
-                  transition={{ duration: 0.4, delay: 0.1 }}
-                >
-                  <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-sapphire-glow to-amethyst-glow rounded-2xl flex items-center justify-center">
-                    <Gem className="w-10 h-10 text-luxury-deep" />
-                  </div>
-                  <h3 className="text-xl font-bold text-sapphire-glow mb-2">Luxury Real Estate</h3>
-                  <p className="text-neutral-mid text-sm mb-4">Premium properties in global prime locations</p>
-                  <div className="text-sapphire-glow font-semibold">8-12% ROI</div>
-                </motion.div>
-
-                {/* Token Benefits Card */}
-                <motion.div
-                  className="glass-3d p-6 text-center group cursor-pointer"
-                  whileHover={{ y: -10 }}
-                  transition={{ duration: 0.4, delay: 0.2 }}
-                >
-                  <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-amethyst-glow to-emerald-glow rounded-2xl flex items-center justify-center">
-                    <Coins className="w-10 h-10 text-luxury-deep" />
-                  </div>
-                  <h3 className="text-xl font-bold text-amethyst-glow mb-2">ASRD Tokens</h3>
-                  <p className="text-neutral-mid text-sm mb-4">Governance, staking, and premium access</p>
-                  <div className="text-amethyst-glow font-semibold">$32 per token</div>
-                </motion.div>
-              </motion.div>
-
-              {/* Scroll Indicator */}
-              <motion.div
+                key={i}
+                className="border border-emerald-glow/10"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.5, duration: 0.6 }}
-                className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-              >
-                <motion.div
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="w-8 h-14 border-2 border-emerald-glow/50 rounded-full flex justify-center"
-                >
-                  <motion.div
-                    animate={{ y: [0, 20, 0] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="w-1 h-4 bg-emerald-glow rounded-full mt-3"
-                  />
-                </motion.div>
-              </motion.div>
-            </div>
+                animate={{ opacity: [0, 0.3, 0] }}
+                transition={{
+                  duration: 2,
+                  delay: Math.random() * 2,
+                  repeat: Infinity,
+                  repeatType: "reverse"
+                }}
+              />
+            ))}
           </div>
         </div>
-      </section>
+      </div>
+
+      {/* Hero Content */}
+      <div className="container-pro relative z-10">
+        <motion.div
+          className="text-center"
+          style={{ y, opacity, scale, rotateY }}
+        >
+          {/* ASRD Price Display */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="glass-3d inline-block px-6 py-3 rounded-2xl mb-8 border border-emerald-glow/30"
+          >
+            <div className="flex items-center space-x-3">
+              <Coins className="w-6 h-6 text-emerald-glow" />
+              <div className="text-left">
+                <div className="text-2xl font-black text-emerald-glow">ASRD: $32</div>
+                <div className="text-neutral-light text-sm">Platform Token</div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.h1
+            className="text-6xl md:text-8xl lg:text-9xl font-black mb-6"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, type: "spring" }}
+          >
+            <span className="bg-gradient-to-r from-emerald-glow via-sapphire-glow to-amethyst-glow bg-clip-text text-transparent">
+              ASSET RIDE
+            </span>
+          </motion.h1>
+
+          <motion.p
+            className="text-xl md:text-2xl text-neutral-light max-w-3xl mx-auto mb-8 leading-relaxed"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            Fractional ownership of premium thoroughbreds and luxury real estate
+            across <span className="text-emerald-glow font-semibold">UK, Australia & Dubai</span>
+          </motion.p>
+
+          <motion.div
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            {isAuthenticated ? (
+              <motion.a
+                href="/portfolio"
+                className="btn-3d px-8 py-4 text-lg font-semibold"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Go to Dashboard
+              </motion.a>
+            ) : (
+              <motion.button
+                onClick={() => {
+                  const mockAddress = "0x" + Math.random().toString(16).slice(2, 42)
+                  // This would be handled by AuthContext in real implementation
+                  window.location.reload() // Simulate login
+                }}
+                className="btn-3d px-8 py-4 text-lg font-semibold"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Connect Wallet to Invest
+              </motion.button>
+            )}
+            
+            <motion.a
+              href="/marketplace"
+              className="glass-3d px-8 py-4 text-lg font-semibold border border-emerald-glow/30 text-emerald-glow hover:bg-emerald-glow hover:text-luxury-deep transition-all duration-300 rounded-2xl"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Browse Assets
+            </motion.a>
+          </motion.div>
+
+          {/* Platform Stats */}
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+          >
+            {[
+              { value: '$42M+', label: 'Total Value', icon: TrendingUp },
+              { value: '1,240+', label: 'Premium Assets', icon: Star },
+              { value: '18.5%', label: 'Avg. ROI', icon: TrendingUp },
+              { value: '5,200+', label: 'Investors', icon: Users },
+            ].map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                className="glass-3d p-6 rounded-2xl text-center border border-emerald-glow/10"
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              >
+                <div className="text-2xl md:text-3xl font-black text-emerald-glow mb-2">
+                  {stat.value}
+                </div>
+                <div className="text-neutral-light text-sm">{stat.label}</div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
 
       {/* Token Purchase Modal */}
       <TokenPurchaseModal
         isOpen={showTokenModal}
         onClose={() => setShowTokenModal(false)}
-        onConfirm={handleBuyASRD}
+        onPurchase={handleBuyASRD}
       />
-    </>
+    </section>
   )
 }
