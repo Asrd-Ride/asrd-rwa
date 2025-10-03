@@ -157,3 +157,63 @@ select:focus-visible {
     backdrop-filter: none;
   }
 }
+
+/* Reference Theme Colors - Exact match from https://5ee07a7b-7937-465d-904b-f6058d3403c4-00-2r33fyikcd5fe.worf.replit.dev/ */
+:root {
+  --space-dark: #0A0F2C;
+  --space-deep: #050517;
+  --electric-cyan: #00D1FF;
+  --neon-purple: #7B61FF;
+  --matrix-green: #00FF88;
+  --hologram-blue: #0066FF;
+}
+
+.bg-space-dark {
+  background-color: var(--space-dark);
+}
+
+.bg-space-deep {
+  background-color: var(--space-deep);
+}
+
+.text-electric-cyan {
+  color: var(--electric-cyan);
+}
+
+.text-neon-purple {
+  color: var(--neon-purple);
+}
+
+.bg-gradient-space {
+  background: linear-gradient(135deg, var(--space-dark) 0%, var(--space-deep) 100%);
+}
+
+.bg-gradient-cyber {
+  background: linear-gradient(135deg, var(--electric-cyan) 0%, var(--neon-purple) 100%);
+}
+
+/* Glass morphism effects from reference */
+.glass-ref {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-ref:hover {
+  border-color: var(--electric-cyan);
+  box-shadow: 
+    0 8px 32px rgba(0, 209, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.text-matrix-green {
+  color: var(--matrix-green);
+}
+
+.border-matrix-green {
+  border-color: var(--matrix-green);
+}
