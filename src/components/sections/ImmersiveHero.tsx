@@ -5,7 +5,7 @@ import { useApp } from '@/contexts/AppContext'
 import { useAuth } from '@/contexts/AuthContext'
 import { platformStats } from '@/data/mockData'
 import TokenPurchaseModal from '../ui/TokenPurchaseModal'
-import { ArrowRight, Play, Star, TrendingUp, Coins, Gem, Crown, Sparkles } from 'lucide-react'
+import { ArrowRight, Play, Star, TrendingUp, Coins, Gem, Crown, Sparkles, Users } from 'lucide-react'
 
 export default function ImmersiveHero() {
   const { buyASRD, isLoading } = useApp()
