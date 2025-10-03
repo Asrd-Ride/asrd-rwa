@@ -25,13 +25,18 @@ export default function Header() {
   ]
 
   // Add Dashboard only when authenticated
-  const menuItems = isAuthenticated 
+  const menuItems = isAuthenticated
     ? [...baseMenuItems, { label: 'Dashboard', href: '/portfolio', icon: User }]
     : baseMenuItems
 
   const handleLogin = () => {
-    const mockAddress = "0x" + Math.random().toString(16).slice(2, 42)
-    login(mockAddress)
+    // Redirect to login page instead of direct login
+    window.location.href = '/login'
+  }
+
+  const handleLogout = () => {
+    logout()
+    setIsMenuOpen(false)
   }
 
   return (
@@ -81,11 +86,11 @@ export default function Header() {
                   </motion.div>
                 )
               })}
-              
+
               {/* Auth Button */}
               {isAuthenticated ? (
                 <motion.button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="glass-3d px-4 py-2 rounded-xl flex items-center space-x-2 text-sm font-medium text-white/80 hover:text-ruby-glow transition-all duration-300"
                 >
                   <User className="w-4 h-4" />
@@ -173,14 +178,11 @@ export default function Header() {
                       </motion.div>
                     )
                   })}
-                  
+
                   {/* Mobile Auth Button */}
                   {isAuthenticated ? (
                     <motion.button
-                      onClick={() => {
-                        logout()
-                        setIsMenuOpen(false)
-                      }}
+                      onClick={handleLogout}
                       className="w-full flex items-center space-x-3 glass-3d p-4 rounded-xl text-white/80 hover:text-ruby-glow transition-all duration-300"
                     >
                       <User className="w-5 h-5" />
@@ -188,10 +190,7 @@ export default function Header() {
                     </motion.button>
                   ) : (
                     <motion.button
-                      onClick={() => {
-                        handleLogin()
-                        setIsMenuOpen(false)
-                      }}
+                      onClick={handleLogin}
                       className="w-full flex items-center space-x-3 glass-3d p-4 rounded-xl text-white/80 hover:text-emerald-glow transition-all duration-300"
                     >
                       <LogIn className="w-5 h-5" />
