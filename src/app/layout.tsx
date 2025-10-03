@@ -35,15 +35,15 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
-        <meta name="theme-color" content="#0A0B1A" />
+        <meta name="theme-color" content="#3B82F6" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       </head>
       <body className={inter.className}>
         <PerformanceOptimizer>
           <Providers>
             <Header />
-            <main className="min-h-screen bg-luxury-deep text-white overflow-x-hidden">
+            <main className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-100 text-gray-800 overflow-x-hidden">
               {children}
             </main>
           </Providers>

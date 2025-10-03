@@ -343,3 +343,29 @@
   transform: scale(1.2);
   box-shadow: 0 0 30px var(--emerald-glow);
 }
+
+/* Cyberpunk Background Classes */
+.cyberpunk-bg {
+  background: var(--luxury-deep);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(0, 255, 170, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(0, 149, 255, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(138, 43, 226, 0.05) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+.bg-luxury-deep {
+  background-color: var(--luxury-deep);
+}
+
+.bg-luxury-dark {
+  background-color: var(--luxury-dark);
+}
+
+.bg-luxury-mid {
+  background-color: var(--luxury-mid);
+}
+
+.bg-luxury-light {
+  background-color: var(--luxury-light);
+}
