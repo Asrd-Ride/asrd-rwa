@@ -68,7 +68,7 @@ export default function FeaturedAssetsSection() {
   };
 
   return (
-    <section className="py-20 immersive-bg relative overflow-hidden">
+    <section className="py-20 immersive-bg relative">
       {/* Background Particles */}
       <div className="particles">
         {[...Array(15)].map((_, i) => (
@@ -131,7 +131,7 @@ export default function FeaturedAssetsSection() {
                 whileHover={{ y: -10, transition: { duration: 0.3 } }}
               >
                 {/* Asset Image with Overlay */}
-                <div className="relative overflow-hidden rounded-t-2xl">
+                <div className="relative rounded-t-2xl">
                   <OptimizedImage
                     src={asset.image}
                     alt={asset.name}

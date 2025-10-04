@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 export default function CTASection() {
   return (
-    <section className="py-20 immersive-bg relative overflow-hidden">
+    <section className="py-20 immersive-bg relative">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         {/* Floating Orbs */}

@@ -39,7 +39,7 @@ export default function HowItWorksSection() {
   ]
 
   return (
-    <section className="py-20 immersive-bg relative overflow-hidden">
+    <section className="py-20 immersive-bg relative">
       {/* Background Particles */}
       <div className="particles">
         {[...Array(12)].map((_, i) => (

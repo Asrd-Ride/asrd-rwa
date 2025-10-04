@@ -69,7 +69,7 @@ export default function PlatformStatsSection() {
   ]
 
   return (
-    <section className="py-20 immersive-bg relative overflow-hidden">
+    <section className="py-20 immersive-bg relative">
       {/* Animated Background Elements */}
       <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-emerald-glow/5 to-transparent" />
       
