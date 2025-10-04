@@ -41,7 +41,7 @@ export default function Home() {
               <div className="space-y-3 text-lg">
                 <a href="/marketplace" className="text-gray-400 hover:text-[#00D1FF] transition-all duration-300 block hover:translate-x-2">Marketplace</a>
                 {isAuthenticated && (
-                  <a href="/portfolio" className="text-gray-400 hover:text-[#7B61FF] transition-all duration-300 block hover:translate-x-2">Portfolio</a>
+                  <a href="/dashboard" className="text-gray-400 hover:text-[#7B61FF] transition-all duration-300 block hover:translate-x-2">Dashboard</a>
                 )}
                 <a href="/dao" className="text-gray-400 hover:text-[#00FF88] transition-all duration-300 block hover:translate-x-2">DAO Governance</a>
               </div>

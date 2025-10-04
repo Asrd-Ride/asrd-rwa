@@ -8,7 +8,7 @@ export default function AnalyticsChart() {
   const { ownedAssets } = useApp()
   const { getUsdValue } = useWallet()
 
-  // Calculate portfolio metrics
+  // Calculate dashboard metrics
   const totalInvestmentASRD = ownedAssets.reduce((total, asset) => {
     const assetValue = asset.purchasePrice || asset.price || 0
     return total + assetValue
@@ -82,7 +82,7 @@ export default function AnalyticsChart() {
         transition={{ delay: 0.3 }}
         className="glass-3d p-6"
       >
-        <h3 className="text-xl font-bold text-white mb-4">Portfolio Performance</h3>
+        <h3 className="text-xl font-bold text-white mb-4">Dashboard Performance</h3>
         <div className="h-64 relative">
           {/* Grid Lines */}
           <div className="absolute inset-0 grid grid-cols-6 grid-rows-1 gap-4">
@@ -138,7 +138,7 @@ export default function AnalyticsChart() {
         <div className="flex justify-center space-x-6 mt-4">
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-emerald-500 rounded"></div>
-            <span className="text-slate-400 text-sm">Portfolio Value</span>
+            <span className="text-slate-400 text-sm">Dashboard Value</span>
           </div>
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-sapphire-400 rounded"></div>

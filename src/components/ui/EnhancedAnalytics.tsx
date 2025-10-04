@@ -20,7 +20,7 @@ import {
 
 interface PerformanceData {
   timestamp: number
-  portfolioValue: number
+  dashboardValue: number
   earnings: number
   assetsCount: number
 }
@@ -32,7 +32,7 @@ export default function EnhancedAnalytics() {
   const [performanceData, setPerformanceData] = useState<PerformanceData[]>([])
   const [realTimeData, setRealTimeData] = useState<PerformanceData | null>(null)
 
-  // Calculate real-time portfolio metrics
+  // Calculate real-time dashboard metrics
   const totalInvestmentASRD = ownedAssets.reduce((total, asset) => {
     const assetValue = asset.purchasePrice || asset.price || 0
     return total + assetValue
@@ -45,8 +45,8 @@ export default function EnhancedAnalytics() {
   }, 0)
 
   const totalEarningsUSD = getUsdValue(totalEarnings)
-  const totalPortfolioValueASRD = totalInvestmentASRD + totalEarnings
-  const totalPortfolioValueUSD = getUsdValue(totalPortfolioValueASRD)
+  const totalDashboardValueASRD = totalInvestmentASRD + totalEarnings
+  const totalDashboardValueUSD = getUsdValue(totalDashboardValueASRD)
 
   // Generate mock performance data based on time range
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function EnhancedAnalytics() {
 
         data.push({
           timestamp,
-          portfolioValue: baseValue,
+          dashboardValue: baseValue,
           earnings: baseValue * 0.05 * Math.random(),
           assetsCount: Math.max(1, Math.floor(ownedAssets.length * (0.5 + Math.random() * 0.5)))
         })
@@ -82,7 +82,7 @@ export default function EnhancedAnalytics() {
     const interval = setInterval(() => {
       setRealTimeData(prev => prev ? {
         ...prev,
-        portfolioValue: prev.portfolioValue * (1 + (Math.random() * 0.02 - 0.01)),
+        dashboardValue: prev.dashboardValue * (1 + (Math.random() * 0.02 - 0.01)),
         earnings: prev.earnings * (1 + (Math.random() * 0.05 - 0.025))
       } : null)
     }, 5000)
@@ -92,7 +92,7 @@ export default function EnhancedAnalytics() {
 
   // Calculate metrics
   const performanceChange = performanceData.length > 1
-    ? ((performanceData[performanceData.length - 1].portfolioValue - performanceData[0].portfolioValue) / performanceData[0].portfolioValue) * 100
+    ? ((performanceData[performanceData.length - 1].dashboardValue - performanceData[0].dashboardValue) / performanceData[0].dashboardValue) * 100
     : 0
 
   const assetAllocation = ownedAssets.reduce((acc, asset) => {
@@ -113,8 +113,8 @@ export default function EnhancedAnalytics() {
 
   const performanceMetrics = [
     {
-      label: 'Portfolio Value',
-      value: `$${totalPortfolioValueUSD.toLocaleString()}`,
+      label: 'Dashboard Value',
+      value: `$${totalDashboardValueUSD.toLocaleString()}`,
       change: performanceChange,
       icon: DollarSign,
       color: 'text-emerald-400',
@@ -147,14 +147,14 @@ export default function EnhancedAnalytics() {
   ]
 
   // FIX: Ensure we have valid max values for chart scaling
-  const maxPortfolioValue = performanceData.length > 0 ? Math.max(...performanceData.map(d => d.portfolioValue)) : 1
+  const maxDashboardValue = performanceData.length > 0 ? Math.max(...performanceData.map(d => d.dashboardValue)) : 1
   const maxEarnings = performanceData.length > 0 ? Math.max(...performanceData.map(d => d.earnings)) : 1
 
   return (
     <div className="space-y-6">
       {/* Time Range Selector */}
       <div className="flex justify-between items-center">
-        <h3 className="text-2xl font-bold text-white">Portfolio Analytics</h3>
+        <h3 className="text-2xl font-bold text-white">Dashboard Analytics</h3>
         <div className="flex space-x-2 glass-3d rounded-2xl p-1">
           {(['1d', '1w', '1m', '3m', '1y'] as const).map(range => (
             <button
@@ -222,7 +222,7 @@ export default function EnhancedAnalytics() {
             <div className="flex items-center space-x-4 text-sm">
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-emerald-500 rounded"></div>
-                <span className="text-slate-400">Portfolio Value</span>
+                <span className="text-slate-400">Dashboard Value</span>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-sapphire-400 rounded"></div>
@@ -244,16 +244,16 @@ export default function EnhancedAnalytics() {
               <div className="absolute inset-0 flex items-end justify-between px-4 pb-8">
                 {performanceData.map((data, index) => (
                   <div key={data.timestamp} className="flex flex-col items-center space-y-2 relative" style={{ flex: 1 }}>
-                    {/* Portfolio Value Bar */}
+                    {/* Dashboard Value Bar */}
                     <motion.div
                       initial={{ height: 0 }}
-                      animate={{ height: `${(data.portfolioValue / maxPortfolioValue) * 80}%` }}
+                      animate={{ height: `${(data.dashboardValue / maxDashboardValue) * 80}%` }}
                       transition={{ duration: 0.8, delay: index * 0.05 }}
                       className="w-6 bg-gradient-to-t from-emerald-500 to-emerald-600 rounded-t-lg relative group cursor-pointer"
                       whileHover={{ scale: 1.1 }}
                     >
                       <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                        ${getUsdValue(data.portfolioValue).toLocaleString()}
+                        ${getUsdValue(data.dashboardValue).toLocaleString()}
                       </div>
                     </motion.div>
 
@@ -324,7 +324,7 @@ export default function EnhancedAnalytics() {
             transition={{ delay: 0.2 }}
             className="glass-3d p-6"
           >
-            <h4 className="text-lg font-semibold text-white mb-4">Portfolio Health</h4>
+            <h4 className="text-lg font-semibold text-white mb-4">Dashboard Health</h4>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
@@ -369,9 +369,9 @@ export default function EnhancedAnalytics() {
                 />
               </div>
               <div>
-                <p className="text-emerald-300 text-sm font-medium">Live Portfolio Update</p>
+                <p className="text-emerald-300 text-sm font-medium">Live Dashboard Update</p>
                 <p className="text-slate-400 text-xs">
-                  Current value: ${getUsdValue(realTimeData.portfolioValue).toLocaleString()}
+                  Current value: ${getUsdValue(realTimeData.dashboardValue).toLocaleString()}
                 </p>
               </div>
             </div>

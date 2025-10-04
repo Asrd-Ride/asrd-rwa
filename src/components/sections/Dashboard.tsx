@@ -8,12 +8,12 @@ export default function Dashboard() {
   const { ownedAssets, platformStats, claimEarnings, isLoading } = useApp()
   const { cashBalance, asrdBalance, getUsdValue } = useWallet()
 
-  const totalPortfolioValue = ownedAssets.reduce((sum, asset) => sum + getUsdValue(asset.price), 0)
+  const totalDashboardValue = ownedAssets.reduce((sum, asset) => sum + getUsdValue(asset.price), 0)
   const totalUnclaimedEarnings = ownedAssets.reduce((sum, asset) => 
     sum + (asset.unclaimedWinnings || asset.unclaimedRent || 0), 0
   )
 
-  const portfolioData = [
+  const dashboardData = [
     { name: 'Horses', value: ownedAssets.filter(a => a.type === 'horse').length, color: 'var(--accent-success)', percentage: ownedAssets.length > 0 ? (ownedAssets.filter(a => a.type === 'horse').length / ownedAssets.length) * 100 : 0 },
     { name: 'Real Estate', value: ownedAssets.filter(a => a.type === 'real-estate').length, color: 'var(--accent-primary)', percentage: ownedAssets.length > 0 ? (ownedAssets.filter(a => a.type === 'real-estate').length / ownedAssets.length) * 100 : 0 }
   ]
@@ -47,15 +47,15 @@ export default function Dashboard() {
           whileInView={{ opacity: 1, y: 0 }}
           className="text-xl text-neutral-mid text-center mb-12"
         >
-          Track your portfolio performance and earnings in real-time
+          Track your dashboard performance and earnings in real-time
         </motion.p>
 
-        {/* Portfolio Overview Cards */}
+        {/* Dashboard Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {[
             { 
-              title: 'Total Portfolio', 
-              value: `$${totalPortfolioValue.toLocaleString()}`, 
+              title: 'Total Dashboard', 
+              value: `$${totalDashboardValue.toLocaleString()}`, 
               icon: DollarSign,
               color: 'text-accent-success',
               change: '+12.5%',
@@ -82,7 +82,7 @@ export default function Dashboard() {
               value: ownedAssets.length, 
               icon: Package,
               color: 'text-chart-4',
-              change: `${portfolioData[0].value}H ${portfolioData[1].value}R`,
+              change: `${dashboardData[0].value}H ${dashboardData[1].value}R`,
               trend: 'assets'
             }
           ].map((stat, index) => (
@@ -115,7 +115,7 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          {/* Portfolio Distribution */}
+          {/* Dashboard Distribution */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -123,14 +123,14 @@ export default function Dashboard() {
           >
             <h3 className="text-xl font-semibold text-white mb-6 flex items-center">
               <PieChart className="w-6 h-6 mr-2 text-accent-success" />
-              Portfolio Distribution
+              Dashboard Distribution
             </h3>
             <div className="flex items-center justify-between">
               <div className="flex-1">
                 <div className="relative w-48 h-48 mx-auto">
                   {/* Animated Pie Chart */}
                   <svg width="200" height="200" viewBox="0 0 42 42" className="transform -rotate-90">
-                    {portfolioData.map((item, index) => {
+                    {dashboardData.map((item, index) => {
                       const circumference = 2 * Math.PI * 16;
                       const strokeDasharray = circumference;
                       const strokeDashoffset = circumference - (item.percentage / 100) * circumference;
@@ -162,7 +162,7 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="flex-1 space-y-4">
-                {portfolioData.map((item, index) => (
+                {dashboardData.map((item, index) => (
                   <motion.div
                     key={item.name}
                     initial={{ opacity: 0, x: 20 }}
@@ -289,7 +289,7 @@ export default function Dashboard() {
             <div className="text-center py-12">
               <Package className="w-16 h-16 text-neutral-mid mx-auto mb-4" />
               <p className="text-neutral-mid text-lg">No assets owned yet</p>
-              <p className="text-neutral-mid text-sm mt-2">Start building your portfolio in the marketplace</p>
+              <p className="text-neutral-mid text-sm mt-2">Start building your dashboard in the marketplace</p>
             </div>
           )}
         </motion.div>

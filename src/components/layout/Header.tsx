@@ -26,14 +26,14 @@ export default function Header() {
 
   // Add Dashboard only when authenticated
   const menuItems = isAuthenticated
-    ? [...baseMenuItems, { label: 'Dashboard', href: '/portfolio', icon: User }]
+    ? [...baseMenuItems, { label: 'Dashboard', href: '/dashboard', icon: User }]
     : baseMenuItems
 
   const handleLogin = () => {
     // Use AuthContext login directly with mock address
     const mockAddress = "0x" + Math.random().toString(16).substr(2, 40);
     login(mockAddress);
-    setTimeout(() => { window.location.href = "/portfolio" }, 500);
+    setTimeout(() => { window.location.href = "/dashboard" }, 500);
   }
   const handleLogout = () => {
     logout()

@@ -117,7 +117,7 @@ export default function MarketplacePage() {
 
   const handlePurchaseClick = (asset: any) => {
     if (!user) {
-      window.location.href = '/portfolio'
+      window.location.href = '/dashboard'
       return
     }
     setSelectedAsset(asset);
@@ -131,7 +131,7 @@ export default function MarketplacePage() {
 
   const handlePurchaseFromDetail = () => {
     if (!user) {
-      window.location.href = '/portfolio'
+      window.location.href = '/dashboard'
       return
     }
     setShowDetailModal(false);
@@ -410,7 +410,7 @@ export default function MarketplacePage() {
                         Invest Now
                       </button>
                     ) : (
-                      <Link href="/portfolio">
+                      <Link href="/dashboard">
                         <button
                           className="flex-1 px-4 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-luxury-deep font-bold rounded-xl transition-all duration-300 flex items-center justify-center text-sm hover:shadow-lg hover:shadow-amber-500/30"
                         >

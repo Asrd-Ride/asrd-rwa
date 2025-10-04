@@ -15,7 +15,7 @@ export default function HowItWorksSection() {
     {
       icon: Coins,
       title: 'INVEST WITH ASRD TOKENS',
-      description: 'Purchase fractional ownership using ASRD tokens. Start with as little as $50 and build your diversified portfolio of real-world assets.',
+      description: 'Purchase fractional ownership using ASRD tokens. Start with as little as $50 and build your diversified dashboard of real-world assets.',
       color: 'text-sapphire-glow',
       gradient: 'from-sapphire-glow to-amethyst-glow',
       number: '02'

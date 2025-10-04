@@ -141,7 +141,7 @@ export default function CTASection() {
               </motion.button>
             </Link>
 
-            <Link href="/portfolio">
+            <Link href="/dashboard">
               <motion.button
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}

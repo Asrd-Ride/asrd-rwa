@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import Dashboard from '@/components/sections/Dashboard'
 
-export default function PortfolioPage() {
+export default function DashboardPage() {
   const { isAuthenticated } = useAuth()
   const router = useRouter()
 

@@ -21,8 +21,8 @@ export default function PerformanceMetrics() {
     return total + earnings
   }, 0)
 
-  const totalPortfolioValueASRD = totalInvestmentASRD + totalEarnings
-  const totalPortfolioValueUSD = getUsdValue(totalPortfolioValueASRD)
+  const totalDashboardValueASRD = totalInvestmentASRD + totalEarnings
+  const totalDashboardValueUSD = getUsdValue(totalDashboardValueASRD)
 
   // Calculate asset performance
   const assetPerformance = ownedAssets.map(asset => {
@@ -44,7 +44,7 @@ export default function PerformanceMetrics() {
 
   // Generate performance history
   const performanceHistory = Array.from({ length: 12 }, (_, i) => {
-    const baseValue = totalPortfolioValueASRD * 0.7
+    const baseValue = totalDashboardValueASRD * 0.7
     const growth = 1 + (i * 0.08) + (Math.random() * 0.1 - 0.05)
     return {
       month: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][i],
@@ -82,7 +82,7 @@ export default function PerformanceMetrics() {
       color: 'text-sapphire-400'
     },
     {
-      label: 'Portfolio Diversity',
+      label: 'Dashboard Diversity',
       value: ownedAssets.length >= 2 ? 'Good' : 'Low',
       change: ownedAssets.length * 15,
       icon: PieChart,
@@ -129,7 +129,7 @@ export default function PerformanceMetrics() {
           animate={{ opacity: 1, x: 0 }}
           className="glass-3d p-6"
         >
-          <h4 className="text-lg font-semibold text-white mb-6">Portfolio Growth</h4>
+          <h4 className="text-lg font-semibold text-white mb-6">Dashboard Growth</h4>
           <div className="h-64 relative">
             <div className="absolute inset-0 flex items-end justify-between px-4 pb-8">
               {performanceHistory.map((month, index) => (
