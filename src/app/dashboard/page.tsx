@@ -2,12 +2,12 @@
 
 import React from 'react';
 import EnhancedPageWrapper from '@/components/layout/EnhancedPageWrapper';
-import CleanDashboard from '@/components/sections/CleanDashboard';
+import EnhancedDashboard from '@/components/sections/EnhancedDashboard';
 
 export default function DashboardPage() {
   return (
     <EnhancedPageWrapper>
-      <CleanDashboard />
+      <EnhancedDashboard />
     </EnhancedPageWrapper>
   );
 }

@@ -13,7 +13,7 @@ export default function TreasuryPage() {
     // Simulate API call
     const fetchTreasuryData = async () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       const data = {
         totalValue: 15420000,
         availableFunds: 3250000,
@@ -23,11 +23,11 @@ export default function TreasuryPage() {
         netCashFlow: 300000,
         growth: '+12.8%',
         assets: [
-          { name: 'Real Estate', value: 8500000, percentage: 55.2, icon: Building, color: 'from-blue-500 to-cyan-500' },
-          { name: 'Thoroughbred', value: 3200000, percentage: 20.8, icon: TrendingUp, color: 'from-amber-500 to-orange-500' },
-          { name: 'Marine Assets', value: 2200000, percentage: 14.3, icon: Ship, color: 'from-cyan-500 to-blue-500' },
-          { name: 'Aviation', value: 850000, percentage: 5.5, icon: Plane, color: 'from-slate-500 to-gray-500' },
-          { name: 'Luxury Assets', value: 670000, percentage: 4.2, icon: Gem, color: 'from-purple-500 to-pink-500' }
+          { name: 'Real Estate', value: 8500000, percentage: 55.2, icon: Building, gradient: 'gradient-3d-cyber' },
+          { name: 'Thoroughbred', value: 3200000, percentage: 20.8, icon: TrendingUp, gradient: 'gradient-3d-cosmic' },
+          { name: 'Marine Assets', value: 2200000, percentage: 14.3, icon: Ship, gradient: 'gradient-3d-matrix' },
+          { name: 'Aviation', value: 850000, percentage: 5.5, icon: Plane, gradient: 'bg-gradient-to-r from-slate-500 to-gray-500' },
+          { name: 'Luxury Assets', value: 670000, percentage: 4.2, icon: Gem, gradient: 'gradient-3d-holographic' }
         ],
         recentTransactions: [
           { id: 1, type: 'income', description: 'Dubai Villa Rental', amount: 42500, date: '2024-01-15', change: 'positive' },
@@ -36,7 +36,7 @@ export default function TreasuryPage() {
           { id: 4, type: 'income', description: 'Yacht Charter', amount: 32000, date: '2024-01-05', change: 'positive' }
         ]
       };
-      
+
       setTreasuryData(data);
     };
 
@@ -49,7 +49,7 @@ export default function TreasuryPage() {
       value: treasuryData ? `$${(treasuryData.totalValue / 1000000).toFixed(1)}M` : '$15.4M',
       change: treasuryData?.growth || '+12.8%',
       icon: DollarSign,
-      color: "from-emerald-500 to-teal-500",
+      gradient: "gradient-3d-cyber",
       trend: "up" as const
     },
     {
@@ -57,7 +57,7 @@ export default function TreasuryPage() {
       value: treasuryData ? `$${(treasuryData.availableFunds / 1000000).toFixed(1)}M` : '$3.3M',
       change: '+5.2%',
       icon: Zap,
-      color: "from-cyan-500 to-blue-500",
+      gradient: "gradient-3d-matrix",
       trend: "up" as const
     },
     {
@@ -65,7 +65,7 @@ export default function TreasuryPage() {
       value: treasuryData ? `$${(treasuryData.netCashFlow / 1000).toFixed(0)}K` : '$300K',
       change: '+8.7%',
       icon: TrendingUp,
-      color: "from-amber-500 to-orange-500",
+      gradient: "gradient-3d-cosmic",
       trend: "up" as const
     },
     {
@@ -73,7 +73,7 @@ export default function TreasuryPage() {
       value: "24",
       change: '+3',
       icon: Building,
-      color: "from-purple-500 to-pink-500",
+      gradient: "gradient-3d-holographic",
       trend: "up" as const
     }
   ];
@@ -93,23 +93,23 @@ export default function TreasuryPage() {
 
   return (
     <EnhancedPageWrapper>
-      <div className="min-h-screen">
-        <div className="premium-container py-8">
-          {/* Header */}
+      <div className="min-h-screen bg-3d-space">
+        <div className="container-3d py-8">
+          {/* 3D Header */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
-            <h1 className="premium-heading-1 mb-4">
-              Platform <span className="text-cyan-400">Treasury</span>
+            <h1 className="text-3d-hero mb-6">
+              PLATFORM <span className="text-3d-glow">TREASURY</span>
             </h1>
-            <p className="premium-text max-w-2xl mx-auto">
-              Overview of platform treasury, asset allocation, and financial performance.
+            <p className="text-3d-body max-w-2xl mx-auto">
+              Comprehensive overview of platform treasury, asset allocation, and institutional-grade financial performance
             </p>
           </motion.div>
 
-          {/* Stats Grid */}
+          {/* 3D Stats Grid */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -122,10 +122,10 @@ export default function TreasuryPage() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3 + index * 0.1 }}
-                className="premium-card group hover:border-cyan-400/30"
+                className="stats-card-3d group"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <div className={`p-3 rounded-xl bg-gradient-to-r ${stat.color}`}>
+                  <div className={`p-3 rounded-xl ${stat.gradient}`}>
                     <stat.icon className="w-6 h-6 text-white" />
                   </div>
                   <div className={`flex items-center space-x-1 text-sm font-semibold ${
@@ -135,32 +135,32 @@ export default function TreasuryPage() {
                     <span>{stat.change}</span>
                   </div>
                 </div>
-                <h3 className="premium-heading-3 mb-2">{stat.value}</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">{stat.value}</h3>
                 <p className="text-gray-400">{stat.label}</p>
               </motion.div>
             ))}
           </motion.div>
 
-          {/* Asset Allocation */}
+          {/* 3D Asset Allocation */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="premium-card mb-12"
+            className="card-3d mb-12"
           >
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
               <div>
-                <h2 className="premium-heading-2 mb-2">Asset Allocation</h2>
-                <p className="premium-text">Distribution of treasury assets across different categories</p>
+                <h2 className="text-3d-heading mb-2">Asset Allocation</h2>
+                <p className="text-3d-body">Strategic distribution of treasury assets across premium real-world asset classes</p>
               </div>
               <div className="flex items-center space-x-2 text-cyan-400 mt-4 lg:mt-0">
                 <PieChart className="w-5 h-5" />
-                <span className="font-semibold">Diversified Portfolio</span>
+                <span className="font-semibold">Diversified Institutional Portfolio</span>
               </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Asset List */}
+              {/* 3D Asset List */}
               <div className="space-y-4">
                 {treasuryData.assets.map((asset: any, index: number) => (
                   <motion.div
@@ -168,47 +168,72 @@ export default function TreasuryPage() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.6 + index * 0.1 }}
-                    className="flex items-center justify-between p-4 bg-gray-800/50 rounded-2xl border border-gray-700 hover:border-cyan-400/30 transition-all group"
+                    className="asset-card-3d p-4 cursor-pointer"
                   >
-                    <div className="flex items-center space-x-3">
-                      <div className={`w-12 h-12 bg-gradient-to-r ${asset.color} rounded-xl flex items-center justify-center`}>
-                        <asset.icon className="w-6 h-6 text-white" />
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className={`w-12 h-12 ${asset.gradient} rounded-xl flex items-center justify-center`}>
+                          <asset.icon className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-white">{asset.name}</h3>
+                          <p className="text-gray-400 text-sm">{asset.percentage}% of portfolio</p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="premium-heading-3">{asset.name}</h3>
-                        <p className="text-gray-400 text-sm">{asset.percentage}% of portfolio</p>
+                      <div className="text-right">
+                        <p className="text-white font-semibold">${(asset.value / 1000000).toFixed(1)}M</p>
+                        <p className="text-cyan-400 text-sm">{asset.percentage}%</p>
                       </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-white font-semibold">${(asset.value / 1000000).toFixed(1)}M</p>
-                      <p className="text-cyan-400 text-sm">{asset.percentage}%</p>
                     </div>
                   </motion.div>
                 ))}
               </div>
 
-              {/* Chart Placeholder */}
+              {/* 3D Chart Visualization */}
               <div className="flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-48 h-48 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-cyan-500/30">
-                    <PieChart className="w-16 h-16 text-cyan-400" />
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.8 }}
+                  className="text-center"
+                >
+                  <div className="w-48 h-48 gradient-3d-cyber rounded-full flex items-center justify-center mx-auto mb-4 border-3d-glow animate-float-3d">
+                    <PieChart className="w-16 h-16 text-white" />
                   </div>
-                  <p className="text-cyan-300 font-semibold">Asset Allocation Chart</p>
-                  <p className="text-cyan-200 text-sm mt-2">Visual representation of portfolio distribution</p>
-                </div>
+                  <p className="text-cyan-300 font-semibold text-lg">Asset Allocation Visualization</p>
+                  <p className="text-cyan-200 text-sm mt-2">Interactive 3D portfolio distribution</p>
+                  <div className="mt-4 flex justify-center space-x-2">
+                    <button className="btn-3d-secondary text-xs px-3 py-1">View Details</button>
+                    <button className="btn-3d-secondary text-xs px-3 py-1">Export Data</button>
+                  </div>
+                </motion.div>
               </div>
             </div>
           </motion.div>
 
-          {/* Recent Transactions */}
+          {/* 3D Recent Transactions */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="premium-card"
+            className="card-3d"
           >
-            <h2 className="premium-heading-2 mb-8">Recent Transactions</h2>
-            
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-3d-heading">Recent Transactions</h2>
+              <div className="flex items-center space-x-2">
+                <select
+                  value={timeframe}
+                  onChange={(e) => setTimeframe(e.target.value as any)}
+                  className="bg-black/30 border border-gray-600 rounded-xl text-white px-3 py-2 text-sm focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                >
+                  <option value="1m">Last Month</option>
+                  <option value="3m">Last 3 Months</option>
+                  <option value="1y">Last Year</option>
+                  <option value="all">All Time</option>
+                </select>
+              </div>
+            </div>
+
             <div className="space-y-4">
               {treasuryData.recentTransactions.map((transaction: any, index: number) => (
                 <motion.div
@@ -216,35 +241,56 @@ export default function TreasuryPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 1.0 + index * 0.1 }}
-                  className="flex items-center justify-between p-4 bg-gray-800/50 rounded-2xl border border-gray-700 hover:border-cyan-400/30 transition-all"
+                  className="asset-card-3d p-4 cursor-pointer"
                 >
-                  <div className="flex items-center space-x-3">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                      transaction.change === 'positive' 
-                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                        : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                        transaction.change === 'positive'
+                          ? 'gradient-3d-matrix border-3d-glow'
+                          : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                      }`}>
+                        {transaction.change === 'positive' ?
+                          <ArrowUpRight className="w-5 h-5 text-white" /> :
+                          <ArrowDownRight className="w-5 h-5 text-white" />
+                        }
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-white">{transaction.description}</h3>
+                        <p className="text-gray-400 text-sm">{transaction.date} • {transaction.type}</p>
+                      </div>
+                    </div>
+                    <div className={`text-right ${
+                      transaction.change === 'positive' ? 'text-emerald-400' : 'text-red-400'
                     }`}>
-                      {transaction.change === 'positive' ? 
-                        <ArrowUpRight className="w-5 h-5" /> : 
-                        <ArrowDownRight className="w-5 h-5" />
-                      }
+                      <p className="font-semibold text-lg">
+                        {transaction.change === 'positive' ? '+' : '-'}${transaction.amount.toLocaleString()}
+                      </p>
+                      <p className="text-sm">{transaction.change === 'positive' ? 'Income' : 'Expense'}</p>
                     </div>
-                    <div>
-                      <h3 className="premium-heading-3">{transaction.description}</h3>
-                      <p className="text-gray-400 text-sm">{transaction.date}</p>
-                    </div>
-                  </div>
-                  <div className={`text-right ${
-                    transaction.change === 'positive' ? 'text-emerald-400' : 'text-red-400'
-                  }`}>
-                    <p className="font-semibold">
-                      {transaction.change === 'positive' ? '+' : '-'}${transaction.amount.toLocaleString()}
-                    </p>
-                    <p className="text-sm">{transaction.type}</p>
                   </div>
                 </motion.div>
               ))}
             </div>
+
+            {/* 3D Summary Footer */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.4 }}
+              className="mt-6 p-4 gradient-3d-cyber rounded-xl border-3d-glow"
+            >
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-cyan-300 font-semibold">Net Treasury Flow</p>
+                  <p className="text-white text-sm">Last 30 days</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-white font-bold text-xl">+${(treasuryData.netCashFlow).toLocaleString()}</p>
+                  <p className="text-emerald-400 text-sm">Positive Growth</p>
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

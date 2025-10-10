@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Home, BarChart3, ShoppingCart, Users, Building2,
-  Menu, X, LogOut, User, Zap, ChevronDown, Globe
+import { 
+  Home, BarChart3, ShoppingCart, Users, DollarSign, Building2, 
+  Menu, X, LogOut, User, Zap, ChevronDown 
 } from 'lucide-react';
 import PremiumLogo from '@/components/ui/PremiumLogo';
 
@@ -27,18 +27,18 @@ export default function PremiumHeader() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Enhanced navigation with premium icons - REMOVED INCOME, CHANGED HOW IT WORKS TO OUR JOURNEY
+  // Enhanced navigation with premium icons
   const navigation = user ? [
     { name: 'Home', href: '/home', icon: Home, description: 'Platform Overview' },
     { name: 'Dashboard', href: '/dashboard', icon: BarChart3, description: 'Your Portfolio' },
     { name: 'Marketplace', href: '/marketplace', icon: ShoppingCart, description: 'Invest Now' },
-    { name: 'Our Journey', href: '/our-journey', icon: Globe, description: 'Protocol Story' },
+    { name: 'Income', href: '/income', icon: DollarSign, description: 'Your Returns' },
     { name: 'Treasury', href: '/treasury', icon: Building2, description: 'Platform Funds' },
     { name: 'DAO', href: '/dao', icon: Users, description: 'Governance' },
   ] : [
     { name: 'Home', href: '/home', icon: Home, description: 'Get Started' },
     { name: 'Marketplace', href: '/marketplace', icon: ShoppingCart, description: 'Browse Assets' },
-    { name: 'Our Journey', href: '/our-journey', icon: Globe, description: 'Learn Our Story' },
+    { name: 'How It Works', href: '/home#platform-demo', icon: Zap, description: 'Learn More' },
   ];
 
   const isActive = (href: string) => pathname === href;
@@ -65,7 +65,7 @@ export default function PremiumHeader() {
           {/* Premium Logo with enhanced branding */}
           <div className="flex items-center space-x-8">
             <PremiumLogo size="md" showText={true} />
-
+            
             {/* Desktop Navigation - Enhanced */}
             <nav className="hidden lg:flex items-center space-x-1">
               {navigation.map((item) => (
@@ -82,7 +82,7 @@ export default function PremiumHeader() {
                     <item.icon className="w-4 h-4" />
                     <span className="font-semibold text-sm">{item.name}</span>
                   </div>
-
+                  
                   {/* Enhanced active indicator */}
                   {isActive(item.href) && (
                     <motion.div
@@ -90,7 +90,7 @@ export default function PremiumHeader() {
                       className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-3/4 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"
                     />
                   )}
-
+                  
                   {/* Enhanced hover tooltip */}
                   <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-slate-800 border border-cyan-500/30 rounded-lg text-xs text-cyan-300 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
                     {item.description}
@@ -138,7 +138,7 @@ export default function PremiumHeader() {
                           <div className="text-white font-semibold">{user.name}</div>
                           <div className="text-cyan-300 text-sm">Premium Investor</div>
                         </div>
-
+                        
                         <div className="p-2">
                           <div className="grid grid-cols-2 gap-2 mb-3">
                             <div className="text-center p-2 bg-cyan-500/10 rounded-lg border border-cyan-500/20">
@@ -150,7 +150,7 @@ export default function PremiumHeader() {
                               <div className="text-purple-200 text-xs">ASRD Tokens</div>
                             </div>
                           </div>
-
+                          
                           <button
                             onClick={handleLogout}
                             className="w-full flex items-center justify-center space-x-2 px-4 py-2.5 text-red-300 hover:text-red-100 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-xl transition-all"

@@ -2,12 +2,13 @@
 
 import React, { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Search, Filter, Grid, List } from 'lucide-react'
+import { Search, Filter, Grid, List, TrendingUp, DollarSign, Clock } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import EnhancedAssetCard from '@/components/ui/EnhancedAssetCard'
 import InvestmentModal from '@/components/ui/InvestmentModal'
 import AssetDetailsModal from '@/components/ui/AssetDetailsModal'
 import { mockAssets } from '@/data/mockData'
+import { useNotification } from '@/contexts/NotificationContext'
 
 // Enhanced mock assets with proper structure for EnhancedAssetCard
 const enhancedAssets = mockAssets.map(asset => ({
@@ -22,6 +23,7 @@ const enhancedAssets = mockAssets.map(asset => ({
 
 export default function EnhancedMarketplace() {
   const { user, login } = useAuth()
+  const { showNotification } = useNotification()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedType, setSelectedType] = useState('all')
   const [sortBy, setSortBy] = useState('roi')
@@ -70,7 +72,12 @@ export default function EnhancedMarketplace() {
     // Simulate investment processing
     await new Promise(resolve => setTimeout(resolve, 2000))
 
-    alert(`🎉 Successfully invested $${amount.toLocaleString()} in ${selectedAsset?.title}!\n\n• ASRD Tokens: ${(amount / 32).toFixed(2)}\n• Asset: ${selectedAsset?.title}\n• ROI: ${selectedAsset?.roi}\n\nYour investment has been added to your portfolio.`)
+    showNotification({
+      type: 'premium',
+      title: 'Investment Successful!',
+      message: `Successfully invested $${amount.toLocaleString()} in ${selectedAsset?.title}!\n\n• ASRD Tokens: ${(amount / 32).toFixed(2)}\n• Asset: ${selectedAsset?.title}\n• ROI: ${selectedAsset?.roi}\n\nYour investment has been added to your portfolio.`,
+      duration: 6000
+    })
 
     setIsInvestmentModalOpen(false)
     setSelectedAsset(null)
@@ -87,127 +94,132 @@ export default function EnhancedMarketplace() {
   const assetTypes = ['all', ...new Set(enhancedAssets.map(asset => asset.type))]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
+    <div className="min-h-screen bg-3d-space">
+      <div className="container-3d py-8">
+        {/* 3D Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-6">
-            ASSET <span className="text-cyan-400">MARKETPLACE</span>
+          <h1 className="text-3d-hero mb-6">
+            ASSET <span className="text-3d-glow">MARKETPLACE</span>
           </h1>
-          <p className="text-xl text-white max-w-2xl mx-auto leading-relaxed">
-            Discover and invest in exclusive real world assets with proven track records and exceptional returns.
+          <p className="text-3d-body max-w-2xl mx-auto">
+            Discover and invest in premium real-world assets with institutional-grade returns
           </p>
         </motion.div>
 
-        {/* Search and Filters */}
+        {/* 3D Filters and Search */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="bg-slate-800/50 rounded-2xl border border-gray-700 p-6 mb-8"
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="card-3d p-6 mb-8"
         >
-          <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-            {/* Search Bar */}
-            <div className="flex-1 w-full lg:max-w-md">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            {/* Search */}
+            <div className="lg:col-span-2">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type="text"
-                  placeholder="Search assets by name, location, or description..."
+                  placeholder="Search assets..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500"
+                  className="w-full pl-10 pr-4 py-3 bg-black/30 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300"
                 />
               </div>
             </div>
 
-            {/* Controls */}
-            <div className="flex flex-wrap items-center gap-3">
-              {/* View Toggle */}
-              <div className="flex bg-gray-800/50 rounded-xl p-1 border border-gray-600">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded-lg transition-colors ${
-                    viewMode === 'grid'
-                      ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
-                      : 'text-gray-400 hover:text-gray-300'
-                  }`}
-                >
-                  <Grid className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`p-2 rounded-lg transition-colors ${
-                    viewMode === 'list'
-                      ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
-                      : 'text-gray-400 hover:text-gray-300'
-                  }`}
-                >
-                  <List className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Type Filter */}
+            {/* Type Filter */}
+            <div>
               <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
-                className="bg-gray-800/50 border border-gray-600 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm"
+                className="w-full px-4 py-3 bg-black/30 border border-gray-600 rounded-xl text-white focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300"
               >
                 {assetTypes.map(type => (
-                  <option key={type} value={type}>
+                  <option key={type} value={type} className="bg-gray-800">
                     {type === 'all' ? 'All Types' : type}
                   </option>
                 ))}
               </select>
+            </div>
 
-              {/* Sort Dropdown */}
+            {/* Sort By */}
+            <div>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="bg-gray-800/50 border border-gray-600 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500 text-sm"
+                className="w-full px-4 py-3 bg-black/30 border border-gray-600 rounded-xl text-white focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300"
               >
-                <option value="roi">Highest ROI</option>
-                <option value="value">Asset Value</option>
-                <option value="minInvestment">Min Investment</option>
+                <option value="roi" className="bg-gray-800">Highest ROI</option>
+                <option value="value" className="bg-gray-800">Highest Value</option>
+                <option value="minInvestment" className="bg-gray-800">Lowest Minimum</option>
               </select>
+            </div>
+          </div>
+
+          {/* View Mode Toggle */}
+          <div className="flex items-center justify-between mt-6">
+            <div className="text-gray-400">
+              Showing {filteredAssets.length} assets
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded-lg transition-all duration-300 ${
+                  viewMode === 'grid' 
+                    ? 'bg-cyan-500 text-white' 
+                    : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
+                }`}
+              >
+                <Grid className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-2 rounded-lg transition-all duration-300 ${
+                  viewMode === 'list' 
+                    ? 'bg-cyan-500 text-white' 
+                    : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
+                }`}
+              >
+                <List className="w-5 h-5" />
+              </button>
             </div>
           </div>
         </motion.div>
 
-        {/* Results Count */}
+        {/* 3D Asset Grid */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-6"
-        >
-          <p className="text-gray-400">
-            Showing <span className="text-cyan-400 font-semibold">{filteredAssets.length}</span> of{' '}
-            <span className="text-cyan-400 font-semibold">{enhancedAssets.length}</span> premium assets
-          </p>
-        </motion.div>
-
-        {/* Assets Grid/List */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className={viewMode === 'grid'
-            ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
-            : 'space-y-4'
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className={viewMode === 'grid' 
+            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            : "space-y-6"
           }
         >
           {filteredAssets.map((asset, index) => (
             <motion.div
               key={asset.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              initial={{ opacity: 0, y: 30, rotateY: viewMode === 'grid' ? 15 : 0 }}
+              animate={{ opacity: 1, y: 0, rotateY: 0 }}
+              whileHover={{ 
+                y: viewMode === 'grid' ? -8 : -4,
+                rotateY: viewMode === 'grid' ? 3 : 0,
+                transition: { type: "spring", stiffness: 300 }
+              }}
+              transition={{ 
+                duration: 0.6, 
+                delay: index * 0.05,
+                type: "spring",
+                stiffness: 100
+              }}
+              className="transform-gpu"
+              style={{ transformStyle: 'preserve-3d' }}
             >
               <EnhancedAssetCard
                 {...asset}
@@ -221,37 +233,41 @@ export default function EnhancedMarketplace() {
         {/* Empty State */}
         {filteredAssets.length === 0 && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-12"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center py-16"
           >
-            <div className="w-16 h-16 bg-gray-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Search className="w-8 h-8 text-gray-400" />
+            <div className="card-3d p-12 max-w-md mx-auto">
+              <Filter className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-white mb-2">No Assets Found</h3>
+              <p className="text-gray-400 mb-6">
+                Try adjusting your search criteria or filters
+              </p>
+              <button
+                onClick={() => {
+                  setSearchQuery('')
+                  setSelectedType('all')
+                }}
+                className="btn-3d-secondary"
+              >
+                Clear Filters
+              </button>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">No assets found</h3>
-            <p className="text-gray-400">Try adjusting your search criteria or filters</p>
           </motion.div>
         )}
       </div>
 
-      {/* Investment Modal */}
+      {/* Modals */}
       <InvestmentModal
         isOpen={isInvestmentModalOpen}
-        onClose={() => {
-          setIsInvestmentModalOpen(false)
-          setSelectedAsset(null)
-        }}
+        onClose={() => setIsInvestmentModalOpen(false)}
         asset={selectedAsset}
         onInvest={handleConfirmInvest}
       />
 
-      {/* Asset Details Modal */}
       <AssetDetailsModal
         isOpen={isDetailsModalOpen}
-        onClose={() => {
-          setIsDetailsModalOpen(false)
-          setSelectedAsset(null)
-        }}
+        onClose={() => setIsDetailsModalOpen(false)}
         asset={selectedAsset}
         onInvest={handleInvest}
       />

@@ -2,12 +2,12 @@
 
 import React from 'react';
 import EnhancedPageWrapper from '@/components/layout/EnhancedPageWrapper';
-import IncomeSection from '@/components/sections/IncomeSection';
+import OurJourneySection from '@/components/sections/OurJourneySection';
 
-export default function IncomePage() {
+export default function OurJourneyPage() {
   return (
     <EnhancedPageWrapper>
-      <IncomeSection />
+      <OurJourneySection />
     </EnhancedPageWrapper>
   );
 }
