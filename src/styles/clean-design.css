@@ -1,0 +1,244 @@
+/* 🎨 CLEAN DESIGN SYSTEM - OPTIMIZED SPACING & ANIMATIONS */
+
+:root {
+  /* Enhanced Spacing Scale */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  
+  /* Enhanced Animation Durations */
+  --duration-fast: 0.2s;
+  --duration-normal: 0.3s;
+  --duration-slow: 0.5s;
+  --duration-slower: 0.8s;
+}
+
+/* 🌟 CLEAN LAYOUT SYSTEM */
+.clean-section {
+  padding: var(--space-3xl) 0;
+}
+
+.clean-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.clean-grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.clean-grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.clean-grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.clean-grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* ✨ ENHANCED CARD DESIGN */
+.clean-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: var(--space-lg);
+  transition: all var(--duration-normal) ease;
+}
+
+.clean-card:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.clean-card-large {
+  padding: var(--space-xl);
+}
+
+/* 🎯 CLEAN TYPOGRAPHY SYSTEM */
+.clean-heading-1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: var(--space-md);
+  background: linear-gradient(135deg, #00F5FF 0%, #4361EE 50%, #7209B7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.clean-heading-2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: var(--space-md);
+  color: white;
+}
+
+.clean-heading-3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: var(--space-sm);
+  color: white;
+}
+
+.clean-text {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: var(--space-md);
+}
+
+.clean-text-sm {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 🔥 ENHANCED BUTTONS */
+.btn-clean-primary {
+  background: linear-gradient(135deg, #00F5FF 0%, #4361EE 100%);
+  color: white;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all var(--duration-normal) ease;
+  box-shadow: 0 8px 24px rgba(0, 245, 255, 0.3);
+}
+
+.btn-clean-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 245, 255, 0.4);
+}
+
+.btn-clean-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all var(--duration-normal) ease;
+}
+
+.btn-clean-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* 🎭 ENHANCED ANIMATIONS */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp var(--duration-slower) ease-out;
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale var(--duration-slow) ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft var(--duration-slow) ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight var(--duration-slow) ease-out;
+}
+
+/* 📱 RESPONSIVE ENHANCEMENTS */
+@media (max-width: 768px) {
+  .clean-section {
+    padding: var(--space-2xl) 0;
+  }
+  
+  .clean-heading-1 {
+    font-size: 2.5rem;
+  }
+  
+  .clean-heading-2 {
+    font-size: 2rem;
+  }
+  
+  .clean-heading-3 {
+    font-size: 1.25rem;
+  }
+  
+  .clean-text {
+    font-size: 1rem;
+  }
+  
+  .clean-container {
+    padding: 0 var(--space-sm);
+  }
+}
+
+/* ✨ GLOW EFFECTS */
+.glow-cyan {
+  box-shadow: 0 0 40px rgba(0, 245, 255, 0.3);
+}
+
+.glow-blue {
+  box-shadow: 0 0 40px rgba(67, 97, 238, 0.3);
+}
+
+.glow-purple {
+  box-shadow: 0 0 40px rgba(114, 9, 183, 0.3);
+}

@@ -1,0 +1,367 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Professional Financial Design System */
+:root {
+  /* Primary Colors - Sophisticated & Trustworthy */
+  --deep-navy: #0A1128;
+  --space-blue: #1C2541;
+  --midnight: #2A3D66;
+  --steel-blue: #3A506B;
+  
+  /* Accent Colors - Professional & Energetic */
+  --ocean-teal: #00B4D8;
+  --royal-blue: #4361EE;
+  --emerald: #06D6A0;
+  --gold: #FFD166;
+  
+  /* Neutral Colors */
+  --pure-white: #FFFFFF;
+  --light-gray: #F8F9FA;
+  --mid-gray: #E9ECEF;
+  --dark-gray: #6C757D;
+}
+
+/* Professional Backgrounds */
+.bg-professional-dark {
+  background: linear-gradient(135deg, var(--deep-navy) 0%, var(--space-blue) 100%);
+}
+
+.bg-professional-card {
+  background: linear-gradient(135deg, var(--space-blue) 0%, var(--midnight) 100%);
+}
+
+.bg-professional-light {
+  background: linear-gradient(135deg, var(--midnight) 0%, var(--steel-blue) 100%);
+}
+
+/* Professional Glass Morphism */
+.glass-professional {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.glass-professional:hover {
+  border-color: var(--ocean-teal);
+  box-shadow: 
+    0 12px 40px rgba(0, 180, 216, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Professional Gradients */
+.gradient-primary {
+  background: linear-gradient(135deg, var(--ocean-teal) 0%, var(--royal-blue) 100%);
+}
+
+.gradient-success {
+  background: linear-gradient(135deg, var(--emerald) 0%, var(--ocean-teal) 100%);
+}
+
+.gradient-premium {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--emerald) 100%);
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background: var(--deep-navy);
+  color: var(--pure-white);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Container utilities */
+.container-pro {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .container-pro {
+    padding: 0 2rem;
+  }
+}
+
+/* Typography scale */
+.text-hero {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.text-display {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.text-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Animation utilities */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* Color Classes for Tailwind */
+.bg-deep-navy { background-color: var(--deep-navy); }
+.bg-space-blue { background-color: var(--space-blue); }
+.bg-midnight { background-color: var(--midnight); }
+.bg-steel-blue { background-color: var(--steel-blue); }
+.bg-ocean-teal { background-color: var(--ocean-teal); }
+.bg-royal-blue { background-color: var(--royal-blue); }
+.bg-emerald { background-color: var(--emerald); }
+.bg-gold { background-color: var(--gold); }
+
+.text-ocean-teal { color: var(--ocean-teal); }
+.text-royal-blue { color: var(--royal-blue); }
+.text-emerald { color: var(--emerald); }
+.text-gold { color: var(--gold); }
+
+.border-ocean-teal { border-color: var(--ocean-teal); }
+.border-royal-blue { border-color: var(--royal-blue); }
+.border-emerald { border-color: var(--emerald); }
+
+.from-ocean-teal { --tw-gradient-from: var(--ocean-teal); }
+.to-royal-blue { --tw-gradient-to: var(--royal-blue); }
+
+/* Professional Investor Animations */
+@keyframes gridMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(80px, 80px); }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes float-premium {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg) scale(1); 
+  }
+  33% { 
+    transform: translateY(-20px) rotate(120deg) scale(1.05); 
+  }
+  66% { 
+    transform: translateY(-10px) rotate(240deg) scale(1.02); 
+  }
+}
+
+.animate-float-premium {
+  animation: float-premium 8s ease-in-out infinite;
+}
+
+/* Professional color transitions */
+.professional-gradient {
+  background: linear-gradient(135deg, #0A1128 0%, #1C2541 25%, #2A3D66 50%, #3A506B 75%, #0F172A 100%);
+}
+
+/* Enhanced glass morphism for investors */
+.glass-institutional {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Professional hover effects */
+.hover-lift {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 35px 60px -12px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(59, 130, 246, 0.1);
+}
+
+/* Performance metric animations */
+.metric-enter {
+  opacity: 0;
+  transform: translateY(40px) scale(0.9);
+}
+
+.metric-enter-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Institutional border animations */
+.border-glow {
+  position: relative;
+}
+
+.border-glow::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(45deg, #06b6d4, #3b82f6, #8b5cf6);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: border-glow 3s ease-in-out infinite;
+}
+
+@keyframes border-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Futuristic Animations */
+@keyframes float-hologram {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg) scale(1); 
+    opacity: 0.6;
+  }
+  25% { 
+    transform: translateY(-20px) rotate(90deg) scale(1.1);
+    opacity: 0.8;
+  }
+  50% { 
+    transform: translateY(-10px) rotate(180deg) scale(1.05);
+    opacity: 0.7;
+  }
+  75% { 
+    transform: translateY(-15px) rotate(270deg) scale(1.08);
+    opacity: 0.75;
+  }
+}
+
+@keyframes float-data {
+  0%, 100% { 
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.4;
+  }
+  25% { 
+    transform: translateY(-40px) translateX(20px) scale(1.2);
+    opacity: 0.8;
+  }
+  50% { 
+    transform: translateY(-20px) translateX(-15px) scale(1.1);
+    opacity: 0.6;
+  }
+  75% { 
+    transform: translateY(-30px) translateX(10px) scale(1.15);
+    opacity: 0.7;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px currentColor;
+    opacity: 0.3;
+  }
+  50% { 
+    box-shadow: 0 0 40px currentColor, 0 0 60px currentColor;
+    opacity: 0.6;
+  }
+}
+
+@keyframes text-glow {
+  0%, 100% { 
+    text-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
+  }
+  50% { 
+    text-shadow: 0 0 30px rgba(34, 211, 238, 0.8), 0 0 40px rgba(34, 211, 238, 0.6);
+  }
+}
+
+.animate-float-hologram {
+  animation: float-hologram 8s ease-in-out infinite;
+}
+
+.animate-float-data {
+  animation: float-data 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-text-glow {
+  animation: text-glow 2s ease-in-out infinite;
+}
+
+/* Glass morphism effects */
+.glass-futuristic {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Holographic borders */
+.holographic-border {
+  position: relative;
+}
+
+.holographic-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(45deg, #06b6d4, #3b82f6, #8b5cf6, #06b6d4);
+  background-size: 400% 400%;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: holographic-shift 3s ease infinite;
+}
+
+@keyframes holographic-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}

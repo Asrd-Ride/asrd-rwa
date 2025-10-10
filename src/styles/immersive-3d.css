@@ -1,0 +1,371 @@
+/* Immersive 3D Design System - ENHANCED COLOR SCHEME */
+:root {
+  /* Enhanced Luxury Color Palette - Rich & Vibrant */
+  --luxury-deep: #0A0B1A;
+  --luxury-dark: #1A1B2F;
+  --luxury-mid: #2A2B45;
+  --luxury-light: #3A3B5A;
+  
+  /* Premium Accent Colors - Rich & Vibrant */
+  --emerald-glow: #00FFAA;
+  --sapphire-glow: #0095FF;
+  --amethyst-glow: #8A2BE2;
+  --gold-glow: #FFD700;
+  --ruby-glow: #FF3366;
+  
+  /* Gradient Combinations */
+  --gradient-emerald: linear-gradient(135deg, var(--emerald-glow) 0%, #00CC88 100%);
+  --gradient-sapphire: linear-gradient(135deg, var(--sapphire-glow) 0%, #0066CC 100%);
+  --gradient-amethyst: linear-gradient(135deg, var(--amethyst-glow) 0%, #6A0DAD 100%);
+  --gradient-gold: linear-gradient(135deg, var(--gold-glow) 0%, #FFAA00 100%);
+  --gradient-ruby: linear-gradient(135deg, var(--ruby-glow) 0%, #CC0066 100%);
+  
+  /* Glass Morphism V3 */
+  --glass-ultra: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.10) 100%);
+  
+  --glass-card-3d: linear-gradient(135deg,
+    rgba(0, 255, 170, 0.10) 0%,
+    rgba(0, 149, 255, 0.05) 50%,
+    rgba(138, 43, 226, 0.08) 100%);
+}
+
+/* Ultra Immersive Background */
+.immersive-bg {
+  background: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 255, 170, 0.20) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 50% at 100% 50%, rgba(0, 149, 255, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 50% at 0% 50%, rgba(138, 43, 226, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 20%, rgba(255, 51, 102, 0.10) 0%, transparent 60%),
+    linear-gradient(180deg, var(--luxury-deep) 0%, var(--luxury-dark) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.immersive-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%2300ffaa' fill-opacity='0.04' fill-rule='evenodd'/%3E%3C/svg%3E");
+  animation: float 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-20px) translateX(10px); }
+  100% { transform: translateY(0px) translateX(0px); }
+}
+
+/* 3D Glass Cards - Enhanced */
+.glass-3d {
+  background: var(--glass-ultra);
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(0, 255, 170, 0.20);
+  border-radius: 24px;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 40px rgba(0, 255, 170, 0.15);
+  transform-style: preserve-3d;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.glass-3d:hover {
+  transform: translateY(-12px) rotateX(5deg) rotateY(5deg);
+  box-shadow: 
+    0 40px 80px -20px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 0 80px rgba(0, 255, 170, 0.25),
+    0 0 120px rgba(0, 149, 255, 0.15);
+}
+
+/* Neon Glow Effects - Enhanced */
+.neon-glow {
+  position: relative;
+}
+
+.neon-glow::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: var(--gradient-emerald);
+  border-radius: inherit;
+  z-index: -1;
+  filter: blur(25px);
+  opacity: 0.7;
+  animation: neon-pulse 3s ease-in-out infinite;
+}
+
+@keyframes neon-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+}
+
+/* 3D Text Effects */
+.text-3d {
+  background: var(--gradient-emerald);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 
+    0 0 40px rgba(0, 255, 170, 0.6),
+    0 0 80px rgba(0, 149, 255, 0.4),
+    0 0 120px rgba(138, 43, 226, 0.3);
+}
+
+.text-glow {
+  text-shadow: 
+    0 0 25px currentColor,
+    0 0 50px currentColor,
+    0 0 80px currentColor;
+}
+
+/* Enhanced 3D Button */
+.btn-3d {
+  background: var(--gradient-emerald);
+  border: none;
+  border-radius: 16px;
+  color: var(--luxury-deep);
+  font-weight: 800;
+  padding: 1.25rem 2.5rem;
+  font-size: 1.125rem;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 
+    0 12px 35px rgba(0, 255, 170, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.btn-3d::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  transition: left 0.8s ease;
+}
+
+.btn-3d:hover::before {
+  left: 100%;
+}
+
+.btn-3d:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 
+    0 25px 50px rgba(0, 255, 170, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 0 70px rgba(0, 255, 170, 0.6);
+}
+
+.btn-3d-outline {
+  background: transparent;
+  border: 2px solid var(--emerald-glow);
+  color: var(--emerald-glow);
+  border-radius: 16px;
+  font-weight: 800;
+  padding: 1.25rem 2.5rem;
+  font-size: 1.125rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn-3d-outline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 170, 0.3), transparent);
+  transition: left 0.8s ease;
+}
+
+.btn-3d-outline:hover::before {
+  left: 100%;
+}
+
+.btn-3d-outline:hover {
+  background: var(--emerald-glow);
+  color: var(--luxury-deep);
+  transform: translateY(-10px);
+  box-shadow: 
+    0 20px 40px rgba(0, 255, 170, 0.4),
+    0 0 40px rgba(0, 255, 170, 0.3);
+}
+
+/* Asset Type Colors */
+.asset-horse {
+  background: var(--gradient-emerald);
+  color: var(--luxury-deep);
+}
+
+.asset-real-estate {
+  background: var(--gradient-sapphire);
+  color: var(--luxury-deep);
+}
+
+/* Floating Animation */
+.float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+.float-medium {
+  animation: float-medium 4s ease-in-out infinite;
+}
+
+.float-fast {
+  animation: float-fast 2s ease-in-out infinite;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+@keyframes float-medium {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-15px) scale(1.05); }
+}
+
+@keyframes float-fast {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Particle System */
+.particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  animation: particle-float 8s linear infinite;
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Scroll-triggered animations */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Grid Background */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(0, 255, 170, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 170, 0.15) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Advanced Filter Slider Styles */
+.slider-3d {
+  background: linear-gradient(90deg, var(--luxury-dark) 0%, var(--emerald-glow) 100%);
+  border-radius: 10px;
+  outline: none;
+}
+
+.slider-3d::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--emerald-glow);
+  cursor: pointer;
+  border: 2px solid var(--luxury-deep);
+  box-shadow: 0 0 20px var(--emerald-glow);
+  transition: all 0.3s ease;
+}
+
+.slider-3d::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 30px var(--emerald-glow);
+}
+
+.slider-3d::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--emerald-glow);
+  cursor: pointer;
+  border: 2px solid var(--luxury-deep);
+  box-shadow: 0 0 20px var(--emerald-glow);
+  transition: all 0.3s ease;
+}
+
+.slider-3d::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 30px var(--emerald-glow);
+}
+
+/* Cyberpunk Background Classes */
+.cyberpunk-bg {
+  background: var(--luxury-deep);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(0, 255, 170, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(0, 149, 255, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(138, 43, 226, 0.05) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+.bg-luxury-deep {
+  background-color: var(--luxury-deep);
+}
+
+.bg-luxury-dark {
+  background-color: var(--luxury-dark);
+}
+
+.bg-luxury-mid {
+  background-color: var(--luxury-mid);
+}
+
+.bg-luxury-light {
+  background-color: var(--luxury-light);
+}
