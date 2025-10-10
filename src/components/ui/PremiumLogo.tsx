@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from 'framer-motion';
 import React from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 interface PremiumLogoProps {
   size?: 'sm' | 'md' | 'lg';
@@ -10,10 +10,14 @@ interface PremiumLogoProps {
   className?: string;
 }
 
-export default function PremiumLogo({ size = 'md', showText = true, className = '' }: PremiumLogoProps) {
+export default function PremiumLogo({ 
+  size = 'md', 
+  showText = true, 
+  className = '' 
+}: PremiumLogoProps) {
   const sizeClasses = {
-    sm: 'w-8 h-8',
-    md: 'w-10 h-10',
+    sm: 'w-6 h-6',
+    md: 'w-8 h-8',
     lg: 'w-12 h-12'
   };
 
@@ -24,42 +28,34 @@ export default function PremiumLogo({ size = 'md', showText = true, className = 
   };
 
   return (
-    <Link href="/home" className={`flex items-center space-x-3 group ${className}`}>
-      {/* Premium Logo Symbol */}
+    <Link href="/home" className={`flex items-center space-x-2 md:space-x-3 ${className}`}>
+      {/* Enhanced Logo Mark */}
       <motion.div
         whileHover={{ scale: 1.05, rotate: 5 }}
-        className={`${sizeClasses[size]} relative bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-2xl shadow-cyan-500/25 group-hover:shadow-cyan-500/40 transition-all duration-300`}
+        whileTap={{ scale: 0.95 }}
+        className={`${sizeClasses[size]} bg-gradient-to-br from-fluid-gold to-fluid-emerald rounded-xl flex items-center justify-center relative overflow-hidden group`}
       >
-        {/* Diamond/Crystal Effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-xl" />
+        {/* Holographic Effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
-        {/* AR Symbol */}
+        {/* Logo Symbol */}
         <div className="relative z-10">
-          <div className="text-white font-black tracking-tighter leading-none">
-            {size === 'sm' && 'AR'}
-            {size === 'md' && 'AR'}
-            {size === 'lg' && 'AR'}
-          </div>
+          <span className="text-fluid-black font-black text-xs md:text-sm">AR</span>
         </div>
 
         {/* Glow Effect */}
-        <div className="absolute inset-0 bg-cyan-400/20 rounded-xl blur-sm group-hover:bg-cyan-400/30 transition-colors" />
+        <div className="absolute inset-0 rounded-xl bg-fluid-gold opacity-0 group-hover:opacity-20 blur-sm transition-opacity duration-300" />
       </motion.div>
 
-      {/* Logo Text */}
+      {/* Logo Text - Hidden on mobile if specified */}
       {showText && (
-        <motion.div
+        <motion.span 
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
-          className="flex flex-col"
+          className={`${textSizes[size]} font-black text-white tracking-tight hidden sm:block`}
         >
-          <span className={`${textSizes[size]} font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent leading-none`}>
-            AssetRide
-          </span>
-          <span className="text-cyan-300 text-xs font-medium tracking-wider">
-            REAL WORLD ASSETS
-          </span>
-        </motion.div>
+          Asset<span className="text-fluid-gold">Ride</span>
+        </motion.span>
       )}
     </Link>
   );

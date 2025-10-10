@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Star, TrendingUp, Zap, Shield } from 'lucide-react';
+import { Star, TrendingUp, Zap, Shield, ArrowRight } from 'lucide-react';
 import EnhancedAssetCard from '../ui/EnhancedAssetCard';
 import InvestmentModal from '../ui/InvestmentModal';
 import AssetDetailsModal from '../ui/AssetDetailsModal';
@@ -68,100 +68,72 @@ const FeaturedAssetsSection: React.FC = () => {
     window.location.href = '/marketplace';
   };
 
-  return (
-    <section className="section-3d">
-      <div className="container-3d">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-12 h-12 gradient-3d-cyber rounded-2xl flex items-center justify-center animate-glow-3d">
-              <Star className="w-6 h-6 text-white" />
-            </div>
-            <h2 className="text-3d-heading">
-              FEATURED <span className="text-3d-glow">ASSETS</span>
-            </h2>
-          </div>
-          <p className="text-3d-body max-w-2xl mx-auto">
-            Exclusive premium assets with proven track records and institutional-grade returns
-          </p>
-        </motion.div>
+  const features = [
+    { icon: Shield, text: "Institutional Security", description: "Bank-grade asset protection" },
+    { icon: Zap, text: "Instant Liquidity", description: "24/7 trading availability" },
+    { icon: TrendingUp, text: "Proven Returns", description: "38.7% average ROI" },
+    { icon: Star, text: "Elite Assets", description: "$50M+ asset classes" }
+  ];
 
-        {/* 3D Asset Grid */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
-        >
+  return (
+    <section className="fluid-section">
+      <div className="fluid-container">
+        {/* Header Section */}
+        <div className="text-center mb-8 md:mb-12 fluid-scroll-item mobile:text-center">
+          <h2 className="fluid-heading">
+            Featured <span className="text-fluid-gold">Opportunities</span>
+          </h2>
+          <p className="fluid-body max-w-2xl mx-auto mobile:px-4">
+            Hand-picked premium assets with exceptional returns and institutional-grade management
+          </p>
+        </div>
+
+        {/* Features Grid */}
+        <div className="fluid-grid fluid-grid-cols-2 lg:fluid-grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+          {features.map((feature, index) => (
+            <div 
+              key={feature.text} 
+              className="fluid-card text-center fluid-scroll-item mobile:p-3"
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <feature.icon className="w-6 h-6 md:w-8 md:h-8 text-fluid-gold mx-auto mb-2 md:mb-3" />
+              <h3 className="text-white font-semibold text-sm md:text-base mb-1">{feature.text}</h3>
+              <p className="fluid-caption text-xs">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Featured Assets Grid */}
+        <div className="fluid-grid fluid-grid-cols-1 md:fluid-grid-cols-2 lg:fluid-grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
           {featuredAssets.map((asset, index) => (
-            <motion.div
-              key={asset.id}
-              initial={{ opacity: 0, y: 30, rotateY: 15 }}
-              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
-              whileHover={{ 
-                y: -10,
-                rotateY: 5,
-                transition: { type: "spring", stiffness: 300 }
-              }}
-              transition={{ 
-                duration: 0.6, 
-                delay: index * 0.1,
-                type: "spring",
-                stiffness: 100
-              }}
-              className="transform-gpu"
-              style={{ transformStyle: 'preserve-3d' }}
+            <div 
+              key={asset.id} 
+              className="fluid-scroll-item"
+              style={{ transitionDelay: `${index * 150}ms` }}
             >
               <EnhancedAssetCard
                 {...asset}
                 onInvest={handleInvest}
                 onViewDetails={handleViewDetails}
+                layout="grid"
               />
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
 
-        {/* 3D CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center"
-        >
-          <div className="card-3d-premium p-8 max-w-2xl mx-auto">
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <div className="w-16 h-16 gradient-3d-holographic rounded-2xl flex items-center justify-center animate-float-3d">
-                <Zap className="w-8 h-8 text-white" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold text-white mb-2">
-                  Ready to Expand Your Portfolio?
-                </h3>
-                <p className="text-gray-300">
-                  Explore our full marketplace of premium real-world assets
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                onClick={handleExploreAssets}
-                className="btn-3d flex items-center justify-center gap-2"
-              >
-                <TrendingUp className="w-5 h-5" />
-                Explore All Assets
-              </button>
-              <button className="btn-3d-secondary flex items-center justify-center gap-2">
-                <Shield className="w-5 h-5" />
-                Learn About Security
-              </button>
-            </div>
-          </div>
-        </motion.div>
+        {/* CTA Section */}
+        <div className="text-center fluid-scroll-item">
+          <button
+            onClick={handleExploreAssets}
+            className="btn-fluid text-lg px-6 md:px-8 py-3 md:py-4 flex items-center justify-center mx-auto space-x-2 mobile:w-full md:w-auto"
+          >
+            <span>Explore All Investment Opportunities</span>
+            <ArrowRight className="w-5 h-5" />
+          </button>
+          <p className="fluid-caption mt-3 md:mt-4 mobile:px-4">
+            Join 2,470+ investors already building wealth with AssetRide
+          </p>
+        </div>
       </div>
 
       {/* Modals */}

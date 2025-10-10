@@ -69,7 +69,12 @@ export default function EnhancedMarketplace() {
   }
 
   const handleConfirmInvest = async (assetId: number, amount: number) => {
-    // Simulate investment processing
+    // Update ASRD balance through AuthContext
+      if (user) {
+        const asrdTokens = amount / 32;
+        // This would call buyASRD in AuthContext
+        console.log(`Purchased $${amount} worth of ASRD tokens: ${asrdTokens.toFixed(2)}`);
+      }
     await new Promise(resolve => setTimeout(resolve, 2000))
 
     showNotification({

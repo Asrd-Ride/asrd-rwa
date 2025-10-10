@@ -1,0 +1,79 @@
+/* ===== PROFESSIONAL FINANCIAL THEME ===== */
+:root {
+  /* Professional Color Palette */
+  --premium-black: #0A0A0A;
+  --deep-charcoal: #1A1A1A;
+  --rich-navy: #0F1A2C;
+  --dark-slate: #2D3748;
+  
+  /* Professional Accent Colors */
+  --gold-accent: #D4AF37;
+  --emerald-accent: #10B981;
+  --sapphire-accent: #3B82F6;
+  --platinum-accent: #E5E7EB;
+  
+  /* Professional Gradients */
+  --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #FBBF24 100%);
+  --gradient-emerald: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+  --gradient-sapphire: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+  --gradient-charcoal: linear-gradient(135deg, #1A1A1A 0%, #2D3748 100%);
+}
+
+/* Professional Backgrounds */
+.bg-professional {
+  background: var(--premium-black);
+}
+
+.bg-professional-deep {
+  background: var(--deep-charcoal);
+}
+
+.bg-professional-navy {
+  background: var(--rich-navy);
+}
+
+/* Professional Cards */
+.card-professional {
+  background: var(--deep-charcoal);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.card-professional:hover {
+  border-color: var(--gold-accent);
+  box-shadow: 0 8px 30px rgba(212, 175, 55, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Professional Buttons */
+.btn-professional {
+  background: var(--gradient-gold);
+  color: var(--premium-black);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-professional:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+}
+
+.btn-professional-secondary {
+  background: transparent;
+  color: var(--platinum-accent);
+  border: 1px solid var(--platinum-accent);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-professional-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--gold-accent);
+}

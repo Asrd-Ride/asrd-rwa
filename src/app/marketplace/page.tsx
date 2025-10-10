@@ -1,13 +1,13 @@
 "use client";
 
 import React from 'react';
-import EnhancedPageWrapper from '@/components/layout/EnhancedPageWrapper';
-import EnhancedMarketplace from '@/components/sections/EnhancedMarketplace';
+import FluidLayout from '@/components/layout/FluidLayout';
+import FluidMarketplace from '@/components/sections/FluidMarketplace';
 
 export default function MarketplacePage() {
   return (
-    <EnhancedPageWrapper>
-      <EnhancedMarketplace />
-    </EnhancedPageWrapper>
+    <FluidLayout>
+      <FluidMarketplace />
+    </FluidLayout>
   );
 }

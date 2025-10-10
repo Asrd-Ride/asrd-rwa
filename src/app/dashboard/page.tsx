@@ -1,13 +1,13 @@
 "use client";
 
 import React from 'react';
-import EnhancedPageWrapper from '@/components/layout/EnhancedPageWrapper';
-import EnhancedDashboard from '@/components/sections/EnhancedDashboard';
+import FluidLayout from '@/components/layout/FluidLayout';
+import FluidDashboard from '@/components/sections/FluidDashboard';
 
 export default function DashboardPage() {
   return (
-    <EnhancedPageWrapper>
-      <EnhancedDashboard />
-    </EnhancedPageWrapper>
+    <FluidLayout>
+      <FluidDashboard />
+    </FluidLayout>
   );
 }

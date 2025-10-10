@@ -1,13 +1,13 @@
 "use client";
 
 import React from 'react';
-import EnhancedPageWrapper from '@/components/layout/EnhancedPageWrapper';
+import FluidLayout from '@/components/layout/FluidLayout';
 import OurJourneySection from '@/components/sections/OurJourneySection';
 
 export default function OurJourneyPage() {
   return (
-    <EnhancedPageWrapper>
+    <FluidLayout>
       <OurJourneySection />
-    </EnhancedPageWrapper>
+    </FluidLayout>
   );
 }

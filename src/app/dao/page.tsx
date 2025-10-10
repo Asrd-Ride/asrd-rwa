@@ -1,13 +1,13 @@
 "use client";
 
 import React from 'react';
-import EnhancedPageWrapper from '@/components/layout/EnhancedPageWrapper';
-import DAOSection from '@/components/sections/DAOSection';
+import FluidLayout from '@/components/layout/FluidLayout';
+import FluidDAO from '@/components/sections/FluidDAO';
 
 export default function DAOPage() {
   return (
-    <EnhancedPageWrapper>
-      <DAOSection />
-    </EnhancedPageWrapper>
+    <FluidLayout>
+      <FluidDAO />
+    </FluidLayout>
   );
 }

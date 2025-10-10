@@ -2,203 +2,176 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Target, Users, Zap, Shield, Globe, TrendingUp,
-  Crown, DollarSign, Building2, Lock, Award, Rocket
-} from 'lucide-react';
+import { Calendar, Target, Users, TrendingUp, Shield, Globe } from 'lucide-react';
 
 export default function OurJourneySection() {
   const milestones = [
     {
-      year: "Q3-2025",
+      year: "2023 Q4",
       title: "Protocol Foundation",
-      description: "Launched AssetRide with a vision to democratize institutional-grade real world assets through blockchain technology",
-      icon: <Target className="w-6 h-6" />,
-      stats: "Platform Architecture Deployed"
+      description: "Launched AssetRide protocol with initial real estate tokenization",
+      icon: Target,
+      status: "completed",
+      color: "text-fluid-gold"
     },
     {
-      year: "Q4-2025", 
-      title: "Collective Capital Power",
-      description: "Enabled fractional digital ownership starting from $100, breaking barriers to elite asset classes previously reserved for ultra-high-net-worth individuals",
-      icon: <Users className="w-6 h-6" />,
-      stats: "1,247+ Community Members"
+      year: "2024 Q1",
+      title: "Asset Diversification",
+      description: "Expanded to thoroughbred, marine, and aviation assets",
+      icon: TrendingUp,
+      status: "completed",
+      color: "text-fluid-emerald"
     },
     {
-      year: "Q1-2026",
-      title: "Institutional-Grade Access",
-      description: "Curated portfolio of $50M+ elite assets including luxury real estate, thoroughbreds, marine assets, and private aviation",
-      icon: <Building2 className="w-6 h-6" />,
-      stats: "$15.4M+ Asset Portfolio"
+      year: "2024 Q2",
+      title: "DAO Governance",
+      description: "Implemented decentralized governance for community-driven decisions",
+      icon: Users,
+      status: "completed",
+      color: "text-fluid-sapphire"
     },
     {
-      year: "Q2-2026",
-      title: "Digital Sovereignty",
-      description: "Implemented collective governance protocol giving token holders voting rights on platform decisions and asset acquisitions",
-      icon: <Shield className="w-6 h-6" />,
-      stats: "8,420+ Governance Votes"
-    }
-  ];
-
-  const values = [
-    {
-      icon: <Globe className="w-8 h-8" />,
-      title: "Democratizing Elite Access",
-      description: "Transforming $50M asset classes into $100 investment opportunities through fractional digital ownership"
+      year: "2024 Q3",
+      title: "Global Expansion",
+      description: "Scaled operations to international markets and regulatory compliance",
+      icon: Globe,
+      status: "current",
+      color: "text-fluid-gold"
     },
     {
-      icon: <TrendingUp className="w-8 h-8" />,
-      title: "Institutional-Grade Returns", 
-      description: "Delivering 20-45% average annual returns previously exclusive to private equity and family offices"
+      year: "2024 Q4",
+      title: "Institutional Partnerships",
+      description: "Forming alliances with major financial institutions",
+      icon: Shield,
+      status: "upcoming",
+      color: "text-fluid-emerald"
     },
     {
-      icon: <Lock className="w-8 h-8" />,
-      title: "Blockchain Security",
-      description: "Enterprise-grade security ensuring transparent ownership and automated distribution of returns"
-    },
-    {
-      icon: <Award className="w-8 h-8" />,
-      title: "Collective Intelligence",
-      description: "Community-driven governance protocol enabling collective decision-making on platform evolution"
+      year: "2025 Q1",
+      title: "Mass Adoption",
+      description: "Targeting 10,000+ active investors worldwide",
+      icon: Target,
+      status: "upcoming",
+      color: "text-fluid-sapphire"
     }
   ];
 
   const stats = [
-    { value: "$15.4M+", label: "Total Asset Value" },
-    { value: "1,247+", label: "Community Members" },
-    { value: "32.5%", label: "Average Annual ROI" },
-    { value: "$4.5M+", label: "Returns Distributed" }
+    { value: "2,470+", label: "Active Investors", icon: Users },
+    { value: "$15.4M", label: "Platform Value", icon: TrendingUp },
+    { value: "38.7%", label: "Average ROI", icon: Target },
+    { value: "28", label: "Premium Assets", icon: Shield }
   ];
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900">
-      <div className="premium-container py-8">
-        {/* Hero Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-6">
-            OUR <span className="text-cyan-400">JOURNEY</span>
-          </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-            Transforming institutional-grade real world asset investment through fractional digital ownership and collective capital power. 
-            We're breaking down the barriers that kept elite $50M asset classes exclusive to the ultra-rich.
-          </p>
-          <div className="bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 rounded-2xl p-6 max-w-4xl mx-auto">
-            <p className="text-cyan-300 text-lg font-semibold">
-              "With mere $100, you can now own pieces of assets that were previously accessible only to billionaires and institutional funds."
-            </p>
-          </div>
-        </motion.div>
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'completed': return 'bg-fluid-emerald';
+      case 'current': return 'bg-fluid-gold';
+      case 'upcoming': return 'bg-fluid-slate';
+      default: return 'bg-fluid-slate';
+    }
+  };
 
-        {/* Key Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
-        >
+  return (
+    <div className="fluid-section">
+      <div className="fluid-container">
+        {/* Header Section */}
+        <div className="text-center mb-8 md:mb-12 fluid-scroll-item mobile:text-center">
+          <h1 className="fluid-hero">
+            Our <span className="text-fluid-gold">Journey</span>
+          </h1>
+          <p className="fluid-body max-w-2xl mx-auto mobile:px-4">
+            From visionary concept to leading real-world asset platform. Discover how we're democratizing access to elite investments.
+          </p>
+        </div>
+
+        {/* Stats Section */}
+        <div className="fluid-grid fluid-grid-cols-2 lg:fluid-grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
           {stats.map((stat, index) => (
-            <div key={index} className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">{stat.value}</div>
-              <div className="text-cyan-300 text-sm">{stat.label}</div>
+            <div 
+              key={stat.label} 
+              className="fluid-card text-center fluid-scroll-item mobile:p-3"
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <stat.icon className="w-6 h-6 md:w-8 md:h-8 text-fluid-gold mx-auto mb-2 md:mb-3" />
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2">{stat.value}</h3>
+              <p className="fluid-caption text-sm md:text-base">{stat.label}</p>
             </div>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Journey Timeline */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mb-16"
-        >
-          <h2 className="text-3xl font-bold text-white text-center mb-12">Protocol Evolution Timeline</h2>
-          <div className="space-y-8">
-            {milestones.map((milestone, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
-                className="flex flex-col md:flex-row items-start gap-6 p-6 bg-slate-800/50 rounded-2xl border border-gray-700 hover:border-cyan-500/30 transition-all duration-300"
-              >
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center">
-                    {milestone.icon}
+        {/* Timeline Section */}
+        <div className="fluid-card-panel fluid-scroll-item mobile:px-4 mobile:py-4">
+          <h2 className="fluid-subheading mb-6 md:mb-8 text-center">Platform Evolution Timeline</h2>
+          
+          <div className="relative">
+            {/* Timeline Line */}
+            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-fluid-slate transform -translate-x-1/2 hidden md:block"></div>
+            
+            <div className="space-y-6 md:space-y-8">
+              {milestones.map((milestone, index) => (
+                <motion.div
+                  key={milestone.year}
+                  initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className={`flex flex-col md:flex-row items-start md:items-center ${
+                    index % 2 === 0 ? 'md:flex-row-reverse' : ''
+                  }`}
+                >
+                  {/* Mobile Timeline Dot */}
+                  <div className="flex items-center mb-3 md:hidden">
+                    <div className={`w-3 h-3 rounded-full ${getStatusColor(milestone.status)} mr-3`}></div>
+                    <span className="text-fluid-gold font-semibold text-sm">{milestone.year}</span>
                   </div>
-                </div>
-                <div className="flex-1">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
-                    <div>
-                      <span className="text-cyan-400 font-bold text-lg">{milestone.year}</span>
-                      <h3 className="text-xl font-bold text-white">{milestone.title}</h3>
+
+                  {/* Content */}
+                  <div className={`flex-1 ${index % 2 === 0 ? 'md:pr-8' : 'md:pl-8'} mobile:ml-0`}>
+                    <div className="fluid-card mobile:p-3">
+                      <div className="flex items-start space-x-3 md:space-x-4">
+                        <div className={`p-2 md:p-3 rounded-xl bg-opacity-10 ${milestone.color.replace('text-', 'bg-')}`}>
+                          <milestone.icon className="w-4 h-4 md:w-5 md:h-5" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
+                            <h3 className="text-lg md:text-xl font-bold text-white">{milestone.title}</h3>
+                            <span className="text-fluid-gold font-semibold text-sm hidden md:block">{milestone.year}</span>
+                          </div>
+                          <p className="fluid-caption text-sm md:text-base">{milestone.description}</p>
+                          <div className="flex items-center space-x-2 mt-2">
+                            <div className={`w-2 h-2 rounded-full ${getStatusColor(milestone.status)}`}></div>
+                            <span className="text-fluid-silver text-xs capitalize">{milestone.status}</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-cyan-300 text-sm font-semibold mt-2 md:mt-0">
-                      {milestone.stats}
-                    </div>
                   </div>
-                  <p className="text-gray-300 leading-relaxed">
-                    {milestone.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
 
-        {/* Core Values */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mb-16"
-        >
-          <h2 className="text-3xl font-bold text-white text-center mb-12">Protocol Governance Principles</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {values.map((value, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 1 + index * 0.1 }}
-                className="p-6 bg-slate-800/50 rounded-2xl border border-gray-700 hover:border-cyan-500/30 transition-all duration-300"
-              >
-                <div className="flex items-center space-x-4 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-xl flex items-center justify-center border border-cyan-500/30">
-                    {value.icon}
+                  {/* Desktop Timeline Dot */}
+                  <div className="hidden md:flex items-center justify-center w-4 h-4 relative">
+                    <div className={`w-3 h-3 rounded-full ${getStatusColor(milestone.status)} absolute`}></div>
                   </div>
-                  <h3 className="text-xl font-bold text-white">{value.title}</h3>
-                </div>
-                <p className="text-gray-300 leading-relaxed">
-                  {value.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
 
-        {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.2 }}
-          className="text-center"
-        >
-          <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 rounded-2xl p-8 max-w-2xl mx-auto">
-            <Rocket className="w-12 h-12 text-cyan-400 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-white mb-4">Join the Digital Ownership Revolution</h3>
-            <p className="text-gray-300 mb-6">
-              Be part of the collective that's reshaping how real world assets are owned and managed. 
-              Start with just $100 and access institutional-grade investment opportunities.
+                  {/* Spacer for desktop */}
+                  <div className="flex-1 hidden md:block"></div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Mission Statement */}
+        <div className="fluid-card-panel mt-6 md:mt-8 fluid-scroll-item mobile:px-4 mobile:py-4" style={{ transitionDelay: '400ms' }}>
+          <div className="text-center">
+            <Shield className="w-12 h-12 md:w-16 md:h-16 text-fluid-gold mx-auto mb-4 md:mb-6" />
+            <h2 className="fluid-subheading mb-3 md:mb-4">Our Mission</h2>
+            <p className="fluid-body max-w-3xl mx-auto mobile:px-4">
+              To democratize access to premium real-world assets through fractional digital ownership, 
+              enabling anyone to participate in investment opportunities previously reserved for the ultra-wealthy. 
+              We believe in collective capital power and institutional-grade access for all.
             </p>
-            <button className="btn-premium">
-              Start Your Journey Today
-            </button>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
