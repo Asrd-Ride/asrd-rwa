@@ -15,6 +15,7 @@ interface AuthContextType {
   login: (redirectPath?: string) => void;
   logout: () => void;
   buyASRD: (amount: number) => void;
+  invest: (amount: number, assetName: string) => boolean;
   claimRental: (assetId: number) => void;
   claimWinnings: (assetId: number) => void;
 }
@@ -42,7 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
     setUser(demoUser);
     localStorage.setItem('assetRideUser', JSON.stringify(demoUser));
-    
+
     // Redirect to dashboard after login
     router.push(redirectPath);
   };
@@ -58,10 +59,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const asrdTokens = amount / 32; // $32 per ASRD token
     const updatedUser = {
       ...user,
-      asrdBalance: user.asrdBalance + asrdTokens
+      asrdBalance: user.asrdBalance + asrdTokens,
+      portfolioValue: user.portfolioValue + amount // Increase portfolio when buying ASRD
     };
     setUser(updatedUser);
     localStorage.setItem('assetRideUser', JSON.stringify(updatedUser));
+  };
+
+  const invest = (amount: number, assetName: string): boolean => {
+    if (!user) return false;
+    const asrdTokensCost = amount / 32; // Calculate ASRD tokens needed
+
+    // Check if user has enough ASRD balance
+    if (user.asrdBalance < asrdTokensCost) {
+      // Show notification instead of alert
+      if (typeof window !== 'undefined' && (window as any).showNotification) {
+        (window as any).showNotification({
+          type: 'error',
+          title: 'Insufficient Balance',
+          message: `You need ${asrdTokensCost.toFixed(2)} ASRD but only have ${user.asrdBalance.toFixed(2)}.`,
+          duration: 5000
+        });
+      }
+      return false;
+    }
+
+    // CORRECT: When investing ASRD tokens, portfolio USD value decreases proportionally
+    const updatedUser = {
+      ...user,
+      asrdBalance: user.asrdBalance - asrdTokensCost,
+      portfolioValue: user.portfolioValue - amount // Decrease portfolio value by investment amount
+    };
+    setUser(updatedUser);
+    localStorage.setItem('assetRideUser', JSON.stringify(updatedUser));
+
+    console.log(`Invested $${amount} in ${assetName}. Deducted ${asrdTokensCost.toFixed(2)} ASRD tokens.`);
+    return true;
   };
 
   const claimRental = (assetId: number) => {
@@ -71,11 +104,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const updatedUser = {
       ...user,
       asrdBalance: user.asrdBalance + asrdTokens,
-      portfolioValue: user.portfolioValue + rentalAmount
+      portfolioValue: user.portfolioValue + rentalAmount // Increase portfolio when claiming rental
     };
     setUser(updatedUser);
     localStorage.setItem('assetRideUser', JSON.stringify(updatedUser));
-    alert(`🏠 Successfully claimed $${rentalAmount} rental income! Received ${asrdTokens} ASRD tokens.`);
+
+    // Show notification instead of alert
+    if (typeof window !== 'undefined' && (window as any).showNotification) {
+      (window as any).showNotification({
+        type: 'success',
+        title: 'Rental Income Claimed!',
+        message: `Successfully claimed $${rentalAmount} rental income! Received ${asrdTokens} ASRD tokens.`,
+        duration: 6000
+      });
+    }
   };
 
   const claimWinnings = (assetId: number) => {
@@ -85,15 +127,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const updatedUser = {
       ...user,
       asrdBalance: user.asrdBalance + asrdTokens,
-      portfolioValue: user.portfolioValue + winningsAmount
+      portfolioValue: user.portfolioValue + winningsAmount // Increase portfolio when claiming winnings
     };
     setUser(updatedUser);
     localStorage.setItem('assetRideUser', JSON.stringify(updatedUser));
-    alert(`🏆 Successfully claimed $${winningsAmount} race winnings! Received ${asrdTokens} ASRD tokens.`);
+
+    // Show notification instead of alert
+    if (typeof window !== 'undefined' && (window as any).showNotification) {
+      (window as any).showNotification({
+        type: 'success',
+        title: 'Winnings Claimed!',
+        message: `Successfully claimed $${winningsAmount} race winnings! Received ${asrdTokens} ASRD tokens.`,
+        duration: 6000
+      });
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, buyASRD, claimRental, claimWinnings }}>
+    <AuthContext.Provider value={{ user, login, logout, buyASRD, invest, claimRental, claimWinnings }}>
       {children}
     </AuthContext.Provider>
   );
