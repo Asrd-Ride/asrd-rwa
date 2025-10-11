@@ -1,0 +1,2794 @@
+===== FILE: src/components/sections/FluidHero.tsx =====
+"use client";
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Shield, Zap, TrendingUp } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+
+export default function FluidHero() {
+  const { login } = useAuth();
+
+  const features = [
+    { icon: Shield, text: "Institutional-Grade Assets" },
+    { icon: Zap, text: "Fractional Ownership" },
+    { icon: TrendingUp, text: "Proven ROI Track Record" }
+  ];
+
+  return (
+    <div className="fluid-section-lg">
+      <div className="fluid-container">
+        <div className="text-center fluid-scroll-item">
+          <motion.h1 
+            className="fluid-hero mb-4 md:mb-6"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Democratizing <span className="text-fluid-gold">Elite</span> Asset Access
+          </motion.h1>
+          
+          <motion.p 
+            className="fluid-body max-w-3xl mx-auto mb-6 md:mb-8 mobile:px-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            With mere $100, own fractions of $50M elite asset classes. Institutional-grade real world assets 
+            now accessible through fractional digital ownership and collective governance.
+          </motion.p>
+
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center mb-8 md:mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <button 
+              onClick={() => login('/marketplace')}
+              className="btn-fluid text-lg px-6 md:px-8 py-3 md:py-4 flex items-center justify-center mobile:w-full sm:w-auto"
+            >
+              Start Investing Now
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </button>
+            <button className="btn-fluid-secondary text-lg px-6 md:px-8 py-3 md:py-4 mobile:w-full sm:w-auto">
+              Explore Assets
+            </button>
+          </motion.div>
+
+          {/* Features */}
+          <motion.div 
+            className="fluid-grid fluid-grid-cols-1 md:fluid-grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            {features.map((feature, index) => (
+              <div key={index} className="fluid-card text-center mobile:p-3">
+                <feature.icon className="w-6 h-6 md:w-8 md:h-8 text-fluid-gold mx-auto mb-2 md:mb-3" />
+                <p className="text-white font-semibold text-sm md:text-base">{feature.text}</p>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+===== FILE: src/components/sections/ImmersiveHero.tsx =====
+"use client";
+
+import React from 'react';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+
+export default function ImmersiveHero() {
+  const { getFadeStyle } = useScrollAnimation();
+
+  return (
+    <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-10 w-4 h-4 bg-cyan-400/30 rounded-full animate-pulse" />
+        <div className="absolute bottom-40 right-20 w-6 h-6 bg-blue-400/20 rounded-full animate-pulse" style={{animationDelay: '1.5s'}} />
+        <div className="absolute top-60 left-1/2 w-3 h-3 bg-purple-400/40 rounded-full animate-pulse" style={{animationDelay: '2.5s'}} />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Pre-headline */}
+          <div 
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 rounded-full px-6 py-2 mb-8 backdrop-blur-sm"
+            style={getFadeStyle(0, 200)}
+          >
+            <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+            <span className="text-cyan-300 font-semibold text-sm uppercase tracking-wider">
+              Future of Asset Investment • Powered by Blockchain
+            </span>
+          </div>
+
+          {/* Main Headline */}
+          <div style={getFadeStyle(200, 400)}>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight">
+              <span className="block">ELITE ASSETS</span>
+              <span className="block bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                DEMOCRATIZED
+              </span>
+            </h1>
+
+            {/* Subtitle */}
+            <p className="text-xl md:text-2xl text-white mb-8 max-w-2xl mx-auto leading-relaxed font-light">
+              Experience the future of investing. Our platform leverages cutting-edge
+              technology to bring exclusive assets within reach.
+              <span className="text-cyan-300 font-semibold"> Start your journey with just $50.</span>
+            </p>
+          </div>
+
+          {/* CTA Buttons */}
+          <div 
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
+            style={getFadeStyle(400, 600)}
+          >
+            <button className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 w-full sm:w-auto">
+              Explore Investments
+            </button>
+            <button className="border-2 border-white/30 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:border-cyan-400 hover:bg-cyan-400/10 transition-all duration-500 w-full sm:w-auto">
+              Learn More
+            </button>
+          </div>
+
+          {/* Stats */}
+          <div 
+            className="grid grid-cols-3 gap-8 max-w-2xl mx-auto"
+            style={getFadeStyle(600, 800)}
+          >
+            <div className="text-center">
+              <div className="text-2xl font-black text-cyan-400 mb-1">30%+</div>
+              <div className="text-cyan-200 text-sm">Average Returns</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-black text-blue-400 mb-1">$50</div>
+              <div className="text-cyan-200 text-sm">Start Investing</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-black text-purple-400 mb-1">1K+</div>
+              <div className="text-cyan-200 text-sm">Active Investors</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div 
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        style={getFadeStyle(800, 1000)}
+      >
+        <div className="animate-bounce">
+          <div className="w-6 h-10 border-2 border-cyan-400/50 rounded-full flex justify-center backdrop-blur-sm">
+            <div className="w-1 h-3 bg-cyan-400 rounded-full mt-2 animate-pulse" />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+
+===== FILE: src/components/sections/EnhancedMarketplace.tsx =====
+"use client"
+
+import React, { useState, useMemo } from 'react'
+import { Search, Filter, Grid, List } from 'lucide-react'
+import { useAuth } from '@/contexts/AuthContext'
+import EnhancedAssetCard from '@/components/ui/EnhancedAssetCard'
+import InvestmentModal from '@/components/ui/InvestmentModal'
+import AssetDetailsModal from '@/components/ui/AssetDetailsModal'
+import { mockAssets } from '@/data/mockData'
+import { useNotification } from '@/contexts/NotificationContext'
+
+// Enhanced mock assets with proper structure for EnhancedAssetCard
+const enhancedAssets = mockAssets.map((asset, index) => ({
+  ...asset,
+  category: asset.type,
+  currency: "USD",
+  image: "",
+  description: `Premium ${asset.type.toLowerCase()} investment located in ${asset.location} with ${asset.roi} ROI. Professional management and proven returns.`,
+  sharesAvailable: 100,
+  sharesSold: (index * 17) % 100 // Deterministic value based on index
+}))
+
+export default function EnhancedMarketplace() {
+  const { user, login, invest } = useAuth()
+  const { showNotification } = useNotification()
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedType, setSelectedType] = useState('all')
+  const [sortBy, setSortBy] = useState('roi')
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  const [selectedAsset, setSelectedAsset] = useState<any>(null)
+  const [isInvestmentModalOpen, setIsInvestmentModalOpen] = useState(false)
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false)
+
+  const filteredAssets = useMemo(() => {
+    return enhancedAssets.filter(asset => {
+      const matchesSearch = asset.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          asset.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          asset.location.toLowerCase().includes(searchQuery.toLowerCase())
+
+      const matchesType = selectedType === 'all' || asset.type === selectedType
+
+      return matchesSearch && matchesType
+    }).sort((a, b) => {
+      switch (sortBy) {
+        case 'roi':
+          return parseFloat(b.roi) - parseFloat(a.roi)
+        case 'value':
+          return b.value - a.value
+        case 'minInvestment':
+          return a.minInvestment - b.minInvestment
+        default:
+          return 0
+      }
+    })
+  }, [searchQuery, selectedType, sortBy])
+
+  const handleInvest = (assetId: number) => {
+    if (!user) {
+      login('/marketplace')
+      return
+    }
+
+    const asset = enhancedAssets.find(a => a.id === assetId)
+    if (asset) {
+      setSelectedAsset(asset)
+      setIsInvestmentModalOpen(true)
+    }
+  }
+
+  const handleConfirmInvest = async (assetId: number, amount: number) => {
+    if (!user || !selectedAsset) return;
+
+    // Deduct ASRD balance for investment using the new invest function
+    const success = invest(amount, selectedAsset.title);
+    if (!success) return; // Stop if insufficient balance
+
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    showNotification({
+      type: 'premium',
+      title: 'Investment Successful!',
+      message: `Successfully invested $${amount.toLocaleString()} in ${selectedAsset?.title}!\n\n• ASRD Tokens Deducted: ${(amount / 32).toFixed(2)}\n• Asset: ${selectedAsset?.title}\n• ROI: ${selectedAsset?.roi}\n\nYour investment has been added to your portfolio.`,
+      duration: 6000
+    });
+
+    setIsInvestmentModalOpen(false);
+    setSelectedAsset(null);
+  }
+
+  const handleViewDetails = (assetId: number) => {
+    const asset = enhancedAssets.find(a => a.id === assetId)
+    if (asset) {
+      setSelectedAsset(asset)
+      setIsDetailsModalOpen(true)
+    }
+  }
+
+  const assetTypes = ['all', ...new Set(enhancedAssets.map(asset => asset.type))]
+
+  return (
+    <div className="min-h-screen bg-3d-space">
+      <div className="container-3d py-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-3d-hero mb-6">
+            ASSET <span className="text-3d-glow">MARKETPLACE</span>
+          </h1>
+          <p className="text-3d-body max-w-2xl mx-auto">
+            Discover and invest in premium real-world assets with institutional-grade returns
+          </p>
+        </div>
+
+        {/* Filters and Search */}
+        <div className="card-3d p-6 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            {/* Search */}
+            <div className="lg:col-span-2">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Search assets..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-black/30 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300"
+                />
+              </div>
+            </div>
+
+            {/* Type Filter */}
+            <div>
+              <select
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+                className="w-full px-4 py-3 bg-black/30 border border-gray-600 rounded-xl text-white focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300"
+              >
+                {assetTypes.map(type => (
+                  <option key={type} value={type} className="bg-gray-800">
+                    {type === 'all' ? 'All Types' : type}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Sort By */}
+            <div>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="w-full px-4 py-3 bg-black/30 border border-gray-600 rounded-xl text-white focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300"
+              >
+                <option value="roi" className="bg-gray-800">Highest ROI</option>
+                <option value="value" className="bg-gray-800">Highest Value</option>
+                <option value="minInvestment" className="bg-gray-800">Lowest Minimum</option>
+              </select>
+            </div>
+          </div>
+
+          {/* View Mode Toggle */}
+          <div className="flex items-center justify-between mt-6">
+            <div className="text-gray-400">
+              Showing {filteredAssets.length} assets
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded-lg transition-all duration-300 ${
+                  viewMode === 'grid'
+                    ? 'bg-cyan-500 text-white'
+                    : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
+                }`}
+              >
+                <Grid className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-2 rounded-lg transition-all duration-300 ${
+                  viewMode === 'list'
+                    ? 'bg-cyan-500 text-white'
+                    : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
+                }`}
+              >
+                <List className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Asset Grid */}
+        <div className={viewMode === 'grid'
+          ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          : "space-y-6"
+        }>
+          {filteredAssets.map((asset, index) => (
+            <div
+              key={asset.id}
+              className="transition-transform duration-300 hover:scale-105"
+            >
+              <EnhancedAssetCard
+                {...asset}
+                onInvest={handleInvest}
+                onViewDetails={handleViewDetails}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Empty State */}
+        {filteredAssets.length === 0 && (
+          <div className="text-center py-16">
+            <div className="card-3d p-12 max-w-md mx-auto">
+              <Filter className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-white mb-2">No Assets Found</h3>
+              <p className="text-gray-400 mb-6">
+                Try adjusting your search criteria or filters
+              </p>
+              <button
+                onClick={() => {
+                  setSearchQuery('')
+                  setSelectedType('all')
+                }}
+                className="btn-3d-secondary"
+              >
+                Clear Filters
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Modals */}
+      <InvestmentModal
+        isOpen={isInvestmentModalOpen}
+        onClose={() => setIsInvestmentModalOpen(false)}
+        asset={selectedAsset}
+        onInvest={handleConfirmInvest}
+      />
+
+      <AssetDetailsModal
+        isOpen={isDetailsModalOpen}
+        onClose={() => setIsDetailsModalOpen(false)}
+        asset={selectedAsset}
+        onInvest={handleInvest}
+      />
+    </div>
+  )
+}
+
+
+
+===== FILE: src/components/sections/FeaturedAssetsSection.tsx =====
+"use client";
+
+import React, { useState } from 'react';
+import { Star, TrendingUp, Zap, Shield, ArrowRight } from 'lucide-react';
+import EnhancedAssetCard from '../ui/EnhancedAssetCard';
+import InvestmentModal from '../ui/InvestmentModal';
+import AssetDetailsModal from '../ui/AssetDetailsModal';
+import { mockAssets } from '@/data/mockData';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNotification } from '@/contexts/NotificationContext';
+
+const FeaturedAssetsSection: React.FC = () => {
+  const { user, login, invest } = useAuth();
+  const { showNotification } = useNotification();
+  const [selectedAsset, setSelectedAsset] = useState<any>(null);
+  const [isInvestmentModalOpen, setIsInvestmentModalOpen] = useState(false);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+
+  // Transform mockAssets to match EnhancedAssetCard interface
+  const featuredAssets = mockAssets.slice(0, 3).map((asset, index) => ({
+    ...asset,
+    category: asset.type,
+    currency: "USD",
+    image: "",
+    sharesAvailable: 100,
+    sharesSold: (index * 23) % 100 // Deterministic value based on index
+  }));
+
+  const handleInvest = (assetId: number) => {
+    if (!user) {
+      login('/home');
+      return;
+    }
+
+    const asset = featuredAssets.find(a => a.id === assetId);
+    if (asset) {
+      setSelectedAsset(asset);
+      setIsInvestmentModalOpen(true);
+    }
+  };
+
+  const handleConfirmInvest = async (assetId: number, amount: number) => {
+    if (!user || !selectedAsset) return;
+
+    // Deduct ASRD balance for investment using the new invest function
+    const success = invest(amount, selectedAsset.title);
+    if (!success) return; // Stop if insufficient balance
+
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    showNotification({
+      type: 'premium',
+      title: 'Investment Successful!',
+      message: `Successfully invested $${amount.toLocaleString()} in ${selectedAsset?.title}!\n\n• ASRD Tokens Deducted: ${(amount / 32).toFixed(2)}\n• Asset: ${selectedAsset?.title}\n• ROI: ${selectedAsset?.roi}\n\nYour investment has been added to your portfolio.`,
+      duration: 6000
+    });
+
+    setIsInvestmentModalOpen(false);
+    setSelectedAsset(null);
+  };
+
+  const handleViewDetails = (assetId: number) => {
+    const asset = featuredAssets.find(a => a.id === assetId);
+    if (asset) {
+      setSelectedAsset(asset);
+      setIsDetailsModalOpen(true);
+    }
+  };
+
+  const handleExploreAssets = () => {
+    // Navigate to marketplace
+    window.location.href = '/marketplace';
+  };
+
+  const features = [
+    { icon: Shield, text: "Institutional Security", description: "Bank-grade asset protection" },
+    { icon: Zap, text: "Instant Liquidity", description: "24/7 trading availability" },
+    { icon: TrendingUp, text: "Proven Returns", description: "38.7% average ROI" },
+    { icon: Star, text: "Elite Assets", description: "$50M+ asset classes" }
+  ];
+
+  return (
+    <section className="fluid-section">
+      <div className="fluid-container">
+        {/* Header Section */}
+        <div className="text-center mb-8 md:mb-12 fluid-scroll-item mobile:text-center">
+          <h2 className="fluid-heading">
+            Featured <span className="text-fluid-gold">Opportunities</span>
+          </h2>
+          <p className="fluid-body max-w-2xl mx-auto mobile:px-4">
+            Hand-picked premium assets with exceptional returns and institutional-grade management
+          </p>
+        </div>
+
+        {/* Features Grid */}
+        <div className="fluid-grid fluid-grid-cols-2 lg:fluid-grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+          {features.map((feature, index) => (
+            <div
+              key={feature.text}
+              className="fluid-card text-center fluid-scroll-item mobile:p-3"
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <feature.icon className="w-6 h-6 md:w-8 md:h-8 text-fluid-gold mx-auto mb-2 md:mb-3" />
+              <h3 className="text-white font-semibold text-sm md:text-base mb-1">{feature.text}</h3>
+              <p className="fluid-caption text-xs">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Featured Assets Grid */}
+        <div className="fluid-grid fluid-grid-cols-1 md:fluid-grid-cols-2 lg:fluid-grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
+          {featuredAssets.map((asset, index) => (
+            <div
+              key={asset.id}
+              className="fluid-scroll-item"
+              style={{ transitionDelay: `${index * 150}ms` }}
+            >
+              <EnhancedAssetCard
+                {...asset}
+                onInvest={handleInvest}
+                onViewDetails={handleViewDetails}
+                layout="grid"
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* CTA Section */}
+        <div className="text-center fluid-scroll-item">
+          <button
+            onClick={handleExploreAssets}
+            className="btn-fluid text-lg px-6 md:px-8 py-3 md:py-4 flex items-center justify-center mx-auto space-x-2 mobile:w-full md:w-auto"
+          >
+            <span>Explore All Investment Opportunities</span>
+            <ArrowRight className="w-5 h-5" />
+          </button>
+          <p className="fluid-caption mt-3 md:mt-4 mobile:px-4">
+            Join 2,470+ investors already building wealth with AssetRide
+          </p>
+        </div>
+      </div>
+
+      {/* Modals */}
+      <InvestmentModal
+        isOpen={isInvestmentModalOpen}
+        onClose={() => setIsInvestmentModalOpen(false)}
+        asset={selectedAsset}
+        onInvest={handleConfirmInvest}
+      />
+
+      <AssetDetailsModal
+        isOpen={isDetailsModalOpen}
+        onClose={() => setIsDetailsModalOpen(false)}
+        asset={selectedAsset}
+        onInvest={handleInvest}
+      />
+    </section>
+  );
+};
+
+export default FeaturedAssetsSection;
+
+
+
+===== FILE: src/components/sections/FluidDashboard.tsx =====
+"use client";
+
+import React, { useState } from 'react';
+import {
+  DollarSign, TrendingUp, Building, Zap,
+  ArrowUpRight, Download, Eye, Coins, CalendarDays
+} from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { ownedAssets } from '@/data/mockData';
+import RealAssetImage from '@/components/ui/RealAssetImage';
+import AssetDetailsModal from '@/components/ui/AssetDetailsModal';
+import { useNotification } from '@/contexts/NotificationContext';
+
+export default function FluidDashboard() {
+  const { user, claimRental, claimWinnings } = useAuth();
+  const { showNotification } = useNotification();
+  const [selectedAsset, setSelectedAsset] = useState<any>(null);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [claimedRent, setClaimedRent] = useState(false);
+  const [claimedWinnings, setClaimedWinnings] = useState(false);
+
+  const totalMonthlyIncome = ownedAssets.reduce((sum, asset) => sum + asset.payoutAmount, 0);
+
+  const handleClaimRent = () => {
+    claimRental(1);
+    setClaimedRent(true);
+    showNotification({
+      type: 'premium',
+      title: 'Rent Income Claimed!',
+      message: '$4,250 rent successfully claimed! +132 ASRD tokens added to your balance.',
+      duration: 5000
+    });
+  };
+
+  const handleClaimWinnings = () => {
+    claimWinnings(2);
+    setClaimedWinnings(true);
+    showNotification({
+      type: 'premium',
+      title: 'Investment Winnings Claimed!',
+      message: '$8,500 winnings successfully claimed! +265 ASRD tokens added to your balance.',
+      duration: 5000
+    });
+  };
+
+  const handleViewDetails = (asset: any) => {
+    setSelectedAsset(asset);
+    setIsDetailsModalOpen(true);
+  };
+
+  const stats = [
+    {
+      label: "Portfolio Value",
+      value: `$${user?.portfolioValue?.toLocaleString() || '490,000'}`,
+      change: "+12.8%",
+      icon: DollarSign,
+      color: "text-fluid-gold"
+    },
+    {
+      label: "Monthly Income",
+      value: `$${totalMonthlyIncome.toLocaleString()}`,
+      change: "+15.2%",
+      icon: TrendingUp,
+      color: "text-fluid-emerald"
+    },
+    {
+      label: "Active Assets",
+      value: ownedAssets.length.toString(),
+      change: "+2",
+      icon: Building,
+      color: "text-fluid-sapphire"
+    },
+    {
+      label: "ASRD Tokens",
+      value: user?.asrdBalance?.toLocaleString() || "5,000",
+      change: "+265",
+      icon: Zap,
+      color: "text-fluid-gold"
+    }
+  ];
+
+  return (
+    <div className="fluid-section">
+      <div className="fluid-container">
+        {/* Header Section with Mobile Optimization */}
+        <div className="text-center mb-8 md:mb-12 fluid-scroll-item mobile:text-center">
+          <h1 className="fluid-hero">
+            Portfolio <span className="text-fluid-gold">Dashboard</span>
+          </h1>
+          <p className="fluid-body max-w-2xl mx-auto mobile:px-4">
+            Track your premium real-world asset investments and income with comprehensive analytics
+          </p>
+        </div>
+
+        {/* Stats Grid - Mobile Responsive */}
+        <div className="fluid-grid fluid-grid-cols-2 lg:fluid-grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+          {stats.map((stat, index) => (
+            <div 
+              key={stat.label} 
+              className="fluid-card fluid-scroll-item mobile:w-full"
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <div className="flex items-center justify-between mb-3 md:mb-4">
+                <div className={`p-2 md:p-3 rounded-lg md:rounded-xl bg-opacity-10 ${stat.color.replace('text-', 'bg-')}`}>
+                  <stat.icon className="w-4 h-4 md:w-6 md:h-6" />
+                </div>
+                <div className="flex items-center space-x-1 text-xs md:text-sm font-semibold text-fluid-emerald">
+                  <ArrowUpRight className="w-3 h-3 md:w-4 md:h-4" />
+                  <span>{stat.change}</span>
+                </div>
+              </div>
+              <h3 className="text-lg md:text-2xl font-bold text-white mb-1 md:mb-2">{stat.value}</h3>
+              <p className="fluid-caption text-xs md:text-base">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="fluid-grid lg:fluid-grid-cols-3 gap-6 md:gap-8">
+          {/* Income Section */}
+          <div className="lg:col-span-2 space-y-4 md:space-y-6">
+            {/* Claimable Income */}
+            <div className="fluid-card-panel fluid-scroll-item mobile:px-4 mobile:py-4">
+              <h2 className="fluid-subheading mb-4 md:mb-6">Claimable Income</h2>
+
+              {/* Rent Income */}
+              <div className="fluid-card mb-3 md:mb-4 border-fluid-gold mobile:p-3">
+                <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 md:mb-4 space-y-2 md:space-y-0">
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-white text-sm md:text-base">Rental Income</h3>
+                    <p className="fluid-caption text-xs md:text-sm">From real estate assets</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-lg md:text-xl font-bold text-fluid-gold">$4,250</p>
+                    <p className="text-fluid-gold text-xs md:text-sm">+132 ASRD</p>
+                  </div>
+                </div>
+                <button
+                  onClick={handleClaimRent}
+                  disabled={claimedRent}
+                  className={`w-full btn-fluid mobile:py-3 ${claimedRent ? 'opacity-50' : ''}`}
+                >
+                  <Coins className="w-4 h-4 mr-2" />
+                  {claimedRent ? 'Claimed Successfully!' : 'Claim Rent Income'}
+                </button>
+              </div>
+
+              {/* Winnings Income */}
+              <div className="fluid-card border-fluid-emerald mobile:p-3">
+                <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 md:mb-4 space-y-2 md:space-y-0">
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-white text-sm md:text-base">Investment Winnings</h3>
+                    <p className="fluid-caption text-xs md:text-sm">From thoroughbred and venture assets</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-lg md:text-xl font-bold text-fluid-emerald">$8,500</p>
+                    <p className="text-fluid-emerald text-xs md:text-sm">+265 ASRD</p>
+                  </div>
+                </div>
+                <button
+                  onClick={handleClaimWinnings}
+                  disabled={claimedWinnings}
+                  className={`w-full btn-fluid mobile:py-3 ${claimedWinnings ? 'opacity-50' : ''}`}
+                >
+                  <Zap className="w-4 h-4 mr-2" />
+                  {claimedWinnings ? 'Claimed Successfully!' : 'Claim Winnings'}
+                </button>
+              </div>
+            </div>
+
+            {/* Income History */}
+            <div className="fluid-card-panel fluid-scroll-item mobile:px-4 mobile:py-4" style={{ transitionDelay: '200ms' }}>
+              <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 md:mb-6 space-y-3 md:space-y-0">
+                <h2 className="fluid-subheading">Income History</h2>
+                <button className="btn-fluid-secondary mobile:w-full md:w-auto">
+                  <Download className="w-4 h-4 mr-2" />
+                  Export
+                </button>
+              </div>
+
+              <div className="space-y-2 md:space-y-3 mobile:space-y-3">
+                {ownedAssets.map((asset) => (
+                  <div key={asset.id} className="flex items-center justify-between p-2 md:p-3 fluid-card mobile:flex-col mobile:items-start mobile:space-y-2">
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-white text-xs md:text-sm">{asset.title}</h3>
+                      <p className="fluid-caption text-xs">Next payout: {asset.nextPayout}</p>
+                    </div>
+                    <div className="text-right md:text-left mobile:w-full mobile:flex mobile:justify-between">
+                      <p className="text-fluid-sapphire font-semibold text-sm md:text-base">${asset.payoutAmount.toLocaleString()}</p>
+                      <p className="text-fluid-sapphire text-xs">+{(asset.payoutAmount / 32).toFixed(0)} ASRD</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Your Assets Section */}
+          <div className="fluid-card-panel fluid-scroll-item mobile:px-4 mobile:py-4" style={{ transitionDelay: '400ms' }}>
+            <h2 className="fluid-subheading mb-4 md:mb-6">Your Assets</h2>
+            <div className="space-y-3 md:space-y-4 mobile:space-y-3">
+              {ownedAssets.map((asset, index) => (
+                <div 
+                  key={asset.id} 
+                  className="fluid-card cursor-pointer mobile:p-3"
+                  onClick={() => handleViewDetails(asset)}
+                  style={{ transitionDelay: `${index * 50}ms` }}
+                >
+                  <div className="flex items-start space-x-2 md:space-x-3">
+                    <RealAssetImage type={asset.type} title={asset.title} size="sm" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-col md:flex-row md:items-start justify-between mb-2 space-y-1 md:space-y-0">
+                        <div className="flex-1">
+                          <h3 className="font-bold text-white text-sm md:text-base mb-1 line-clamp-1">{asset.title}</h3>
+                          <p className="fluid-caption text-xs">{asset.location}</p>
+                        </div>
+                        <span className="text-fluid-emerald font-semibold bg-fluid-emerald bg-opacity-10 px-2 py-1 rounded text-xs md:text-sm">
+                          {asset.roi}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-1 md:gap-2 text-xs mb-2">
+                        <div>
+                          <p className="fluid-caption">Investment</p>
+                          <p className="text-white font-semibold">${asset.investment.toLocaleString()}</p>
+                        </div>
+                        <div>
+                          <p className="fluid-caption">Shares</p>
+                          <p className="text-fluid-sapphire font-semibold">{asset.shares}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0">
+                        <span className="fluid-caption text-xs">Value: ${asset.value.toLocaleString()}</span>
+                        <button
+                          className="btn-fluid-secondary text-xs px-2 py-1 mobile:w-full md:w-auto"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleViewDetails(asset);
+                          }}
+                        >
+                          <Eye className="w-3 h-3 mr-1" />
+                          Details
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <AssetDetailsModal
+        isOpen={isDetailsModalOpen}
+        onClose={() => setIsDetailsModalOpen(false)}
+        asset={selectedAsset}
+        onInvest={() => {}}
+      />
+    </div>
+  );
+}
+
+
+
+===== FILE: src/components/sections/OurJourneySection.tsx =====
+"use client";
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Calendar, Target, Users, TrendingUp, Shield, Globe } from 'lucide-react';
+
+export default function OurJourneySection() {
+  const milestones = [
+    {
+      year: "2023 Q4",
+      title: "Protocol Foundation",
+      description: "Launched AssetRide protocol with initial real estate tokenization",
+      icon: Target,
+      status: "completed",
+      color: "text-fluid-gold"
+    },
+    {
+      year: "2024 Q1",
+      title: "Asset Diversification",
+      description: "Expanded to thoroughbred, marine, and aviation assets",
+      icon: TrendingUp,
+      status: "completed",
+      color: "text-fluid-emerald"
+    },
+    {
+      year: "2024 Q2",
+      title: "DAO Governance",
+      description: "Implemented decentralized governance for community-driven decisions",
+      icon: Users,
+      status: "completed",
+      color: "text-fluid-sapphire"
+    },
+    {
+      year: "2024 Q3",
+      title: "Global Expansion",
+      description: "Scaled operations to international markets and regulatory compliance",
+      icon: Globe,
+      status: "current",
+      color: "text-fluid-gold"
+    },
+    {
+      year: "2024 Q4",
+      title: "Institutional Partnerships",
+      description: "Forming alliances with major financial institutions",
+      icon: Shield,
+      status: "upcoming",
+      color: "text-fluid-emerald"
+    },
+    {
+      year: "2025 Q1",
+      title: "Mass Adoption",
+      description: "Targeting 10,000+ active investors worldwide",
+      icon: Target,
+      status: "upcoming",
+      color: "text-fluid-sapphire"
+    }
+  ];
+
+  const stats = [
+    { value: "2,470+", label: "Active Investors", icon: Users },
+    { value: "$15.4M", label: "Platform Value", icon: TrendingUp },
+    { value: "38.7%", label: "Average ROI", icon: Target },
+    { value: "28", label: "Premium Assets", icon: Shield }
+  ];
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'completed': return 'bg-fluid-emerald';
+      case 'current': return 'bg-fluid-gold';
+      case 'upcoming': return 'bg-fluid-slate';
+      default: return 'bg-fluid-slate';
+    }
+  };
+
+  return (
+    <div className="fluid-section">
+      <div className="fluid-container">
+        {/* Header Section */}
+        <div className="text-center mb-8 md:mb-12 fluid-scroll-item mobile:text-center">
+          <h1 className="fluid-hero">
+            Our <span className="text-fluid-gold">Journey</span>
+          </h1>
+          <p className="fluid-body max-w-2xl mx-auto mobile:px-4">
+            From visionary concept to leading real-world asset platform. Discover how we're democratizing access to elite investments.
+          </p>
+        </div>
+
+        {/* Stats Section */}
+        <div className="fluid-grid fluid-grid-cols-2 lg:fluid-grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+          {stats.map((stat, index) => (
+            <div 
+              key={stat.label} 
+              className="fluid-card text-center fluid-scroll-item mobile:p-3"
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <stat.icon className="w-6 h-6 md:w-8 md:h-8 text-fluid-gold mx-auto mb-2 md:mb-3" />
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2">{stat.value}</h3>
+              <p className="fluid-caption text-sm md:text-base">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Timeline Section */}
+        <div className="fluid-card-panel fluid-scroll-item mobile:px-4 mobile:py-4">
+          <h2 className="fluid-subheading mb-6 md:mb-8 text-center">Platform Evolution Timeline</h2>
+          
+          <div className="relative">
+            {/* Timeline Line */}
+            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-fluid-slate transform -translate-x-1/2 hidden md:block"></div>
+            
+            <div className="space-y-6 md:space-y-8">
+              {milestones.map((milestone, index) => (
+                <motion.div
+                  key={milestone.year}
+                  initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className={`flex flex-col md:flex-row items-start md:items-center ${
+                    index % 2 === 0 ? 'md:flex-row-reverse' : ''
+                  }`}
+                >
+                  {/* Mobile Timeline Dot */}
+                  <div className="flex items-center mb-3 md:hidden">
+                    <div className={`w-3 h-3 rounded-full ${getStatusColor(milestone.status)} mr-3`}></div>
+                    <span className="text-fluid-gold font-semibold text-sm">{milestone.year}</span>
+                  </div>
+
+                  {/* Content */}
+                  <div className={`flex-1 ${index % 2 === 0 ? 'md:pr-8' : 'md:pl-8'} mobile:ml-0`}>
+                    <div className="fluid-card mobile:p-3">
+                      <div className="flex items-start space-x-3 md:space-x-4">
+                        <div className={`p-2 md:p-3 rounded-xl bg-opacity-10 ${milestone.color.replace('text-', 'bg-')}`}>
+                          <milestone.icon className="w-4 h-4 md:w-5 md:h-5" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
+                            <h3 className="text-lg md:text-xl font-bold text-white">{milestone.title}</h3>
+                            <span className="text-fluid-gold font-semibold text-sm hidden md:block">{milestone.year}</span>
+                          </div>
+                          <p className="fluid-caption text-sm md:text-base">{milestone.description}</p>
+                          <div className="flex items-center space-x-2 mt-2">
+                            <div className={`w-2 h-2 rounded-full ${getStatusColor(milestone.status)}`}></div>
+                            <span className="text-fluid-silver text-xs capitalize">{milestone.status}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Desktop Timeline Dot */}
+                  <div className="hidden md:flex items-center justify-center w-4 h-4 relative">
+                    <div className={`w-3 h-3 rounded-full ${getStatusColor(milestone.status)} absolute`}></div>
+                  </div>
+
+                  {/* Spacer for desktop */}
+                  <div className="flex-1 hidden md:block"></div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Mission Statement */}
+        <div className="fluid-card-panel mt-6 md:mt-8 fluid-scroll-item mobile:px-4 mobile:py-4" style={{ transitionDelay: '400ms' }}>
+          <div className="text-center">
+            <Shield className="w-12 h-12 md:w-16 md:h-16 text-fluid-gold mx-auto mb-4 md:mb-6" />
+            <h2 className="fluid-subheading mb-3 md:mb-4">Our Mission</h2>
+            <p className="fluid-body max-w-3xl mx-auto mobile:px-4">
+              To democratize access to premium real-world assets through fractional digital ownership, 
+              enabling anyone to participate in investment opportunities previously reserved for the ultra-wealthy. 
+              We believe in collective capital power and institutional-grade access for all.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+===== FILE: src/components/sections/FluidTreasury.tsx =====
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import { DollarSign, TrendingUp, PieChart, Building, Ship, Plane, Gem, Zap, ArrowUpRight, ArrowDownRight, Users, Calendar } from 'lucide-react';
+
+export default function FluidTreasury() {
+  const [treasuryData, setTreasuryData] = useState<any>(null);
+  const [timeframe, setTimeframe] = useState<'1m' | '3m' | '1y' | 'all'>('1y');
+
+  useEffect(() => {
+    const fetchTreasuryData = async () => {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setTreasuryData({
+        totalValue: 15420000,
+        totalInvestors: 2470,
+        averageRoi: "38.7%",
+        activeAssets: 28,
+        monthlyReturns: 425000,
+        totalReturns: 3850000,
+        assetsByType: [
+          { type: 'Real Estate', value: 6200000, percentage: 40.2, icon: Building },
+          { type: 'Thoroughbred', value: 3800000, percentage: 24.6, icon: Zap },
+          { type: 'Marine', value: 2850000, percentage: 18.5, icon: Ship },
+          { type: 'Aviation', value: 1570000, percentage: 10.2, icon: Plane },
+          { type: 'Luxury Goods', value: 1000000, percentage: 6.5, icon: Gem }
+        ],
+        performance: [
+          { month: 'Jan', returns: 385000, growth: 12.5 },
+          { month: 'Feb', returns: 412000, growth: 15.2 },
+          { month: 'Mar', returns: 398000, growth: 13.8 },
+          { month: 'Apr', returns: 425000, growth: 16.1 },
+          { month: 'May', returns: 441000, growth: 18.3 },
+          { month: 'Jun', returns: 468000, growth: 21.5 }
+        ]
+      });
+    };
+
+    fetchTreasuryData();
+  }, []);
+
+  const stats = [
+    {
+      label: "Total Platform Value",
+      value: `$${(treasuryData?.totalValue / 1000000).toFixed(1)}M`,
+      change: "+18.3%",
+      icon: DollarSign,
+      color: "text-fluid-gold"
+    },
+    {
+      label: "Active Investors",
+      value: treasuryData?.totalInvestors.toLocaleString(),
+      change: "+247",
+      icon: Users,
+      color: "text-fluid-emerald"
+    },
+    {
+      label: "Average ROI",
+      value: treasuryData?.averageRoi,
+      change: "+2.1%",
+      icon: TrendingUp,
+      color: "text-fluid-sapphire"
+    },
+    {
+      label: "Monthly Returns",
+      value: `$${(treasuryData?.monthlyReturns / 1000).toFixed(0)}K`,
+      change: "+16.1%",
+      icon: PieChart,
+      color: "text-fluid-gold"
+    }
+  ];
+
+  if (!treasuryData) {
+    return (
+      <div className="fluid-section">
+        <div className="fluid-container">
+          <div className="text-center">
+            <div className="w-12 h-12 md:w-16 md:h-16 border-4 border-fluid-gold border-t-transparent rounded-full animate-spin mx-auto mb-3 md:mb-4"></div>
+            <p className="fluid-caption">Loading treasury data...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="fluid-section">
+      <div className="fluid-container">
+        {/* Header Section */}
+        <div className="text-center mb-8 md:mb-12 fluid-scroll-item mobile:text-center">
+          <h1 className="fluid-hero">
+            Platform <span className="text-fluid-gold">Treasury</span>
+          </h1>
+          <p className="fluid-body max-w-2xl mx-auto mobile:px-4">
+            Comprehensive overview of platform assets, performance, and investor returns
+          </p>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="fluid-grid fluid-grid-cols-2 lg:fluid-grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+          {stats.map((stat, index) => (
+            <div 
+              key={stat.label} 
+              className="fluid-card fluid-scroll-item mobile:w-full"
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <div className="flex items-center justify-between mb-3 md:mb-4">
+                <div className={`p-2 md:p-3 rounded-lg md:rounded-xl bg-opacity-10 ${stat.color.replace('text-', 'bg-')}`}>
+                  <stat.icon className="w-4 h-4 md:w-6 md:h-6" />
+                </div>
+                <div className="flex items-center space-x-1 text-xs md:text-sm font-semibold text-fluid-emerald">
+                  <ArrowUpRight className="w-3 h-3 md:w-4 md:h-4" />
+                  <span>{stat.change}</span>
+                </div>
+              </div>
+              <h3 className="text-lg md:text-2xl font-bold text-white mb-1 md:mb-2">{stat.value}</h3>
+              <p className="fluid-caption text-xs md:text-base">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="fluid-grid lg:fluid-grid-cols-2 gap-6 md:gap-8">
+          {/* Asset Allocation */}
+          <div className="fluid-card-panel fluid-scroll-item mobile:px-4 mobile:py-4">
+            <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 md:mb-6 space-y-2 md:space-y-0">
+              <h2 className="fluid-subheading">Asset Allocation</h2>
+              <div className="flex items-center space-x-2 text-fluid-silver">
+                <Calendar className="w-4 h-4" />
+                <span className="text-sm md:text-base">Current</span>
+              </div>
+            </div>
+
+            <div className="space-y-3 md:space-y-4">
+              {treasuryData.assetsByType.map((asset: any, index: number) => (
+                <div key={asset.type} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2 md:space-x-3">
+                    <div className={`p-1 md:p-2 rounded-lg bg-opacity-10 ${
+                      asset.type === 'Real Estate' ? 'bg-fluid-gold' : 
+                      asset.type === 'Thoroughbred' ? 'bg-fluid-emerald' : 'bg-fluid-sapphire'
+                    }`}>
+                      <asset.icon className="w-3 h-3 md:w-4 md:h-4" />
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold text-sm md:text-base">{asset.type}</p>
+                      <p className="fluid-caption text-xs md:text-sm">${(asset.value / 1000000).toFixed(1)}M</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-white font-semibold text-sm md:text-base">{asset.percentage}%</p>
+                    <div className="w-20 md:w-32 h-2 bg-fluid-slate rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full rounded-full ${
+                          asset.type === 'Real Estate' ? 'bg-fluid-gold' : 
+                          asset.type === 'Thoroughbred' ? 'bg-fluid-emerald' : 'bg-fluid-sapphire'
+                        }`}
+                        style={{ width: `${asset.percentage}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Performance Chart */}
+          <div className="fluid-card-panel fluid-scroll-item mobile:px-4 mobile:py-4" style={{ transitionDelay: '200ms' }}>
+            <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 md:mb-6 space-y-2 md:space-y-0">
+              <h2 className="fluid-subheading">Performance Trend</h2>
+              <select 
+                value={timeframe}
+                onChange={(e) => setTimeframe(e.target.value as any)}
+                className="px-3 py-2 bg-fluid-charcoal border border-fluid-slate rounded-lg text-white text-sm focus:border-fluid-gold focus:outline-none"
+              >
+                <option value="1m">1 Month</option>
+                <option value="3m">3 Months</option>
+                <option value="1y">1 Year</option>
+                <option value="all">All Time</option>
+              </select>
+            </div>
+
+            <div className="space-y-3 md:space-y-4">
+              {treasuryData.performance.map((month: any, index: number) => (
+                <div key={month.month} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2 md:space-x-4">
+                    <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-fluid-gold bg-opacity-20 flex items-center justify-center">
+                      <span className="text-fluid-gold text-xs md:text-sm font-semibold">{month.month}</span>
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold text-sm md:text-base">${(month.returns / 1000).toFixed(0)}K Returns</p>
+                      <p className="fluid-caption text-xs">Monthly Performance</p>
+                    </div>
+                  </div>
+                  <div className={`flex items-center space-x-1 text-xs md:text-sm font-semibold ${
+                    month.growth >= 0 ? 'text-fluid-emerald' : 'text-red-400'
+                  }`}>
+                    {month.growth >= 0 ? <ArrowUpRight className="w-3 h-3 md:w-4 md:h-4" /> : <ArrowDownRight className="w-3 h-3 md:w-4 md:h-4" />}
+                    <span>{month.growth >= 0 ? '+' : ''}{month.growth}%</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Total Returns Summary */}
+        <div className="fluid-card-panel mt-6 md:mt-8 fluid-scroll-item mobile:px-4 mobile:py-4" style={{ transitionDelay: '400ms' }}>
+          <div className="flex flex-col md:flex-row md:items-center justify-between space-y-3 md:space-y-0">
+            <div>
+              <h3 className="fluid-subheading">Total Platform Returns</h3>
+              <p className="fluid-caption">Cumulative returns distributed to investors</p>
+            </div>
+            <div className="text-right">
+              <p className="text-2xl md:text-3xl font-bold text-fluid-gold">${(treasuryData.totalReturns / 1000000).toFixed(1)}M</p>
+              <p className="fluid-caption">Since inception</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+===== FILE: src/components/sections/FluidDAO.tsx =====
+"use client";
+
+import React, { useState } from 'react';
+import { Users, Vote, Clock, CheckCircle, XCircle, TrendingUp, Award, Shield } from 'lucide-react';
+
+export default function FluidDAO() {
+  const [activeTab, setActiveTab] = useState<'proposals' | 'governance' | 'rewards'>('proposals');
+
+  const proposals = [
+    {
+      id: 1,
+      title: "Expand Dubai Real Estate Portfolio",
+      description: "Acquire additional luxury properties in Palm Jumeirah to meet growing investor demand",
+      votesFor: 1250,
+      votesAgainst: 320,
+      status: "active",
+      endDate: "2024-02-15",
+      type: "Investment"
+    },
+    {
+      id: 2,
+      title: "Launch New Thoroughbred Fund",
+      description: "Create specialized fund for champion racehorses with proven track records",
+      votesFor: 890,
+      votesAgainst: 210,
+      status: "active",
+      endDate: "2024-02-20",
+      type: "Fund Creation"
+    },
+    {
+      id: 3,
+      title: "Upgrade Yacht Fleet Amenities",
+      description: "Invest in premium upgrades for Mediterranean superyacht to increase charter rates",
+      votesFor: 670,
+      votesAgainst: 150,
+      status: "active",
+      endDate: "2024-02-25",
+      type: "Asset Enhancement"
+    }
+  ];
+
+  const governanceStats = [
+    { label: "Total Members", value: "2,470", icon: Users, color: "text-fluid-gold" },
+    { label: "Active Proposals", value: "3", icon: Vote, color: "text-fluid-emerald" },
+    { label: "Approval Rate", value: "78%", icon: CheckCircle, color: "text-fluid-sapphire" },
+    { label: "Avg Participation", value: "64%", icon: TrendingUp, color: "text-fluid-gold" }
+  ];
+
+  const rewards = [
+    { type: "Voting Participation", amount: "50 ASRD", description: "For active voting on proposals" },
+    { type: "Proposal Submission", amount: "200 ASRD", description: "For successful proposal creation" },
+    { type: "Community Governance", amount: "100 ASRD", description: "Monthly governance participation" },
+    { type: "Platform Growth", amount: "150 ASRD", description: "Contributing to platform expansion" }
+  ];
+
+  const getProgressPercentage = (forVotes: number, againstVotes: number) => {
+    const total = forVotes + againstVotes;
+    return total > 0 ? (forVotes / total) * 100 : 0;
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active': return 'text-fluid-emerald';
+      case 'pending': return 'text-fluid-gold';
+      case 'closed': return 'text-fluid-silver';
+      default: return 'text-fluid-silver';
+    }
+  };
+
+  return (
+    <div className="fluid-section">
+      <div className="fluid-container">
+        {/* Header Section */}
+        <div className="text-center mb-8 md:mb-12 fluid-scroll-item mobile:text-center">
+          <h1 className="fluid-hero">
+            DAO <span className="text-fluid-gold">Governance</span>
+          </h1>
+          <p className="fluid-body max-w-2xl mx-auto mobile:px-4">
+            Collective intelligence in action. Shape the future of AssetRide through decentralized governance and community-driven decisions.
+          </p>
+        </div>
+
+        {/* Governance Stats */}
+        <div className="fluid-grid fluid-grid-cols-2 lg:fluid-grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+          {governanceStats.map((stat, index) => (
+            <div 
+              key={stat.label} 
+              className="fluid-card fluid-scroll-item mobile:w-full"
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <div className="flex items-center justify-between mb-3 md:mb-4">
+                <div className={`p-2 md:p-3 rounded-lg md:rounded-xl bg-opacity-10 ${stat.color.replace('text-', 'bg-')}`}>
+                  <stat.icon className="w-4 h-4 md:w-6 md:h-6" />
+                </div>
+              </div>
+              <h3 className="text-lg md:text-2xl font-bold text-white mb-1 md:mb-2">{stat.value}</h3>
+              <p className="fluid-caption text-xs md:text-base">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Tabs */}
+        <div className="fluid-card-panel mb-6 md:mb-8 fluid-scroll-item mobile:px-4 mobile:py-4">
+          <div className="flex flex-col md:flex-row md:space-x-1 space-y-2 md:space-y-0 mb-4 md:mb-6">
+            {[
+              { id: 'proposals', label: 'Active Proposals', icon: Vote },
+              { id: 'governance', label: 'Governance', icon: Shield },
+              { id: 'rewards', label: 'Rewards', icon: Award }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex items-center space-x-2 px-3 md:px-4 py-2 md:py-3 rounded-xl font-semibold transition-all duration-300 text-sm md:text-base ${
+                  activeTab === tab.id
+                    ? 'bg-fluid-gold text-fluid-black'
+                    : 'text-fluid-silver hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <tab.icon className="w-4 h-4" />
+                <span>{tab.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Proposals Tab */}
+          {activeTab === 'proposals' && (
+            <div className="space-y-4 md:space-y-6">
+              {proposals.map((proposal, index) => {
+                const progress = getProgressPercentage(proposal.votesFor, proposal.votesAgainst);
+                return (
+                  <div key={proposal.id} className="fluid-card fluid-scroll-item mobile:p-3" style={{ transitionDelay: `${index * 150}ms` }}>
+                    <div className="flex items-start justify-between mb-3 md:mb-4">
+                      <div className="flex-1">
+                        <div className="flex flex-wrap gap-2 mb-2">
+                          <span className={`px-2 md:px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(proposal.status)} bg-opacity-10 border ${getStatusColor(proposal.status).replace('text-', 'border-')}`}>
+                            {proposal.status.toUpperCase()}
+                          </span>
+                          <span className="px-2 py-1 bg-fluid-sapphire bg-opacity-10 text-fluid-sapphire rounded text-xs">
+                            {proposal.type}
+                          </span>
+                        </div>
+                        <h3 className="text-lg md:text-xl font-bold text-white mb-1 md:mb-2">{proposal.title}</h3>
+                        <p className="fluid-caption text-sm mb-3 md:mb-4">{proposal.description}</p>
+                      </div>
+                    </div>
+
+                    {/* Voting Progress */}
+                    <div className="space-y-2 md:space-y-3">
+                      <div className="flex justify-between text-xs md:text-sm">
+                        <span className="text-fluid-emerald">{proposal.votesFor.toLocaleString()} For</span>
+                        <span className="text-red-400">{proposal.votesAgainst.toLocaleString()} Against</span>
+                      </div>
+                      <div className="w-full bg-fluid-slate rounded-full h-2">
+                        <div
+                          className="bg-gradient-to-r from-fluid-emerald to-fluid-gold h-2 rounded-full transition-all duration-500"
+                          style={{ width: `${progress}%` }}
+                        ></div>
+                      </div>
+                      <div className="flex justify-between items-center text-xs md:text-sm">
+                        <div className="flex items-center space-x-1 text-fluid-silver">
+                          <Clock className="w-3 h-3 md:w-4 md:h-4" />
+                          <span>Ends {proposal.endDate}</span>
+                        </div>
+                        <span className="text-white font-semibold">{progress.toFixed(1)}%</span>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-3 mt-3 md:mt-4">
+                      <button className="flex-1 btn-fluid-secondary flex items-center justify-center space-x-2 py-2 text-sm">
+                        <CheckCircle className="w-4 h-4" />
+                        <span>Vote For</span>
+                      </button>
+                      <button className="flex-1 btn-fluid-secondary flex items-center justify-center space-x-2 py-2 text-sm">
+                        <XCircle className="w-4 h-4" />
+                        <span>Vote Against</span>
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Governance Tab */}
+          {activeTab === 'governance' && (
+            <div className="fluid-grid fluid-grid-cols-1 lg:fluid-grid-cols-2 gap-4 md:gap-6">
+              <div className="fluid-card fluid-scroll-item mobile:p-3">
+                <Shield className="w-6 h-6 md:w-8 md:h-8 text-fluid-gold mb-3 md:mb-4" />
+                <h3 className="text-lg md:text-xl font-bold text-white mb-2 md:mb-3">Governance Framework</h3>
+                <p className="fluid-caption text-sm mb-3 md:mb-4">
+                  Our decentralized governance model ensures every token holder has a voice in platform decisions.
+                </p>
+                <ul className="space-y-1 md:space-y-2">
+                  <li className="flex items-center space-x-2 text-fluid-silver text-sm">
+                    <div className="w-2 h-2 bg-fluid-gold rounded-full"></div>
+                    <span>1 ASRD = 1 Vote</span>
+                  </li>
+                  <li className="flex items-center space-x-2 text-fluid-silver text-sm">
+                    <div className="w-2 h-2 bg-fluid-gold rounded-full"></div>
+                    <span>7-day voting periods</span>
+                  </li>
+                  <li className="flex items-center space-x-2 text-fluid-silver text-sm">
+                    <div className="w-2 h-2 bg-fluid-gold rounded-full"></div>
+                    <span>51% approval threshold</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="fluid-card fluid-scroll-item mobile:p-3" style={{ transitionDelay: '200ms' }}>
+                <Users className="w-6 h-6 md:w-8 md:h-8 text-fluid-emerald mb-3 md:mb-4" />
+                <h3 className="text-lg md:text-xl font-bold text-white mb-2 md:mb-3">Community Power</h3>
+                <p className="fluid-caption text-sm mb-3 md:mb-4">
+                  Join 2,470+ investors shaping the future of real-world asset investment.
+                </p>
+                <div className="space-y-2 md:space-y-3">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-fluid-silver">Active Members</span>
+                    <span className="text-white font-semibold">2,470</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-fluid-silver">Proposals Passed</span>
+                    <span className="text-white font-semibold">89</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-fluid-silver">Total Votes Cast</span>
+                    <span className="text-white font-semibold">15,247</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Rewards Tab */}
+          {activeTab === 'rewards' && (
+            <div className="fluid-grid fluid-grid-cols-1 lg:fluid-grid-cols-2 gap-4 md:gap-6">
+              {rewards.map((reward, index) => (
+                <div key={reward.type} className="fluid-card fluid-scroll-item mobile:p-3" style={{ transitionDelay: `${index * 100}ms` }}>
+                  <Award className="w-6 h-6 md:w-8 md:h-8 text-fluid-gold mb-3 md:mb-4" />
+                  <h3 className="text-lg md:text-xl font-bold text-white mb-1 md:mb-2">{reward.type}</h3>
+                  <p className="text-fluid-gold text-base md:text-lg font-semibold mb-1 md:mb-2">{reward.amount}</p>
+                  <p className="fluid-caption text-sm">{reward.description}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+===== FILE: src/components/sections/IncomeSection.tsx =====
+"use client";
+
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { DollarSign, TrendingUp, Calendar, Download, Zap, Crown, Target } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNotification } from '@/contexts/NotificationContext';
+import { ownedAssets } from '@/data/mockData';
+
+export default function IncomeSection() {
+  const { user, claimRental, claimWinnings } = useAuth();
+  const { showNotification } = useNotification();
+  const [claimedRent, setClaimedRent] = useState(false);
+  const [claimedWinnings, setClaimedWinnings] = useState(false);
+
+  const totalMonthlyIncome = ownedAssets.reduce((sum, asset) => sum + asset.payoutAmount, 0);
+  const totalASRDTokens = totalMonthlyIncome / 32;
+
+  const handleClaimRent = () => {
+    // Call the actual claim function from AuthContext
+    claimRental(1); // Pass any asset ID
+    
+    // Simulate API call
+    setTimeout(() => {
+      setClaimedRent(true);
+      
+      // Show notification instead of alert
+      showNotification({
+        type: 'success',
+        title: 'Rental Income Claimed!',
+        message: 'Successfully claimed $4,250 rent! +132 ASRD tokens added to your balance.',
+        duration: 6000
+      });
+    }, 1000);
+  };
+
+  const handleClaimWinnings = () => {
+    // Call the actual claim function from AuthContext
+    claimWinnings(1); // Pass any asset ID
+    
+    // Simulate API call
+    setTimeout(() => {
+      setClaimedWinnings(true);
+      
+      // Show notification instead of alert
+      showNotification({
+        type: 'success',
+        title: 'Winnings Claimed!',
+        message: 'Successfully claimed $8,500 winnings! +265 ASRD tokens added to your balance.',
+        duration: 6000
+      });
+    }, 1000);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
+          <h1 className="text-4xl md:text-6xl font-black text-white mb-6">
+            INCOME <span className="text-cyan-400">DASHBOARD</span>
+          </h1>
+          <p className="text-xl text-white max-w-2xl mx-auto leading-relaxed">
+            Track your earnings, claim rewards, and monitor your investment performance
+          </p>
+        </motion.div>
+
+        {/* Income Overview */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12"
+        >
+          {/* Total Income Card */}
+          <div className="bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-2xl p-6 border border-cyan-500/20">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-white">Monthly Income</h3>
+              <DollarSign className="w-8 h-8 text-cyan-400" />
+            </div>
+            <p className="text-3xl font-bold text-white mb-2">${totalMonthlyIncome.toLocaleString()}</p>
+            <p className="text-cyan-300">+{totalASRDTokens.toFixed(0)} ASRD tokens</p>
+            <div className="flex items-center text-emerald-400 text-sm mt-2">
+              <TrendingUp className="w-4 h-4 mr-1" />
+              <span>+15.2% from last month</span>
+            </div>
+          </div>
+
+          {/* Available for Claim */}
+          <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-2xl p-6 border border-amber-500/20">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-white">Ready to Claim</h3>
+              <Zap className="w-8 h-8 text-amber-400" />
+            </div>
+            <p className="text-3xl font-bold text-white mb-2">$12,750</p>
+            <p className="text-amber-300">+398 ASRD tokens available</p>
+            <div className="text-amber-400 text-sm mt-2">
+              <Calendar className="w-4 h-4 inline mr-1" />
+              <span>Next claim: Today</span>
+            </div>
+          </div>
+
+          {/* Portfolio Value */}
+          <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl p-6 border border-purple-500/20">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-white">Portfolio Value</h3>
+              <Crown className="w-8 h-8 text-purple-400" />
+            </div>
+            <p className="text-3xl font-bold text-white mb-2">${user?.portfolioValue?.toLocaleString() || '490,000'}</p>
+            <p className="text-purple-300">All-time returns</p>
+            <div className="flex items-center text-emerald-400 text-sm mt-2">
+              <Target className="w-4 h-4 mr-1" />
+              <span>+38.7% overall ROI</span>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Claimable Income */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="bg-slate-800/50 rounded-2xl border border-gray-700 p-6"
+          >
+            <h2 className="text-2xl font-bold text-white mb-6">Claimable Income</h2>
+
+            {/* Rent Income */}
+            <div className="bg-gray-800/30 rounded-xl p-4 mb-4 border border-gray-600">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h3 className="font-semibold text-white">Rental Income</h3>
+                  <p className="text-gray-400 text-sm">From real estate assets</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xl font-bold text-cyan-400">$4,250</p>
+                  <p className="text-cyan-300 text-sm">+132 ASRD</p>
+                </div>
+              </div>
+              <button
+                onClick={handleClaimRent}
+                disabled={claimedRent}
+                className={`w-full py-3 rounded-xl font-semibold transition-colors flex items-center justify-center space-x-2 ${
+                  claimedRent
+                    ? 'bg-emerald-500 text-white'
+                    : 'bg-cyan-500 hover:bg-cyan-600 text-white'
+                }`}
+              >
+                <DollarSign className="w-4 h-4" />
+                <span>{claimedRent ? 'Claimed Successfully!' : 'Claim Rent Income'}</span>
+              </button>
+            </div>
+
+            {/* Winnings Income */}
+            <div className="bg-gray-800/30 rounded-xl p-4 border border-gray-600">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h3 className="font-semibold text-white">Investment Winnings</h3>
+                  <p className="text-gray-400 text-sm">From thoroughbred and venture assets</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xl font-bold text-amber-400">$8,500</p>
+                  <p className="text-amber-300 text-sm">+265 ASRD</p>
+                </div>
+              </div>
+              <button
+                onClick={handleClaimWinnings}
+                disabled={claimedWinnings}
+                className={`w-full py-3 rounded-xl font-semibold transition-colors flex items-center justify-center space-x-2 ${
+                  claimedWinnings
+                    ? 'bg-emerald-500 text-white'
+                    : 'bg-amber-500 hover:bg-amber-600 text-white'
+                }`}
+              >
+                <Zap className="w-4 h-4" />
+                <span>{claimedWinnings ? 'Claimed Successfully!' : 'Claim Winnings'}</span>
+              </button>
+            </div>
+          </motion.div>
+
+          {/* Income History */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="bg-slate-800/50 rounded-2xl border border-gray-700 p-6"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-white">Income History</h2>
+              <button className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-xl transition-colors flex items-center space-x-2">
+                <Download className="w-4 h-4" />
+                <span>Export</span>
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {ownedAssets.map((asset) => (
+                <div key={asset.id} className="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg border border-gray-700">
+                  <div>
+                    <h3 className="font-semibold text-white text-sm">{asset.title}</h3>
+                    <p className="text-gray-400 text-xs">Next payout: {asset.nextPayout}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-cyan-400 font-semibold">${asset.payoutAmount.toLocaleString()}</p>
+                    <p className="text-cyan-300 text-xs">+{(asset.payoutAmount / 32).toFixed(0)} ASRD</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Total Summary */}
+            <div className="mt-6 p-4 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-xl border border-emerald-500/20">
+              <div className="flex justify-between items-center">
+                <span className="text-emerald-300 font-semibold">Total Monthly</span>
+                <span className="text-white font-bold text-lg">${totalMonthlyIncome.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between items-center mt-2">
+                <span className="text-cyan-300 text-sm">ASRD Tokens</span>
+                <span className="text-cyan-400 font-semibold">+{totalASRDTokens.toFixed(0)}</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+===== FILE: src/components/sections/HowItWorksSection.tsx =====
+'use client';
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Search, TrendingUp, Shield, Zap, DollarSign, Rocket } from 'lucide-react';
+
+export default function HowItWorksSection() {
+  const steps = [
+    {
+      number: "01",
+      title: "Discover Premium Assets",
+      description: "Explore our curated collection of high-ROI real world assets from $100",
+      icon: <Search className="w-8 h-8" />,
+      color: "from-blue-500 to-cyan-500"
+    },
+    {
+      number: "02",
+      title: "Fractional Ownership",
+      description: "Own pieces of luxury assets starting from just $100 investment",
+      icon: <DollarSign className="w-8 h-8" />,
+      color: "from-emerald-500 to-teal-500"
+    },
+    {
+      number: "03",
+      title: "Blockchain Security",
+      description: "All investments secured with enterprise-grade blockchain technology",
+      icon: <Shield className="w-8 h-8" />,
+      color: "from-purple-500 to-pink-500"
+    },
+    {
+      number: "04",
+      title: "Earn High Returns",
+      description: "Receive 20-45% average annual returns with regular distributions",
+      icon: <TrendingUp className="w-8 h-8" />,
+      color: "from-amber-500 to-orange-500"
+    }
+  ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  return (
+    <section id="how-it-works" className="section-premium relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-float delay-2000" />
+      </div>
+
+      <div className="container-premium relative z-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <div className="inline-flex items-center gap-2 px-6 py-3 glass-ultimate mb-6 border border-cyan-500/30">
+            <Zap className="w-4 h-4 text-cyan-400" />
+            <span className="text-cyan-400 text-sm font-semibold tracking-wide uppercase">
+              SIMPLE 4-STEP PROCESS
+            </span>
+          </div>
+          
+          <h2 className="heading-responsive text-gradient-premium mb-6">
+            Start Investing in Minutes
+          </h2>
+          <p className="text-responsive text-premium-light max-w-3xl mx-auto leading-relaxed">
+            From discovery to returns - experience the future of asset ownership with our streamlined platform. 
+            <span className="text-cyan-400 font-semibold"> Start with just $100 and earn 20-45% returns.</span>
+          </p>
+        </motion.div>
+
+        {/* Steps Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+        >
+          {steps.map((step, index) => (
+            <motion.div
+              key={step.number}
+              variants={itemVariants}
+              className="group"
+            >
+              <div className="card-premium h-full hover:transform hover:scale-105 transition-all duration-500">
+                <div className="card-premium-content text-center">
+                  {/* Step Number & Icon */}
+                  <div className="flex flex-col items-center mb-6">
+                    <div className={`w-16 h-16 bg-gradient-to-br ${step.color} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                      <div className="text-white">
+                        {step.icon}
+                      </div>
+                    </div>
+                    <div className="w-8 h-8 bg-cyan-500/20 rounded-full flex items-center justify-center text-cyan-400 text-sm font-bold">
+                      {step.number}
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <h3 className="text-xl font-bold text-premium-white mb-3 group-hover:text-cyan-300 transition-colors">
+                    {step.title}
+                  </h3>
+                  <p className="text-premium-light leading-relaxed">
+                    {step.description}
+                  </p>
+
+                  {/* Animated Border Effect */}
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-cyan-500 to-blue-500 group-hover:w-3/4 transition-all duration-500 rounded-full" />
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mt-16"
+        >
+          <div className="glass-ultimate p-8 rounded-3xl border border-cyan-500/20 max-w-2xl mx-auto">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Rocket className="w-6 h-6 text-cyan-400" />
+              <span className="text-cyan-400 font-semibold text-lg">READY TO START?</span>
+            </div>
+            <h3 className="text-2xl font-bold text-premium-white mb-4">
+              Join 300K+ Investors Worldwide
+            </h3>
+            <p className="text-premium-light mb-6">
+              Start your investment journey today with just $100 and experience premium asset ownership
+            </p>
+            <button className="btn-premium text-lg px-8 py-4">
+              Start Investing Now
+            </button>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+
+
+===== FILE: src/app/layout.tsx =====
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import '../styles/premium-3d-system.css'
+import '../styles/premium-fluid.css'
+import { AuthProvider } from '@/contexts/AuthContext'
+import { NotificationProvider } from '@/contexts/NotificationContext'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'AssetRide - Premium Real World Asset Investment',
+  description: 'Democratizing access to premium real world assets with world-class returns',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <AuthProvider>
+          <NotificationProvider>
+            {children}
+          </NotificationProvider>
+        </AuthProvider>
+      </body>
+    </html>
+  )
+}
+
+
+
+===== FILE: src/components/sections/PremiumHero.tsx =====
+"use client";
+
+import { motion } from 'framer-motion';
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+import { ArrowRight, Shield, Zap, TrendingUp, Eye, Star, Gem, Crown } from 'lucide-react';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.4, 0, 0.2, 1]
+    }
+  }
+};
+
+export default function PremiumHero() {
+  const router = useRouter();
+  const { login, user } = useAuth();
+
+  const features = [
+    { 
+      icon: TrendingUp, 
+      text: "20-45% Premium Returns", 
+      color: "from-emerald-400 to-teal-400",
+      description: "Industry-leading returns on curated premium assets"
+    },
+    { 
+      icon: Shield, 
+      text: "Secure Real World Assets", 
+      color: "from-blue-400 to-cyan-400",
+      description: "Fully collateralized real estate and thoroughbred assets"
+    },
+    { 
+      icon: Zap, 
+      text: "$100 Minimum Investment", 
+      color: "from-purple-400 to-pink-400",
+      description: "Low barrier entry to high-value investment opportunities"
+    }
+  ];
+
+  const handleExploreInvestments = () => {
+    router.push('/marketplace');
+  };
+
+  const handleStartInvesting = () => {
+    if (user) {
+      router.push('/marketplace');
+    } else {
+      login('/marketplace');
+    }
+  };
+
+  const handleImmersiveDemo = () => {
+    const demoSection = document.getElementById('platform-demo');
+    if (demoSection) {
+      demoSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <div className="container-premium relative z-10">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="text-center"
+      >
+        {/* Premium Badge */}
+        <motion.div
+          variants={itemVariants}
+          className="inline-flex items-center gap-3 px-6 py-3 glass-ultimate mb-8 border border-cyan-500/30"
+        >
+          <Crown className="w-5 h-5 text-amber-400" />
+          <span className="text-amber-400 text-sm font-semibold tracking-wide uppercase">
+            PREMIUM REAL WORLD ASSETS
+          </span>
+          <Gem className="w-5 h-5 text-purple-400" />
+        </motion.div>
+
+        {/* Main Heading */}
+        <motion.h1
+          variants={itemVariants}
+          className="heading-responsive text-gradient-premium mb-8 leading-tight"
+        >
+          Access Elite
+          <span className="block mt-2">Investment Opportunities</span>
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          variants={itemVariants}
+          className="text-responsive text-premium-light max-w-3xl mx-auto mb-12 leading-relaxed"
+        >
+          Democratizing exclusive real-world assets with 20-45% returns. 
+          <span className="text-cyan-400 font-semibold"> Start your journey with just $100</span> and join the future of intelligent wealth creation.
+        </motion.p>
+
+        {/* CTA Buttons */}
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
+        >
+          <button
+            onClick={handleStartInvesting}
+            className="btn-premium flex items-center justify-center space-x-3 group"
+          >
+            <Star className="w-5 h-5" />
+            <span className="font-bold">Start Investing Now</span>
+            <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+          </button>
+          <button
+            onClick={handleExploreInvestments}
+            className="btn-premium-outline group flex items-center justify-center space-x-2 px-8 py-4"
+          >
+            <Eye className="w-5 h-5" />
+            <span>Explore All Opportunities</span>
+          </button>
+        </motion.div>
+
+        {/* Features Grid */}
+        <motion.div
+          variants={itemVariants}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
+        >
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.text}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 + index * 0.2 }}
+              className="card-premium text-center group hover:border-cyan-400/30"
+            >
+              <div className="card-premium-content">
+                <div className={`w-20 h-20 bg-gradient-to-r ${feature.color} rounded-2xl flex items-center justify-center mx-auto mb-6 transform group-hover:scale-110 transition-transform duration-300 animate-glow-premium`}>
+                  <feature.icon className="w-10 h-10 text-white" />
+                </div>
+                <h3 className="premium-heading-3 mb-4 text-premium-white group-hover:text-cyan-300 transition-colors">
+                  {feature.text}
+                </h3>
+                <p className="text-premium-light leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Trust Indicators */}
+        <motion.div
+          variants={itemVariants}
+          className="mt-16 pt-8 border-t border-gray-700"
+        >
+          <p className="text-premium-muted text-sm mb-6">Trusted by sophisticated investors worldwide</p>
+          <div className="flex flex-wrap justify-center items-center gap-8">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-cyan-400">$15.4M+</div>
+              <div className="text-xs text-premium-muted">Assets Under Management</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-emerald-400">1,247+</div>
+              <div className="text-xs text-premium-muted">Active Investors</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-amber-400">32.5%</div>
+              <div className="text-xs text-premium-muted">Average ROI</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-400">100%</div>
+              <div className="text-xs text-premium-muted">Secure & Verified</div>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+}
+
+
+
+===== FILE: src/components/sections/PlatformDemo.tsx =====
+"use client";
+
+import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { 
+  BarChart3, 
+  ShoppingCart, 
+  Users, 
+  DollarSign, 
+  Shield, 
+  Zap,
+  Play,
+  Pause,
+  SkipForward,
+  Eye
+} from 'lucide-react';
+
+const platformFeatures = [
+  {
+    step: 1,
+    title: "Browse Marketplace",
+    description: "Explore premium real-world assets starting from $100",
+    icon: ShoppingCart,
+    color: "from-cyan-500 to-blue-500"
+  },
+  {
+    step: 2,
+    title: "Invest Securely",
+    description: "Tokenize your investment with ASRD tokens",
+    icon: Shield,
+    color: "from-emerald-500 to-teal-500"
+  },
+  {
+    step: 3,
+    title: "Earn Returns",
+    description: "Receive 20-45% returns from rental income and asset appreciation",
+    icon: DollarSign,
+    color: "from-amber-500 to-orange-500"
+  },
+  {
+    step: 4,
+    title: "Govern & Vote",
+    description: "Participate in DAO decisions with your voting power",
+    icon: Users,
+    color: "from-purple-500 to-pink-500"
+  }
+];
+
+const demoSteps = [
+  {
+    title: "Asset Discovery",
+    description: "Browse through curated premium assets with detailed analytics",
+    visualization: "marketplace",
+    stats: { assets: "50+", minInvestment: "$100", avgROI: "32.5%" }
+  },
+  {
+    title: "Portfolio Management", 
+    description: "Track your investments with real-time performance analytics",
+    visualization: "dashboard",
+    stats: { portfolioValue: "$490K", returns: "+12.8%", activeAssets: "8" }
+  },
+  {
+    title: "Income Distribution",
+    description: "Receive automated rental income and asset winnings",
+    visualization: "income",
+    stats: { monthlyIncome: "$12.5K", tokensEarned: "397 ASRD", growth: "+8.2%" }
+  },
+  {
+    title: "Community Governance",
+    description: "Vote on platform decisions and new asset acquisitions",
+    visualization: "dao",
+    stats: { proposals: "24", participation: "87%", members: "1,247" }
+  }
+];
+
+export default function PlatformDemo() {
+  const router = useRouter();
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handleCreateAccount = () => {
+    // This will login and redirect to dashboard
+    router.push('/dashboard');
+  };
+
+  const nextStep = () => {
+    setCurrentStep((prev) => (prev + 1) % demoSteps.length);
+  };
+
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying);
+  };
+
+  const selectStep = (index: number) => {
+    setCurrentStep(index);
+  };
+
+  return (
+    <section id="platform-demo" className="premium-section relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900/20 to-cyan-900/20"></div>
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500"></div>
+
+      <div className="premium-container relative z-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <h2 className="premium-heading-2 mb-6">
+            Platform <span className="text-cyan-400">Experience Demo</span>
+          </h2>
+          <p className="premium-text max-w-2xl mx-auto">
+            See how AssetRide transforms real-world asset investing with our seamless platform experience
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          {/* Demo Visualization */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="premium-card p-0 overflow-hidden"
+          >
+            {/* Demo Screen */}
+            <div className="relative h-80 bg-gradient-to-br from-gray-900 to-gray-800 rounded-t-2xl border-b border-gray-700">
+              {/* Mock Platform Interface */}
+              <div className="absolute inset-4 bg-gray-950 rounded-lg overflow-hidden">
+                {/* Mock Header */}
+                <div className="flex items-center justify-between p-4 bg-gray-900 border-b border-gray-700">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg"></div>
+                    <span className="text-white font-semibold">AssetRide</span>
+                  </div>
+                  <div className="flex space-x-2">
+                    <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+                    <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+                    <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+                  </div>
+                </div>
+
+                {/* Mock Content based on current step */}
+                <div className="p-6">
+                  {demoSteps[currentStep].visualization === 'marketplace' && (
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <h3 className="text-white font-semibold">Premium Assets</h3>
+                        <div className="w-20 h-6 bg-gray-700 rounded"></div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        {[1, 2, 3, 4].map(i => (
+                          <div key={i} className="bg-gray-800 rounded-lg p-3">
+                            <div className="w-full h-16 bg-gray-700 rounded mb-2"></div>
+                            <div className="w-3/4 h-3 bg-gray-600 rounded mb-1"></div>
+                            <div className="w-1/2 h-2 bg-cyan-500 rounded"></div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {demoSteps[currentStep].visualization === 'dashboard' && (
+                    <div className="space-y-4">
+                      <div className="flex space-x-4">
+                        <div className="flex-1 bg-gray-800 rounded-lg p-4">
+                          <div className="w-1/2 h-4 bg-gray-600 rounded mb-2"></div>
+                          <div className="w-3/4 h-6 bg-cyan-500 rounded"></div>
+                        </div>
+                        <div className="flex-1 bg-gray-800 rounded-lg p-4">
+                          <div className="w-1/2 h-4 bg-gray-600 rounded mb-2"></div>
+                          <div className="w-3/4 h-6 bg-emerald-500 rounded"></div>
+                        </div>
+                      </div>
+                      <div className="h-32 bg-gray-800 rounded-lg"></div>
+                    </div>
+                  )}
+
+                  {demoSteps[currentStep].visualization === 'income' && (
+                    <div className="space-y-4">
+                      <div className="bg-gray-800 rounded-lg p-4">
+                        <div className="flex justify-between items-center mb-3">
+                          <div className="w-1/2 h-4 bg-gray-600 rounded"></div>
+                          <div className="w-1/4 h-6 bg-amber-500 rounded"></div>
+                        </div>
+                        <div className="space-y-2">
+                          {[1, 2, 3].map(i => (
+                            <div key={i} className="flex justify-between items-center py-2">
+                              <div className="w-2/3 h-3 bg-gray-700 rounded"></div>
+                              <div className="w-1/4 h-4 bg-emerald-500 rounded"></div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {demoSteps[currentStep].visualization === 'dao' && (
+                    <div className="space-y-4">
+                      <div className="bg-gray-800 rounded-lg p-4">
+                        <div className="w-3/4 h-4 bg-gray-600 rounded mb-3"></div>
+                        <div className="flex space-x-2 mb-3">
+                          <div className="flex-1 h-8 bg-cyan-500 rounded"></div>
+                          <div className="flex-1 h-8 bg-gray-700 rounded"></div>
+                        </div>
+                        <div className="w-full h-4 bg-gray-700 rounded"></div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Step Info */}
+            <div className="p-6">
+              <h3 className="premium-heading-3 mb-2">{demoSteps[currentStep].title}</h3>
+              <p className="text-gray-300 mb-4">{demoSteps[currentStep].description}</p>
+              
+              <div className="grid grid-cols-3 gap-3">
+                {Object.entries(demoSteps[currentStep].stats).map(([key, value]) => (
+                  <div key={key} className="text-center p-2 bg-cyan-500/10 rounded-lg border border-cyan-500/20">
+                    <p className="text-cyan-300 font-bold text-sm">{value}</p>
+                    <p className="text-cyan-200 text-xs capitalize">{key.replace(/([A-Z])/g, ' $1')}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Controls */}
+            <div className="flex justify-between items-center p-4 border-t border-gray-700">
+              <div className="flex space-x-2">
+                <button
+                  onClick={togglePlay}
+                  className="w-10 h-10 bg-cyan-500/20 rounded-full flex items-center justify-center hover:bg-cyan-500/30 transition-colors"
+                >
+                  {isPlaying ? <Pause className="w-4 h-4 text-cyan-400" /> : <Play className="w-4 h-4 text-cyan-400" />}
+                </button>
+                <button
+                  onClick={nextStep}
+                  className="w-10 h-10 bg-cyan-500/20 rounded-full flex items-center justify-center hover:bg-cyan-500/30 transition-colors"
+                >
+                  <SkipForward className="w-4 h-4 text-cyan-400" />
+                </button>
+              </div>
+              
+              <div className="flex space-x-1">
+                {demoSteps.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => selectStep(index)}
+                    className={`w-3 h-3 rounded-full transition-all ${
+                      currentStep === index 
+                        ? 'bg-cyan-400 w-6' 
+                        : 'bg-gray-600 hover:bg-gray-400'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Platform Features */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="space-y-6"
+          >
+            <h3 className="premium-heading-3">How It Works</h3>
+            
+            <div className="space-y-4">
+              {platformFeatures.map((feature, index) => (
+                <motion.div
+                  key={feature.step}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
+                  className="premium-card p-4 group hover:border-cyan-400/30 transition-all"
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform`}>
+                      <feature.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2 mb-1">
+                        <span className="text-cyan-400 text-sm font-semibold">Step {feature.step}</span>
+                        <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                      </div>
+                      <h4 className="font-semibold text-white mb-1">{feature.title}</h4>
+                      <p className="text-gray-300 text-sm">{feature.description}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* CTA Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="premium-card text-center bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border-cyan-400/30"
+            >
+              <Zap className="w-12 h-12 text-cyan-400 mx-auto mb-4" />
+              <h4 className="premium-heading-3 mb-2">Ready to Get Started?</h4>
+              <p className="text-gray-300 mb-6">
+                Join thousands of investors already earning premium returns
+              </p>
+              <button 
+                onClick={handleCreateAccount}
+                className="btn-premium w-full justify-center group"
+              >
+                <span className="flex items-center space-x-2">
+                  <Eye className="w-5 h-5" />
+                  <span>Create Your Account</span>
+                </span>
+              </button>
+              <p className="text-gray-400 text-sm mt-3">
+                Instant access • No commitment • Demo portfolio included
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+
+===== FILE: src/components/sections/PlatformExperienceDemo.tsx =====
+'use client';
+
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Crown,
+  Sparkles,
+  DollarSign,
+  Users,
+  Rocket,
+  BarChart2,
+  Trophy,
+  Building2,
+  Coins,
+} from 'lucide-react';
+
+const demoSteps = [
+  {
+    id: 0,
+    title: 'Marketplace Overview',
+    description:
+      'Discover premium real-world assets tokenized into fractional shares for global investors.',
+    icon: Building2,
+    stats: ['300K+ Users', '$4.8B Total Assets', '50+ Countries'],
+  },
+  {
+    id: 1,
+    title: 'Investment Dashboard',
+    description:
+      'Track your holdings, yields, and ownership history with next-gen analytics.',
+    icon: BarChart2,
+    stats: ['$32 ASRD Token Price', 'Portfolio Growth 12%', 'Yield History'],
+  },
+  {
+    id: 2,
+    title: 'Rental & Yield Earnings',
+    description:
+      'Earn passive income through asset rentals and claim your rewards seamlessly.',
+    icon: Coins,
+    stats: ['$120M Claimed', 'Avg ROI 8%', 'Instant Withdrawals'],
+  },
+  {
+    id: 3,
+    title: 'DAO Governance',
+    description:
+      'Participate in community governance and shape the future of AssetRide ecosystem.',
+    icon: Users,
+    stats: ['100K+ Votes', 'Governance Proposals', 'Community Decisions'],
+  },
+  {
+    id: 4,
+    title: 'Claim Winnings',
+    description:
+      'Instantly withdraw your rental income and competition winnings directly to your wallet.',
+    icon: Trophy,
+    stats: ['Top Rewards 5 ETH', 'Monthly Contests', 'Instant Claim'],
+  },
+];
+
+export default function PlatformExperienceDemo() {
+  const [currentStep, setCurrentStep] = useState(0);
+  const step = demoSteps[currentStep];
+  const StepIcon = step.icon;
+
+  const renderVisualization = () => (
+    <div className="h-full w-full flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl p-6 shadow-xl border border-cyan-500/20 hover:scale-[1.02] transform transition-all duration-500 perspective-3d">
+      <StepIcon className="w-16 h-16 mb-4 text-cyan-400 animate-bounce" />
+      <h3 className="text-3xl font-extrabold mb-2">{step.title}</h3>
+      <p className="text-center text-sm max-w-md opacity-80 mb-4">{step.description}</p>
+      <div className="flex flex-wrap justify-center gap-3 mt-4">
+        {step.stats.map((stat, idx) => (
+          <div
+            key={idx}
+            className="px-3 py-1 text-xs rounded-full bg-cyan-500/20 border border-cyan-400/30 backdrop-blur-sm hover:bg-cyan-500/30 hover:scale-105 transition-all"
+          >
+            {stat}
+          </div>
+        ))}
+      </div>
+      {/* Floating tokens */}
+      <motion.div
+        className="absolute w-6 h-6 bg-cyan-400 rounded-full top-8 left-8 shadow-xl"
+        animate={{ y: [0, -20, 0], x: [0, 10, 0], rotate: [0, 360] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="absolute w-4 h-4 bg-amber-400 rounded-full bottom-10 right-10 shadow-lg"
+        animate={{ y: [0, 15, 0], x: [0, -10, 0], rotate: [0, -360] }}
+        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+      />
+    </div>
+  );
+
+  return (
+    <section
+      id="platform-demo"
+      className="section-premium relative overflow-hidden min-h-screen flex items-center py-16"
+    >
+      {/* Dynamic background */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900/30 to-cyan-900/30"
+        animate={{ backgroundPosition: ['0% 0%', '100% 100%'] }}
+        transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+      />
+
+      <div className="container-premium relative z-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <div className="inline-flex items-center gap-3 px-6 py-3 glass-ultimate mb-6 border border-cyan-500/30">
+            <Crown className="w-5 h-5 text-amber-400 animate-spin-slow" />
+            <span className="text-amber-400 text-sm font-semibold tracking-wide uppercase">
+              IMMERSIVE PLATFORM EXPERIENCE
+            </span>
+            <Sparkles className="w-5 h-5 text-cyan-400 animate-ping" />
+          </div>
+          <h2 className="heading-responsive text-gradient-premium mb-6">
+            Experience the Future of
+            <span className="block">Asset Investing</span>
+          </h2>
+          <p className="text-responsive text-premium-light max-w-2xl mx-auto leading-relaxed">
+            Discover how AssetRide transforms real-world asset investing with cutting-edge technology,
+            <span className="text-cyan-400 font-semibold">3D floating assets, token animations, and seamless Web3 experience.</span>
+          </p>
+        </motion.div>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 items-start">
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative"
+          >
+            <div className="glass-ultimate rounded-3xl overflow-hidden border-2 border-cyan-500/30 hover:border-cyan-400/50 shadow-2xl transition-all duration-500">
+              {/* Demo Header */}
+              <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border-b border-cyan-500/20 p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg animate-pulse">
+                      <Crown className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <span className="text-white font-bold">AssetRide Platform</span>
+                      <div className="text-cyan-300 text-xs">Live Demo • Ultra Premium</div>
+                    </div>
+                  </div>
+                  <div className="flex space-x-2">
+                    <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
+                    <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-rose-500 rounded-full"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Demo Content */}
+              <div className="h-96 bg-gradient-to-br from-gray-900 to-gray-800 relative overflow-hidden p-4">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentStep}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1.05 }}
+                    transition={{ duration: 0.5 }}
+                    className="h-full w-full"
+                  >
+                    {renderVisualization()}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Step Controls */}
+              <div className="p-6 bg-gradient-to-b from-gray-800 to-gray-900 flex justify-between items-center">
+                <button
+                  onClick={() =>
+                    setCurrentStep((currentStep - 1 + demoSteps.length) % demoSteps.length)
+                  }
+                  className="px-4 py-2 text-sm rounded-lg bg-gray-700 hover:bg-gray-600 text-white"
+                >
+                  Prev
+                </button>
+                <button
+                  onClick={() => setCurrentStep((currentStep + 1) % demoSteps.length)}
+                  className="px-4 py-2 text-sm rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+
+===== FILE: src/components/sections/PlatformStatsSection.tsx =====
+"use client";
+
+import React from 'react';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { ChartBarIcon, UsersIcon, BuildingLibraryIcon, CurrencyDollarIcon } from '@/components/ui/ProfessionalIcons';
+
+export default function PlatformStatsSection() {
+  const { getFadeStyle } = useScrollAnimation();
+
+  const stats = [
+    {
+      icon: <ChartBarIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
+      value: "30%+",
+      label: "Average Returns",
+      description: "Proven performance",
+      color: "from-emerald-400 to-cyan-400"
+    },
+    {
+      icon: <CurrencyDollarIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
+      value: "$50",
+      label: "Start Investing",
+      description: "Minimum amount",
+      color: "from-blue-400 to-indigo-400"
+    },
+    {
+      icon: <UsersIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
+      value: "1K+",
+      label: "Members",
+      description: "Growing community",
+      color: "from-purple-400 to-pink-400"
+    },
+    {
+      icon: <BuildingLibraryIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
+      value: "24/7",
+      label: "Access",
+      description: "Always available",
+      color: "from-amber-400 to-orange-400"
+    }
+  ];
+
+  return (
+    <div className="max-w-6xl mx-auto">
+      {/* Section Header */}
+      <div className="text-center mb-12 sm:mb-16" style={getFadeStyle(0, 200)}>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-6">
+          Democratizing Elite Investments
+        </h2>
+        <p className="text-lg sm:text-xl text-white max-w-2xl mx-auto leading-relaxed px-4">
+          We're breaking down barriers to make premium investments accessible to everyone, 
+          not just the wealthy few.
+        </p>
+      </div>
+
+      {/* Stats Grid - Mobile Optimized */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+        {stats.map((stat, index) => (
+          <div
+            key={index}
+            className="group text-center p-4 sm:p-6 bg-white/5 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-white/10 hover:border-cyan-400/30 transition-all duration-500 hover:scale-105"
+            style={getFadeStyle(200 + (index * 100), 600)}
+          >
+            {/* Icon */}
+            <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-white/10 to-white/5 rounded-xl sm:rounded-2xl border border-white/10 mb-3 sm:mb-6 group-hover:border-cyan-400/30 transition-colors duration-500">
+              <div className="text-cyan-300">
+                {stat.icon}
+              </div>
+            </div>
+
+            {/* Value */}
+            <div className={`text-xl sm:text-2xl md:text-3xl font-black bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-2 sm:mb-3`}>
+              {stat.value}
+            </div>
+
+            {/* Label */}
+            <div className="text-white font-bold text-sm sm:text-base mb-1 sm:mb-2">
+              {stat.label}
+            </div>
+
+            {/* Description */}
+            <div className="text-cyan-200 text-xs sm:text-sm leading-relaxed">
+              {stat.description}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Bottom Message */}
+      <div className="text-center mt-8 sm:mt-12" style={getFadeStyle(600, 800)}>
+        <div className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/20 rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3">
+          <span className="text-cyan-300 font-semibold text-sm sm:text-base">No wealth barriers • No elite requirements</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+

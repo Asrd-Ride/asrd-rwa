@@ -9,18 +9,18 @@ import InvestmentModal from '@/components/ui/InvestmentModal';
 import AssetDetailsModal from '@/components/ui/AssetDetailsModal';
 import { mockAssets } from '@/data/mockData';
 
-const enhancedAssets = mockAssets.map(asset => ({
+const enhancedAssets = mockAssets.map((asset, index) => ({
   ...asset,
   category: asset.type,
   currency: "USD",
   image: "",
   description: `Premium ${asset.type.toLowerCase()} investment located in ${asset.location} with ${asset.roi} ROI. Professional management and proven returns.`,
   sharesAvailable: 100,
-  sharesSold: Math.floor(Math.random() * 100)
+  sharesSold: (index * 13) % 100 // Deterministic value based on index
 }))
 
 export default function FluidMarketplace() {
-  const { user, login } = useAuth()
+  const { user, login, invest } = useAuth()
   const { showNotification } = useNotification()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedType, setSelectedType] = useState('all')
@@ -67,23 +67,23 @@ export default function FluidMarketplace() {
   }
 
   const handleConfirmInvest = async (assetId: number, amount: number) => {
-    // Update ASRD balance through AuthContext
-    if (user) {
-      const asrdTokens = amount / 32;
-      console.log(`Purchased $${amount} worth of ASRD tokens: ${asrdTokens.toFixed(2)}`);
-    }
+    if (!user || !selectedAsset) return;
 
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    // Deduct ASRD balance for investment using the new invest function
+    const success = invest(amount, selectedAsset.title);
+    if (!success) return; // Stop if insufficient balance
+
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     showNotification({
       type: 'premium',
       title: 'Investment Successful!',
-      message: `Successfully invested $${amount.toLocaleString()} in ${selectedAsset?.title}!\n\n• ASRD Tokens: ${(amount / 32).toFixed(2)}\n• Asset: ${selectedAsset?.title}\n• ROI: ${selectedAsset?.roi}\n\nYour investment has been added to your portfolio.`,
+      message: `Successfully invested $${amount.toLocaleString()} in ${selectedAsset?.title}!\n\n• ASRD Tokens Deducted: ${(amount / 32).toFixed(2)}\n• Asset: ${selectedAsset?.title}\n• ROI: ${selectedAsset?.roi}\n\nYour investment has been added to your portfolio.`,
       duration: 6000
-    })
+    });
 
-    setIsInvestmentModalOpen(false)
-    setSelectedAsset(null)
+    setIsInvestmentModalOpen(false);
+    setSelectedAsset(null);
   }
 
   const handleViewDetails = (assetId: number) => {
@@ -178,7 +178,7 @@ export default function FluidMarketplace() {
         </div>
 
         {/* Asset Grid */}
-        <div className={viewMode === 'grid' 
+        <div className={viewMode === 'grid'
           ? "fluid-grid fluid-grid-cols-1 md:fluid-grid-cols-2 lg:fluid-grid-cols-3 gap-4 md:gap-6"
           : "space-y-3 md:space-y-4"
         }>

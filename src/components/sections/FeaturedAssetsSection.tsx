@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Star, TrendingUp, Zap, Shield, ArrowRight } from 'lucide-react';
 import EnhancedAssetCard from '../ui/EnhancedAssetCard';
 import InvestmentModal from '../ui/InvestmentModal';
@@ -11,20 +10,20 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNotification } from '@/contexts/NotificationContext';
 
 const FeaturedAssetsSection: React.FC = () => {
-  const { user, login } = useAuth();
+  const { user, login, invest } = useAuth();
   const { showNotification } = useNotification();
   const [selectedAsset, setSelectedAsset] = useState<any>(null);
   const [isInvestmentModalOpen, setIsInvestmentModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
   // Transform mockAssets to match EnhancedAssetCard interface
-  const featuredAssets = mockAssets.slice(0, 3).map(asset => ({
+  const featuredAssets = mockAssets.slice(0, 3).map((asset, index) => ({
     ...asset,
     category: asset.type,
     currency: "USD",
     image: "",
     sharesAvailable: 100,
-    sharesSold: Math.floor(Math.random() * 100)
+    sharesSold: (index * 23) % 100 // Deterministic value based on index
   }));
 
   const handleInvest = (assetId: number) => {
@@ -41,13 +40,18 @@ const FeaturedAssetsSection: React.FC = () => {
   };
 
   const handleConfirmInvest = async (assetId: number, amount: number) => {
-    // Simulate investment processing
+    if (!user || !selectedAsset) return;
+
+    // Deduct ASRD balance for investment using the new invest function
+    const success = invest(amount, selectedAsset.title);
+    if (!success) return; // Stop if insufficient balance
+
     await new Promise(resolve => setTimeout(resolve, 2000));
 
     showNotification({
       type: 'premium',
       title: 'Investment Successful!',
-      message: `Successfully invested $${amount.toLocaleString()} in ${selectedAsset?.title}!\n\n• ASRD Tokens: ${(amount / 32).toFixed(2)}\n• Asset: ${selectedAsset?.title}\n• ROI: ${selectedAsset?.roi}\n\nYour investment has been added to your portfolio.`,
+      message: `Successfully invested $${amount.toLocaleString()} in ${selectedAsset?.title}!\n\n• ASRD Tokens Deducted: ${(amount / 32).toFixed(2)}\n• Asset: ${selectedAsset?.title}\n• ROI: ${selectedAsset?.roi}\n\nYour investment has been added to your portfolio.`,
       duration: 6000
     });
 
@@ -91,8 +95,8 @@ const FeaturedAssetsSection: React.FC = () => {
         {/* Features Grid */}
         <div className="fluid-grid fluid-grid-cols-2 lg:fluid-grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
           {features.map((feature, index) => (
-            <div 
-              key={feature.text} 
+            <div
+              key={feature.text}
               className="fluid-card text-center fluid-scroll-item mobile:p-3"
               style={{ transitionDelay: `${index * 100}ms` }}
             >
@@ -106,8 +110,8 @@ const FeaturedAssetsSection: React.FC = () => {
         {/* Featured Assets Grid */}
         <div className="fluid-grid fluid-grid-cols-1 md:fluid-grid-cols-2 lg:fluid-grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
           {featuredAssets.map((asset, index) => (
-            <div 
-              key={asset.id} 
+            <div
+              key={asset.id}
               className="fluid-scroll-item"
               style={{ transitionDelay: `${index * 150}ms` }}
             >

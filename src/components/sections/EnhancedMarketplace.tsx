@@ -1,8 +1,7 @@
 "use client"
 
 import React, { useState, useMemo } from 'react'
-import { motion } from 'framer-motion'
-import { Search, Filter, Grid, List, TrendingUp, DollarSign, Clock } from 'lucide-react'
+import { Search, Filter, Grid, List } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import EnhancedAssetCard from '@/components/ui/EnhancedAssetCard'
 import InvestmentModal from '@/components/ui/InvestmentModal'
@@ -11,18 +10,18 @@ import { mockAssets } from '@/data/mockData'
 import { useNotification } from '@/contexts/NotificationContext'
 
 // Enhanced mock assets with proper structure for EnhancedAssetCard
-const enhancedAssets = mockAssets.map(asset => ({
+const enhancedAssets = mockAssets.map((asset, index) => ({
   ...asset,
   category: asset.type,
   currency: "USD",
   image: "",
   description: `Premium ${asset.type.toLowerCase()} investment located in ${asset.location} with ${asset.roi} ROI. Professional management and proven returns.`,
   sharesAvailable: 100,
-  sharesSold: Math.floor(Math.random() * 100)
+  sharesSold: (index * 17) % 100 // Deterministic value based on index
 }))
 
 export default function EnhancedMarketplace() {
-  const { user, login } = useAuth()
+  const { user, login, invest } = useAuth()
   const { showNotification } = useNotification()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedType, setSelectedType] = useState('all')
@@ -69,23 +68,23 @@ export default function EnhancedMarketplace() {
   }
 
   const handleConfirmInvest = async (assetId: number, amount: number) => {
-    // Update ASRD balance through AuthContext
-      if (user) {
-        const asrdTokens = amount / 32;
-        // This would call buyASRD in AuthContext
-        console.log(`Purchased $${amount} worth of ASRD tokens: ${asrdTokens.toFixed(2)}`);
-      }
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    if (!user || !selectedAsset) return;
+
+    // Deduct ASRD balance for investment using the new invest function
+    const success = invest(amount, selectedAsset.title);
+    if (!success) return; // Stop if insufficient balance
+
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     showNotification({
       type: 'premium',
       title: 'Investment Successful!',
-      message: `Successfully invested $${amount.toLocaleString()} in ${selectedAsset?.title}!\n\n• ASRD Tokens: ${(amount / 32).toFixed(2)}\n• Asset: ${selectedAsset?.title}\n• ROI: ${selectedAsset?.roi}\n\nYour investment has been added to your portfolio.`,
+      message: `Successfully invested $${amount.toLocaleString()} in ${selectedAsset?.title}!\n\n• ASRD Tokens Deducted: ${(amount / 32).toFixed(2)}\n• Asset: ${selectedAsset?.title}\n• ROI: ${selectedAsset?.roi}\n\nYour investment has been added to your portfolio.`,
       duration: 6000
-    })
+    });
 
-    setIsInvestmentModalOpen(false)
-    setSelectedAsset(null)
+    setIsInvestmentModalOpen(false);
+    setSelectedAsset(null);
   }
 
   const handleViewDetails = (assetId: number) => {
@@ -101,28 +100,18 @@ export default function EnhancedMarketplace() {
   return (
     <div className="min-h-screen bg-3d-space">
       <div className="container-3d py-8">
-        {/* 3D Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
-        >
+        {/* Header */}
+        <div className="text-center mb-12">
           <h1 className="text-3d-hero mb-6">
             ASSET <span className="text-3d-glow">MARKETPLACE</span>
           </h1>
           <p className="text-3d-body max-w-2xl mx-auto">
             Discover and invest in premium real-world assets with institutional-grade returns
           </p>
-        </motion.div>
+        </div>
 
-        {/* 3D Filters and Search */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="card-3d p-6 mb-8"
-        >
+        {/* Filters and Search */}
+        <div className="card-3d p-6 mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
             {/* Search */}
             <div className="lg:col-span-2">
@@ -176,8 +165,8 @@ export default function EnhancedMarketplace() {
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded-lg transition-all duration-300 ${
-                  viewMode === 'grid' 
-                    ? 'bg-cyan-500 text-white' 
+                  viewMode === 'grid'
+                    ? 'bg-cyan-500 text-white'
                     : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
                 }`}
               >
@@ -186,8 +175,8 @@ export default function EnhancedMarketplace() {
               <button
                 onClick={() => setViewMode('list')}
                 className={`p-2 rounded-lg transition-all duration-300 ${
-                  viewMode === 'list' 
-                    ? 'bg-cyan-500 text-white' 
+                  viewMode === 'list'
+                    ? 'bg-cyan-500 text-white'
                     : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
                 }`}
               >
@@ -195,53 +184,30 @@ export default function EnhancedMarketplace() {
               </button>
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        {/* 3D Asset Grid */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className={viewMode === 'grid' 
-            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            : "space-y-6"
-          }
-        >
+        {/* Asset Grid */}
+        <div className={viewMode === 'grid'
+          ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          : "space-y-6"
+        }>
           {filteredAssets.map((asset, index) => (
-            <motion.div
+            <div
               key={asset.id}
-              initial={{ opacity: 0, y: 30, rotateY: viewMode === 'grid' ? 15 : 0 }}
-              animate={{ opacity: 1, y: 0, rotateY: 0 }}
-              whileHover={{ 
-                y: viewMode === 'grid' ? -8 : -4,
-                rotateY: viewMode === 'grid' ? 3 : 0,
-                transition: { type: "spring", stiffness: 300 }
-              }}
-              transition={{ 
-                duration: 0.6, 
-                delay: index * 0.05,
-                type: "spring",
-                stiffness: 100
-              }}
-              className="transform-gpu"
-              style={{ transformStyle: 'preserve-3d' }}
+              className="transition-transform duration-300 hover:scale-105"
             >
               <EnhancedAssetCard
                 {...asset}
                 onInvest={handleInvest}
                 onViewDetails={handleViewDetails}
               />
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Empty State */}
         {filteredAssets.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center py-16"
-          >
+          <div className="text-center py-16">
             <div className="card-3d p-12 max-w-md mx-auto">
               <Filter className="w-16 h-16 text-gray-400 mx-auto mb-4" />
               <h3 className="text-xl font-bold text-white mb-2">No Assets Found</h3>
@@ -258,7 +224,7 @@ export default function EnhancedMarketplace() {
                 Clear Filters
               </button>
             </div>
-          </motion.div>
+          </div>
         )}
       </div>
 

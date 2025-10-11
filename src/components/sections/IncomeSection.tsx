@@ -4,10 +4,12 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { DollarSign, TrendingUp, Calendar, Download, Zap, Crown, Target } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useNotification } from '@/contexts/NotificationContext';
 import { ownedAssets } from '@/data/mockData';
 
 export default function IncomeSection() {
-  const { user } = useAuth();
+  const { user, claimRental, claimWinnings } = useAuth();
+  const { showNotification } = useNotification();
   const [claimedRent, setClaimedRent] = useState(false);
   const [claimedWinnings, setClaimedWinnings] = useState(false);
 
@@ -15,18 +17,38 @@ export default function IncomeSection() {
   const totalASRDTokens = totalMonthlyIncome / 32;
 
   const handleClaimRent = () => {
+    // Call the actual claim function from AuthContext
+    claimRental(1); // Pass any asset ID
+    
     // Simulate API call
     setTimeout(() => {
       setClaimedRent(true);
-      alert('🎉 $4,250 rent successfully claimed! +132 ASRD tokens added to your balance.');
+      
+      // Show notification instead of alert
+      showNotification({
+        type: 'success',
+        title: 'Rental Income Claimed!',
+        message: 'Successfully claimed $4,250 rent! +132 ASRD tokens added to your balance.',
+        duration: 6000
+      });
     }, 1000);
   };
 
   const handleClaimWinnings = () => {
+    // Call the actual claim function from AuthContext
+    claimWinnings(1); // Pass any asset ID
+    
     // Simulate API call
     setTimeout(() => {
       setClaimedWinnings(true);
-      alert('🎉 $8,500 winnings successfully claimed! +265 ASRD tokens added to your balance.');
+      
+      // Show notification instead of alert
+      showNotification({
+        type: 'success',
+        title: 'Winnings Claimed!',
+        message: 'Successfully claimed $8,500 winnings! +265 ASRD tokens added to your balance.',
+        duration: 6000
+      });
     }, 1000);
   };
 
@@ -107,7 +129,7 @@ export default function IncomeSection() {
             className="bg-slate-800/50 rounded-2xl border border-gray-700 p-6"
           >
             <h2 className="text-2xl font-bold text-white mb-6">Claimable Income</h2>
-            
+
             {/* Rent Income */}
             <div className="bg-gray-800/30 rounded-xl p-4 mb-4 border border-gray-600">
               <div className="flex items-center justify-between mb-3">
