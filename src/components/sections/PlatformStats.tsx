@@ -1,70 +1,87 @@
 "use client";
 
 import React from 'react';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { Shield, Users, TrendingUp, DollarSign } from 'lucide-react';
 
-export default function PlatformStats() {
-  const { getFadeStyle } = useScrollAnimation();
-
+const PlatformStats = () => {
   const stats = [
-    { value: "$125M+", label: "Total Volume", color: "text-cyan-400" },
-    { value: "1,247+", label: "Active Users", color: "text-blue-400" },
-    { value: "45", label: "Premium Assets", color: "text-purple-400" },
-    { value: "12.8%", label: "Avg. ROI", color: "text-emerald-400" }
+    {
+      icon: DollarSign,
+      value: "$15.4M+",
+      label: "Assets Under Management",
+      description: "Total platform value",
+      color: "blue"
+    },
+    {
+      icon: Users,
+      value: "1,247+",
+      label: "Active Investors",
+      description: "Growing community",
+      color: "emerald"
+    },
+    {
+      icon: TrendingUp,
+      value: "12.8%",
+      label: "Average ROI",
+      description: "Historical returns",
+      color: "amber"
+    },
+    {
+      icon: Shield,
+      value: "100%",
+      label: "Secure & Verified",
+      description: "Asset verification",
+      color: "blue"
+    }
   ];
 
-  return (
-    <section className="py-20 relative">
-      <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Header */}
-          <div className="mb-12" style={getFadeStyle(0, 200)}>
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
-              TRUSTED PLATFORM
-            </h2>
-            <p className="text-xl text-white max-w-2xl mx-auto leading-relaxed font-light">
-              Join thousands of investors who trust our platform for premium real world asset investments
-            </p>
-          </div>
+  const colorClasses = {
+    blue: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700', icon: 'text-blue-600' },
+    emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-700', icon: 'text-emerald-600' },
+    amber: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700', icon: 'text-amber-600' }
+  };
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-            {stats.map((stat, index) => (
-              <div 
-                key={index}
-                className="text-center"
-                style={getFadeStyle(200 + index * 100, 600)}
+  return (
+    <section className="py-16 bg-slate-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+            Trusted by <span className="text-blue-600">Thousands</span>
+          </h2>
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            Real results from real investors. Join the movement democratizing elite asset ownership.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {stats.map((stat, index) => {
+            const colors = colorClasses[stat.color as keyof typeof colorClasses];
+            return (
+              <div
+                key={stat.label}
+                className={`p-6 rounded-xl border-2 ${colors.bg} ${colors.border} transition-all duration-300 hover:shadow-lg`}
               >
-                <div className={`text-3xl md:text-4xl font-black ${stat.color} mb-2`}>
+                <div className="flex justify-center mb-4">
+                  <div className={`p-3 rounded-lg ${colors.bg} border ${colors.border}`}>
+                    <stat.icon className={`w-6 h-6 ${colors.icon}`} />
+                  </div>
+                </div>
+                <div className={`text-2xl md:text-3xl font-bold ${colors.text} mb-2 text-center`}>
                   {stat.value}
                 </div>
-                <div className="text-cyan-200 text-sm font-medium">
+                <h3 className="text-slate-900 font-semibold text-center mb-1">
                   {stat.label}
-                </div>
+                </h3>
+                <p className="text-slate-500 text-sm text-center">
+                  {stat.description}
+                </p>
               </div>
-            ))}
-          </div>
-
-          {/* Trust Badges */}
-          <div 
-            className="inline-flex flex-wrap justify-center gap-4 bg-white/10 backdrop-blur-sm rounded-2xl p-6"
-            style={getFadeStyle(600, 800)}
-          >
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-              <span className="text-emerald-300 text-sm font-medium">Blockchain Verified</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-              <span className="text-cyan-300 text-sm font-medium">Regulatory Compliant</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
-              <span className="text-blue-300 text-sm font-medium">Secure Platform</span>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
-}
+};
+
+export default PlatformStats;

@@ -1,175 +1,222 @@
 "use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Calendar, Target, Users, TrendingUp, Shield, Globe } from 'lucide-react';
+import React, { useState } from 'react';
+import { 
+  Lock, Target, Zap, Users, Gem, Rocket, Shield, DollarSign,
+  ArrowRight, Sparkles, TrendingUp, Globe, Building2
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
-export default function OurJourneySection() {
-  const milestones = [
+export default function ModernJourneySection() {
+  const router = useRouter();
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+
+  const storyTimeline = [
     {
-      year: "2023 Q4",
-      title: "Protocol Foundation",
-      description: "Launched AssetRide protocol with initial real estate tokenization",
-      icon: Target,
-      status: "completed",
-      color: "text-fluid-gold"
+      phase: "01",
+      title: "The Wall Street Barrier",
+      description: "$50M luxury assets were exclusive to institutions and ultra-wealthy. 99.9% of investors were locked out of premium opportunities.",
+      icon: Lock,
+      stats: "0.1% Access",
+      gradient: "from-blue-500 to-cyan-500",
+      color: "blue"
     },
     {
-      year: "2024 Q1",
-      title: "Asset Diversification",
-      description: "Expanded to thoroughbred, marine, and aviation assets",
-      icon: TrendingUp,
-      status: "completed",
-      color: "text-fluid-emerald"
+      phase: "02",
+      title: "Blockchain Breakthrough", 
+      description: "We pioneered RWA tokenization - transforming physical assets into secure digital tokens with real ownership rights.",
+      icon: Zap,
+      stats: "Tokenization Tech",
+      gradient: "from-emerald-500 to-green-500",
+      color: "emerald"
     },
     {
-      year: "2024 Q2",
-      title: "DAO Governance",
-      description: "Implemented decentralized governance for community-driven decisions",
+      phase: "03", 
+      title: "Fractional Revolution",
+      description: "Democratizing access by splitting $50M assets into affordable fractions. Real ownership starting at $100.",
+      icon: Gem,
+      stats: "$100 Entry",
+      gradient: "from-amber-500 to-orange-500", 
+      color: "amber"
+    },
+    {
+      phase: "04",
+      title: "New Wealth Era",
+      description: "2,470+ investors now building generational wealth through elite assets previously reserved for the 1%.",
       icon: Users,
-      status: "completed",
-      color: "text-fluid-sapphire"
-    },
+      stats: "2.4K+ Investors",
+      gradient: "from-purple-500 to-pink-500",
+      color: "purple"
+    }
+  ];
+
+  const valueProps = [
     {
-      year: "2024 Q3",
-      title: "Global Expansion",
-      description: "Scaled operations to international markets and regulatory compliance",
-      icon: Globe,
-      status: "current",
-      color: "text-fluid-gold"
-    },
-    {
-      year: "2024 Q4",
-      title: "Institutional Partnerships",
-      description: "Forming alliances with major financial institutions",
       icon: Shield,
-      status: "upcoming",
-      color: "text-fluid-emerald"
+      title: "Asset-Backed Security",
+      description: "Every token backed by real-world assets with institutional-grade due diligence",
+      gradient: "from-blue-500 to-cyan-500"
     },
     {
-      year: "2025 Q1",
-      title: "Mass Adoption",
-      description: "Targeting 10,000+ active investors worldwide",
-      icon: Target,
-      status: "upcoming",
-      color: "text-fluid-sapphire"
+      icon: TrendingUp, 
+      title: "Proven Performance",
+      description: "20-45% historical returns from real income-generating assets",
+      gradient: "from-emerald-500 to-green-500"
+    },
+    {
+      icon: Globe,
+      title: "Global Access",
+      description: "Invest in international assets from anywhere with 24/7 liquidity",
+      gradient: "from-amber-500 to-orange-500"
+    },
+    {
+      icon: Building2,
+      title: "Institutional Quality",
+      description: "Same premium assets trusted by billion-dollar funds, now accessible",
+      gradient: "from-purple-500 to-pink-500"
     }
   ];
 
-  const stats = [
-    { value: "2,470+", label: "Active Investors", icon: Users },
-    { value: "$15.4M", label: "Platform Value", icon: TrendingUp },
-    { value: "38.7%", label: "Average ROI", icon: Target },
-    { value: "28", label: "Premium Assets", icon: Shield }
-  ];
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'completed': return 'bg-fluid-emerald';
-      case 'current': return 'bg-fluid-gold';
-      case 'upcoming': return 'bg-fluid-slate';
-      default: return 'bg-fluid-slate';
-    }
+  const handleJoinRevolution = () => {
+    router.push('/marketplace');
   };
 
   return (
-    <div className="fluid-section">
-      <div className="fluid-container">
-        {/* Header Section */}
-        <div className="text-center mb-8 md:mb-12 fluid-scroll-item mobile:text-center">
-          <h1 className="fluid-hero">
-            Our <span className="text-fluid-gold">Journey</span>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Modern Header */}
+        <div className="text-center mb-20">
+          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl mb-8">
+            <Sparkles className="w-5 h-5 text-cyan-400" />
+            <span className="text-cyan-400 font-semibold text-sm tracking-wide">THE RWA REVOLUTION</span>
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+            Democratizing <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Elite Assets</span>
           </h1>
-          <p className="fluid-body max-w-2xl mx-auto mobile:px-4">
-            From visionary concept to leading real-world asset platform. Discover how we're democratizing access to elite investments.
+          
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+            Transforming $50M institutional investments into accessible opportunities through 
+            <span className="text-cyan-400 font-semibold"> blockchain-powered fractional ownership.</span>
           </p>
         </div>
 
-        {/* Stats Section */}
-        <div className="fluid-grid fluid-grid-cols-2 lg:fluid-grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
-          {stats.map((stat, index) => (
-            <div 
-              key={stat.label} 
-              className="fluid-card text-center fluid-scroll-item mobile:p-3"
-              style={{ transitionDelay: `${index * 100}ms` }}
+        {/* Modern Timeline */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
+          {storyTimeline.map((chapter, index) => (
+            <div
+              key={chapter.phase}
+              className="group cursor-pointer"
+              onMouseEnter={() => setHoveredCard(index)}
+              onMouseLeave={() => setHoveredCard(null)}
             >
-              <stat.icon className="w-6 h-6 md:w-8 md:h-8 text-fluid-gold mx-auto mb-2 md:mb-3" />
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2">{stat.value}</h3>
-              <p className="fluid-caption text-sm md:text-base">{stat.label}</p>
-            </div>
-          ))}
-        </div>
+              <div className={`
+                relative p-8 rounded-3xl border transition-all duration-500 overflow-hidden
+                ${hoveredCard === index 
+                  ? 'bg-white/5 border-cyan-400/30 scale-105 shadow-2xl shadow-cyan-500/10' 
+                  : 'bg-white/3 border-white/10 hover:border-white/20'
+                }
+              `}>
+                
+                {/* Animated Gradient Background */}
+                <div className={`
+                  absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500
+                  bg-gradient-to-r ${chapter.gradient}
+                `}></div>
 
-        {/* Timeline Section */}
-        <div className="fluid-card-panel fluid-scroll-item mobile:px-4 mobile:py-4">
-          <h2 className="fluid-subheading mb-6 md:mb-8 text-center">Platform Evolution Timeline</h2>
-          
-          <div className="relative">
-            {/* Timeline Line */}
-            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-fluid-slate transform -translate-x-1/2 hidden md:block"></div>
-            
-            <div className="space-y-6 md:space-y-8">
-              {milestones.map((milestone, index) => (
-                <motion.div
-                  key={milestone.year}
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className={`flex flex-col md:flex-row items-start md:items-center ${
-                    index % 2 === 0 ? 'md:flex-row-reverse' : ''
-                  }`}
-                >
-                  {/* Mobile Timeline Dot */}
-                  <div className="flex items-center mb-3 md:hidden">
-                    <div className={`w-3 h-3 rounded-full ${getStatusColor(milestone.status)} mr-3`}></div>
-                    <span className="text-fluid-gold font-semibold text-sm">{milestone.year}</span>
+                {/* Phase Badge */}
+                <div className="flex items-center gap-4 mb-6">
+                  <div className={`
+                    w-14 h-14 rounded-2xl flex items-center justify-center text-white font-bold text-lg
+                    bg-gradient-to-r ${chapter.gradient} shadow-lg
+                  `}>
+                    {chapter.phase}
                   </div>
+                  <div className="flex-1 h-px bg-white/10"></div>
+                </div>
 
-                  {/* Content */}
-                  <div className={`flex-1 ${index % 2 === 0 ? 'md:pr-8' : 'md:pl-8'} mobile:ml-0`}>
-                    <div className="fluid-card mobile:p-3">
-                      <div className="flex items-start space-x-3 md:space-x-4">
-                        <div className={`p-2 md:p-3 rounded-xl bg-opacity-10 ${milestone.color.replace('text-', 'bg-')}`}>
-                          <milestone.icon className="w-4 h-4 md:w-5 md:h-5" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
-                            <h3 className="text-lg md:text-xl font-bold text-white">{milestone.title}</h3>
-                            <span className="text-fluid-gold font-semibold text-sm hidden md:block">{milestone.year}</span>
-                          </div>
-                          <p className="fluid-caption text-sm md:text-base">{milestone.description}</p>
-                          <div className="flex items-center space-x-2 mt-2">
-                            <div className={`w-2 h-2 rounded-full ${getStatusColor(milestone.status)}`}></div>
-                            <span className="text-fluid-silver text-xs capitalize">{milestone.status}</span>
-                          </div>
-                        </div>
+                {/* Content */}
+                <div className="relative z-10">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className={`
+                      p-3 rounded-xl bg-gradient-to-r ${chapter.gradient} shadow-lg
+                    `}>
+                      <chapter.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-white mb-2">
+                        {chapter.title}
+                      </h3>
+                      <div className="inline-flex items-center px-3 py-1 bg-white/10 rounded-full border border-white/20">
+                        <span className="text-cyan-400 text-sm font-semibold">{chapter.stats}</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Desktop Timeline Dot */}
-                  <div className="hidden md:flex items-center justify-center w-4 h-4 relative">
-                    <div className={`w-3 h-3 rounded-full ${getStatusColor(milestone.status)} absolute`}></div>
-                  </div>
+                  <p className="text-slate-300 leading-relaxed">
+                    {chapter.description}
+                  </p>
+                </div>
 
-                  {/* Spacer for desktop */}
-                  <div className="flex-1 hidden md:block"></div>
-                </motion.div>
-              ))}
+                {/* Hover Arrow */}
+                <div className={`
+                  absolute top-6 right-6 transform transition-all duration-300
+                  ${hoveredCard === index ? 'translate-x-0 opacity-100' : 'translate-x-2 opacity-0'}
+                `}>
+                  <ArrowRight className="w-6 h-6 text-cyan-400" />
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
 
-        {/* Mission Statement */}
-        <div className="fluid-card-panel mt-6 md:mt-8 fluid-scroll-item mobile:px-4 mobile:py-4" style={{ transitionDelay: '400ms' }}>
-          <div className="text-center">
-            <Shield className="w-12 h-12 md:w-16 md:h-16 text-fluid-gold mx-auto mb-4 md:mb-6" />
-            <h2 className="fluid-subheading mb-3 md:mb-4">Our Mission</h2>
-            <p className="fluid-body max-w-3xl mx-auto mobile:px-4">
-              To democratize access to premium real-world assets through fractional digital ownership, 
-              enabling anyone to participate in investment opportunities previously reserved for the ultra-wealthy. 
-              We believe in collective capital power and institutional-grade access for all.
+        {/* Value Propositions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+          {valueProps.map((prop, index) => (
+            <div
+              key={prop.title}
+              className="group p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-cyan-400/30 transition-all duration-300 hover:scale-105"
+            >
+              <div className={`
+                w-12 h-12 rounded-xl mb-4 flex items-center justify-center
+                bg-gradient-to-r ${prop.gradient} shadow-lg
+              `}>
+                <prop.icon className="w-6 h-6 text-white" />
+              </div>
+              
+              <h3 className="text-lg font-semibold text-white mb-3">
+                {prop.title}
+              </h3>
+              
+              <p className="text-slate-400 text-sm leading-relaxed">
+                {prop.description}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Modern CTA Section */}
+        <div className="text-center">
+          <div className="max-w-2xl mx-auto p-8 rounded-3xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-400/20 backdrop-blur-sm">
+            <Rocket className="w-16 h-16 text-cyan-400 mx-auto mb-6" />
+            
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Join the <span className="text-cyan-400">Financial Revolution</span>
+            </h2>
+            
+            <p className="text-slate-300 text-lg mb-8 leading-relaxed">
+              What institutions spend millions to access is now available starting at $100. 
+              This is more than investing - it's building generational wealth.
             </p>
+
+            <button
+              onClick={handleJoinRevolution}
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-2xl shadow-2xl shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300 hover:scale-105"
+            >
+              <span>Start Investing Today</span>
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </button>
           </div>
         </div>
       </div>

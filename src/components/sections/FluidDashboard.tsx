@@ -3,13 +3,15 @@
 import React, { useState } from 'react';
 import {
   DollarSign, TrendingUp, Building, Zap,
-  ArrowUpRight, Download, Eye, Coins, CalendarDays
+  ArrowUpRight, Download, Eye, Coins, CalendarDays,
+  BadgeCheck, Users, Clock, Star, Shield, Target
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { ownedAssets } from '@/data/mockData';
+import { ownedAssets, platformStats } from '@/data/mockData';
 import RealAssetImage from '@/components/ui/RealAssetImage';
 import AssetDetailsModal from '@/components/ui/AssetDetailsModal';
 import { useNotification } from '@/contexts/NotificationContext';
+import { motion } from 'framer-motion';
 
 export default function FluidDashboard() {
   const { user, claimRental, claimWinnings } = useAuth();
@@ -20,7 +22,9 @@ export default function FluidDashboard() {
   const [claimedWinnings, setClaimedWinnings] = useState(false);
 
   const totalMonthlyIncome = ownedAssets.reduce((sum, asset) => sum + asset.payoutAmount, 0);
+  const totalPortfolioValue = ownedAssets.reduce((sum, asset) => sum + (asset.value * asset.shares / 100), 0);
 
+  // Claim functionality (unchanged)
   const handleClaimRent = () => {
     claimRental(1);
     setClaimedRent(true);
@@ -48,209 +52,318 @@ export default function FluidDashboard() {
     setIsDetailsModalOpen(true);
   };
 
+  // Enhanced stats with better data
   const stats = [
     {
       label: "Portfolio Value",
-      value: `$${user?.portfolioValue?.toLocaleString() || '490,000'}`,
+      value: `$${totalPortfolioValue.toLocaleString()}`,
       change: "+12.8%",
       icon: DollarSign,
-      color: "text-fluid-gold"
+      color: "text-amber-400",
+      bgColor: "bg-amber-500/10",
+      description: "Total value of your investments"
     },
     {
       label: "Monthly Income",
       value: `$${totalMonthlyIncome.toLocaleString()}`,
       change: "+15.2%",
       icon: TrendingUp,
-      color: "text-fluid-emerald"
+      color: "text-emerald-400",
+      bgColor: "bg-emerald-500/10",
+      description: "Expected monthly returns"
     },
     {
       label: "Active Assets",
       value: ownedAssets.length.toString(),
       change: "+2",
       icon: Building,
-      color: "text-fluid-sapphire"
+      color: "text-blue-400",
+      bgColor: "bg-blue-500/10",
+      description: "Diversified investments"
     },
     {
       label: "ASRD Tokens",
-      value: user?.asrdBalance?.toLocaleString() || "5,000",
+      value: user?.asrdBalance?.toLocaleString() || "15,642",
       change: "+265",
       icon: Zap,
-      color: "text-fluid-gold"
+      color: "text-amber-400",
+      bgColor: "bg-amber-500/10",
+      description: "Platform rewards balance"
     }
   ];
 
   return (
-    <div className="fluid-section">
-      <div className="fluid-container">
-        {/* Header Section with Mobile Optimization */}
-        <div className="text-center mb-8 md:mb-12 fluid-scroll-item mobile:text-center">
-          <h1 className="fluid-hero">
-            Portfolio <span className="text-fluid-gold">Dashboard</span>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Enhanced Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-12"
+        >
+          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-500/20 to-amber-600/20 border border-amber-500/30 rounded-full px-6 py-3 mb-6 backdrop-blur-sm">
+            <BadgeCheck className="w-5 h-5 text-amber-400" />
+            <span className="text-amber-400 font-semibold">Premium Portfolio</span>
+          </div>
+          
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            Investment <span className="bg-gradient-to-r from-amber-400 to-cyan-400 bg-clip-text text-transparent">Dashboard</span>
           </h1>
-          <p className="fluid-body max-w-2xl mx-auto mobile:px-4">
-            Track your premium real-world asset investments and income with comprehensive analytics
+          
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+            Track your elite real-world asset investments with comprehensive analytics and real-time performance metrics.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Stats Grid - Mobile Responsive */}
-        <div className="fluid-grid fluid-grid-cols-2 lg:fluid-grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+        {/* Enhanced Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {stats.map((stat, index) => (
-            <div 
-              key={stat.label} 
-              className="fluid-card fluid-scroll-item mobile:w-full"
-              style={{ transitionDelay: `${index * 100}ms` }}
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6 hover:border-amber-400/30 transition-all duration-300 group"
             >
-              <div className="flex items-center justify-between mb-3 md:mb-4">
-                <div className={`p-2 md:p-3 rounded-lg md:rounded-xl bg-opacity-10 ${stat.color.replace('text-', 'bg-')}`}>
-                  <stat.icon className="w-4 h-4 md:w-6 md:h-6" />
+              <div className="flex items-center justify-between mb-4">
+                <div className={`p-3 rounded-xl ${stat.bgColor}`}>
+                  <stat.icon className={`w-6 h-6 ${stat.color}`} />
                 </div>
-                <div className="flex items-center space-x-1 text-xs md:text-sm font-semibold text-fluid-emerald">
-                  <ArrowUpRight className="w-3 h-3 md:w-4 md:h-4" />
+                <div className="flex items-center space-x-1 text-sm font-semibold text-emerald-400">
+                  <ArrowUpRight className="w-4 h-4" />
                   <span>{stat.change}</span>
                 </div>
               </div>
-              <h3 className="text-lg md:text-2xl font-bold text-white mb-1 md:mb-2">{stat.value}</h3>
-              <p className="fluid-caption text-xs md:text-base">{stat.label}</p>
-            </div>
+              
+              <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">
+                {stat.value}
+              </h3>
+              
+              <p className="text-slate-300 font-medium mb-1">{stat.label}</p>
+              <p className="text-slate-400 text-sm">{stat.description}</p>
+            </motion.div>
           ))}
         </div>
 
-        <div className="fluid-grid lg:fluid-grid-cols-3 gap-6 md:gap-8">
-          {/* Income Section */}
-          <div className="lg:col-span-2 space-y-4 md:space-y-6">
-            {/* Claimable Income */}
-            <div className="fluid-card-panel fluid-scroll-item mobile:px-4 mobile:py-4">
-              <h2 className="fluid-subheading mb-4 md:mb-6">Claimable Income</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column - Income & Performance */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Claimable Income - Enhanced */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-white">Claimable Income</h2>
+                <div className="flex items-center space-x-2 text-amber-400">
+                  <Coins className="w-5 h-5" />
+                  <span className="font-semibold">Ready to Claim</span>
+                </div>
+              </div>
 
-              {/* Rent Income */}
-              <div className="fluid-card mb-3 md:mb-4 border-fluid-gold mobile:p-3">
-                <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 md:mb-4 space-y-2 md:space-y-0">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-white text-sm md:text-base">Rental Income</h3>
-                    <p className="fluid-caption text-xs md:text-sm">From real estate assets</p>
+              {/* Rent Income Card */}
+              <div className="bg-gradient-to-r from-amber-500/10 to-amber-600/10 rounded-xl border border-amber-500/20 p-6 mb-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-1">Rental Income</h3>
+                    <p className="text-slate-300 text-sm">From premium real estate assets</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-lg md:text-xl font-bold text-fluid-gold">$4,250</p>
-                    <p className="text-fluid-gold text-xs md:text-sm">+132 ASRD</p>
+                    <p className="text-2xl font-bold text-amber-400">$4,250</p>
+                    <p className="text-amber-300 text-sm">+132 ASRD Tokens</p>
                   </div>
                 </div>
                 <button
                   onClick={handleClaimRent}
                   disabled={claimedRent}
-                  className={`w-full btn-fluid mobile:py-3 ${claimedRent ? 'opacity-50' : ''}`}
+                  className={`w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2 ${
+                    claimedRent ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'
+                  }`}
                 >
-                  <Coins className="w-4 h-4 mr-2" />
-                  {claimedRent ? 'Claimed Successfully!' : 'Claim Rent Income'}
+                  <Coins className="w-5 h-5" />
+                  <span>{claimedRent ? 'Claimed Successfully!' : 'Claim Rent Income'}</span>
                 </button>
               </div>
 
-              {/* Winnings Income */}
-              <div className="fluid-card border-fluid-emerald mobile:p-3">
-                <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 md:mb-4 space-y-2 md:space-y-0">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-white text-sm md:text-base">Investment Winnings</h3>
-                    <p className="fluid-caption text-xs md:text-sm">From thoroughbred and venture assets</p>
+              {/* Winnings Income Card */}
+              <div className="bg-gradient-to-r from-emerald-500/10 to-emerald-600/10 rounded-xl border border-emerald-500/20 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-1">Investment Winnings</h3>
+                    <p className="text-slate-300 text-sm">From thoroughbred and venture assets</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-lg md:text-xl font-bold text-fluid-emerald">$8,500</p>
-                    <p className="text-fluid-emerald text-xs md:text-sm">+265 ASRD</p>
+                    <p className="text-2xl font-bold text-emerald-400">$8,500</p>
+                    <p className="text-emerald-300 text-sm">+265 ASRD Tokens</p>
                   </div>
                 </div>
                 <button
                   onClick={handleClaimWinnings}
                   disabled={claimedWinnings}
-                  className={`w-full btn-fluid mobile:py-3 ${claimedWinnings ? 'opacity-50' : ''}`}
+                  className={`w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2 ${
+                    claimedWinnings ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'
+                  }`}
                 >
-                  <Zap className="w-4 h-4 mr-2" />
-                  {claimedWinnings ? 'Claimed Successfully!' : 'Claim Winnings'}
+                  <Zap className="w-5 h-5" />
+                  <span>{claimedWinnings ? 'Claimed Successfully!' : 'Claim Winnings'}</span>
                 </button>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Income History */}
-            <div className="fluid-card-panel fluid-scroll-item mobile:px-4 mobile:py-4" style={{ transitionDelay: '200ms' }}>
-              <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 md:mb-6 space-y-3 md:space-y-0">
-                <h2 className="fluid-subheading">Income History</h2>
-                <button className="btn-fluid-secondary mobile:w-full md:w-auto">
-                  <Download className="w-4 h-4 mr-2" />
-                  Export
+            {/* Income History - Enhanced */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-white">Income History</h2>
+                <button className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-xl font-semibold transition-all duration-300 flex items-center space-x-2">
+                  <Download className="w-4 h-4" />
+                  <span>Export</span>
                 </button>
               </div>
 
-              <div className="space-y-2 md:space-y-3 mobile:space-y-3">
-                {ownedAssets.map((asset) => (
-                  <div key={asset.id} className="flex items-center justify-between p-2 md:p-3 fluid-card mobile:flex-col mobile:items-start mobile:space-y-2">
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-white text-xs md:text-sm">{asset.title}</h3>
-                      <p className="fluid-caption text-xs">Next payout: {asset.nextPayout}</p>
+              <div className="space-y-4">
+                {ownedAssets.map((asset, index) => (
+                  <motion.div
+                    key={asset.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.1 * index }}
+                    className="flex items-center justify-between p-4 bg-slate-700/30 rounded-xl border border-slate-600 hover:border-slate-500 transition-all duration-300 group cursor-pointer"
+                    onClick={() => handleViewDetails(asset)}
+                  >
+                    <div className="flex items-center space-x-4">
+                      <RealAssetImage type={asset.type} title={asset.title} size="sm" />
+                      <div>
+                        <h3 className="font-semibold text-white group-hover:text-amber-400 transition-colors">
+                          {asset.title}
+                        </h3>
+                        <div className="flex items-center space-x-2 text-slate-400 text-sm mt-1">
+                          <CalendarDays className="w-4 h-4" />
+                          <span>Next payout: {asset.nextPayout}</span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-right md:text-left mobile:w-full mobile:flex mobile:justify-between">
-                      <p className="text-fluid-sapphire font-semibold text-sm md:text-base">${asset.payoutAmount.toLocaleString()}</p>
-                      <p className="text-fluid-sapphire text-xs">+{(asset.payoutAmount / 32).toFixed(0)} ASRD</p>
+                    <div className="text-right">
+                      <p className="text-lg font-bold text-blue-400">${asset.payoutAmount.toLocaleString()}</p>
+                      <p className="text-blue-300 text-sm">+{(asset.payoutAmount / 32).toFixed(0)} ASRD</p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
 
-          {/* Your Assets Section */}
-          <div className="fluid-card-panel fluid-scroll-item mobile:px-4 mobile:py-4" style={{ transitionDelay: '400ms' }}>
-            <h2 className="fluid-subheading mb-4 md:mb-6">Your Assets</h2>
-            <div className="space-y-3 md:space-y-4 mobile:space-y-3">
+          {/* Right Column - Your Assets */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-white">Your Assets</h2>
+              <div className="flex items-center space-x-2 text-emerald-400">
+                <Shield className="w-5 h-5" />
+                <span className="text-sm font-semibold">Secured</span>
+              </div>
+            </div>
+
+            <div className="space-y-4">
               {ownedAssets.map((asset, index) => (
-                <div 
-                  key={asset.id} 
-                  className="fluid-card cursor-pointer mobile:p-3"
+                <motion.div
+                  key={asset.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.1 * index }}
+                  className="bg-slate-700/30 rounded-xl border border-slate-600 p-4 hover:border-amber-400/30 transition-all duration-300 group cursor-pointer"
                   onClick={() => handleViewDetails(asset)}
-                  style={{ transitionDelay: `${index * 50}ms` }}
                 >
-                  <div className="flex items-start space-x-2 md:space-x-3">
-                    <RealAssetImage type={asset.type} title={asset.title} size="sm" />
+                  <div className="flex items-start space-x-4">
+                    <RealAssetImage type={asset.type} title={asset.title} size="md" />
                     <div className="flex-1 min-w-0">
-                      <div className="flex flex-col md:flex-row md:items-start justify-between mb-2 space-y-1 md:space-y-0">
+                      <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
-                          <h3 className="font-bold text-white text-sm md:text-base mb-1 line-clamp-1">{asset.title}</h3>
-                          <p className="fluid-caption text-xs">{asset.location}</p>
+                          <h3 className="font-bold text-white text-lg mb-1 group-hover:text-amber-400 transition-colors line-clamp-1">
+                            {asset.title}
+                          </h3>
+                          <p className="text-slate-300 text-sm mb-2">{asset.location}</p>
+                          
+                          {/* Enhanced badges */}
+                          {asset.badges && asset.badges.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mb-2">
+                              {asset.badges.slice(0, 2).map((badge, badgeIndex) => (
+                                <span
+                                  key={badgeIndex}
+                                  className={`px-2 py-1 rounded-full text-xs font-medium border ${
+                                    badge.color === 'emerald' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' :
+                                    badge.color === 'amber' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
+                                    'bg-blue-500/20 text-blue-300 border-blue-500/30'
+                                  }`}
+                                >
+                                  {badge.label}
+                                </span>
+                              ))}
+                            </div>
+                          )}
                         </div>
-                        <span className="text-fluid-emerald font-semibold bg-fluid-emerald bg-opacity-10 px-2 py-1 rounded text-xs md:text-sm">
+                        <span className="bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full text-sm font-semibold border border-emerald-500/30">
                           {asset.roi}
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-1 md:gap-2 text-xs mb-2">
+                      {/* Enhanced metrics */}
+                      <div className="grid grid-cols-2 gap-4 mb-3">
                         <div>
-                          <p className="fluid-caption">Investment</p>
+                          <p className="text-slate-400 text-sm">Investment</p>
                           <p className="text-white font-semibold">${asset.investment.toLocaleString()}</p>
                         </div>
                         <div>
-                          <p className="fluid-caption">Shares</p>
-                          <p className="text-fluid-sapphire font-semibold">{asset.shares}</p>
+                          <p className="text-slate-400 text-sm">Shares</p>
+                          <p className="text-blue-400 font-semibold">{asset.shares}</p>
                         </div>
                       </div>
 
-                      <div className="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0">
-                        <span className="fluid-caption text-xs">Value: ${asset.value.toLocaleString()}</span>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4 text-slate-400 text-sm">
+                          <div className="flex items-center space-x-1">
+                            <Users className="w-4 h-4" />
+                            <span>{asset.investorCount} investors</span>
+                          </div>
+                          {asset.performance && (
+                            <div className="flex items-center space-x-1 text-emerald-400">
+                              <TrendingUp className="w-4 h-4" />
+                              <span>{asset.performance}</span>
+                            </div>
+                          )}
+                        </div>
                         <button
-                          className="btn-fluid-secondary text-xs px-2 py-1 mobile:w-full md:w-auto"
+                          className="bg-slate-600 hover:bg-slate-500 text-white px-3 py-2 rounded-lg transition-all duration-300 flex items-center space-x-1 text-sm"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleViewDetails(asset);
                           }}
                         >
-                          <Eye className="w-3 h-3 mr-1" />
-                          Details
+                          <Eye className="w-4 h-4" />
+                          <span>View</span>
                         </button>
                       </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
+      {/* Modal (unchanged functionality) */}
       <AssetDetailsModal
         isOpen={isDetailsModalOpen}
         onClose={() => setIsDetailsModalOpen(false)}

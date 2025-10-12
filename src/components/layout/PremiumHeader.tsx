@@ -1,3 +1,4 @@
+// src/components/layout/PremiumHeader.tsx - ENHANCED
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -7,9 +8,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Home, BarChart3, ShoppingCart, Users, Building2,
-  Menu, X, LogOut, User, Zap, ChevronDown, Globe
+  Menu, X, LogOut, User, Zap, ChevronDown, Globe,
+  Shield, TrendingUp
 } from 'lucide-react';
-import PremiumLogo from '@/components/ui/PremiumLogo';
 
 export default function PremiumHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,7 +25,7 @@ export default function PremiumHeader() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    
+
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -32,25 +33,24 @@ export default function PremiumHeader() {
     checkMobile();
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', checkMobile);
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', checkMobile);
     };
   }, []);
 
-  // Enhanced navigation with fluid design
+  // Professional financial navigation
   const navigation = user ? [
     { name: 'Home', href: '/home', icon: Home, description: 'Platform Overview' },
-    { name: 'Dashboard', href: '/dashboard', icon: BarChart3, description: 'Your Portfolio' },
-    { name: 'Marketplace', href: '/marketplace', icon: ShoppingCart, description: 'Invest Now' },
-    { name: 'Our Journey', href: '/our-journey', icon: Globe, description: 'Protocol Story' },
+    { name: 'Portfolio', href: '/dashboard', icon: BarChart3, description: 'Your Investments' },
+    { name: 'Marketplace', href: '/marketplace', icon: ShoppingCart, description: 'Browse Assets' },
     { name: 'Treasury', href: '/treasury', icon: Building2, description: 'Platform Funds' },
     { name: 'DAO', href: '/dao', icon: Users, description: 'Governance' },
   ] : [
     { name: 'Home', href: '/home', icon: Home, description: 'Get Started' },
     { name: 'Marketplace', href: '/marketplace', icon: ShoppingCart, description: 'Browse Assets' },
-    { name: 'Our Journey', href: '/our-journey', icon: Globe, description: 'Learn Our Story' },
+    { name: 'Our Story', href: '/our-journey', icon: Globe, description: 'Learn About Us' },
   ];
 
   const isActive = (href: string) => pathname === href;
@@ -69,103 +69,97 @@ export default function PremiumHeader() {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       isScrolled
-        ? 'py-2 md:py-3 bg-fluid-charcoal/95 backdrop-blur-xl border-b border-fluid-gold/20 shadow-2xl shadow-fluid-gold/5'
-        : 'py-3 md:py-5 bg-transparent'
+        ? 'py-3 bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-lg'
+        : 'py-4 bg-white/80 backdrop-blur-md'
     }`}>
-      <div className="fluid-container">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          {/* Premium Logo with enhanced branding */}
-          <div className="flex items-center space-x-4 md:space-x-8">
-            <PremiumLogo size={isMobile ? "sm" : "md"} showText={!isMobile} />
+          {/* Logo & Brand */}
+          <div className="flex items-center space-x-8">
+            <Link href="/home" className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-emerald-500 rounded-xl flex items-center justify-center">
+                <Shield className="w-6 h-6 text-white" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xl font-bold text-slate-900">ASRD</span>
+                <span className="text-xs text-slate-500 -mt-1">Real World Assets</span>
+              </div>
+            </Link>
 
-            {/* Desktop Navigation - Enhanced with Fluid Design */}
+            {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-1">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`relative group px-3 md:px-4 py-2 md:py-2.5 rounded-xl transition-all duration-300 mobile-nav-item ${
+                  className={`relative group px-4 py-2 rounded-lg transition-all duration-300 ${
                     isActive(item.href)
-                      ? 'bg-gradient-to-r from-fluid-gold/20 to-fluid-emerald/20 text-fluid-gold border border-fluid-gold/30'
-                      : 'text-fluid-silver hover:text-white hover:bg-white/5'
+                      ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                      : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'
                   }`}
                 >
-                  <div className="flex items-center space-x-2 md:space-x-2.5">
+                  <div className="flex items-center space-x-2">
                     <item.icon className="w-4 h-4" />
-                    <span className="font-semibold text-sm">{item.name}</span>
-                  </div>
-
-                  {/* Enhanced active indicator */}
-                  {isActive(item.href) && (
-                    <motion.div
-                      layoutId="premium-nav-indicator"
-                      className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-3/4 h-0.5 bg-gradient-to-r from-fluid-gold to-fluid-emerald rounded-full"
-                    />
-                  )}
-
-                  {/* Enhanced hover tooltip */}
-                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-fluid-charcoal border border-fluid-gold/30 rounded-lg text-xs text-fluid-gold opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
-                    {item.description}
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-fluid-gold/30"></div>
+                    <span className="font-medium text-sm">{item.name}</span>
                   </div>
                 </Link>
               ))}
             </nav>
           </div>
 
-          {/* Enhanced Auth Section */}
-          <div className="hidden lg:flex items-center space-x-3 md:space-x-4">
+          {/* Auth Section */}
+          <div className="hidden lg:flex items-center space-x-4">
             {user ? (
-              <div className="flex items-center space-x-3 md:space-x-4">
-                {/* Enhanced User Info */}
+              <div className="flex items-center space-x-4">
+                {/* User Menu */}
                 <div className="relative">
                   <button
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    className="flex items-center space-x-2 md:space-x-3 px-3 md:px-4 py-2 md:py-2.5 bg-gradient-to-r from-fluid-gold/10 to-fluid-emerald/10 rounded-xl border border-fluid-gold/20 hover:border-fluid-gold/40 transition-all group"
+                    className="flex items-center space-x-3 px-4 py-2 bg-slate-50 rounded-lg border border-slate-200 hover:border-blue-300 transition-all group"
                   >
                     <div className="flex items-center space-x-2">
-                      <div className="w-7 h-7 md:w-8 md:h-8 bg-gradient-to-r from-fluid-gold to-fluid-emerald rounded-full flex items-center justify-center">
-                        <User className="w-3 h-3 md:w-4 md:h-4 text-white" />
+                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full flex items-center justify-center">
+                        <User className="w-4 h-4 text-white" />
                       </div>
                       <div className="text-left">
-                        <div className="text-white font-semibold text-sm">{user.name}</div>
-                        <div className="text-fluid-gold text-xs">${user.portfolioValue.toLocaleString()}</div>
+                        <div className="text-slate-900 font-semibold text-sm">{user.name}</div>
+                        <div className="text-slate-500 text-xs">${user.portfolioValue?.toLocaleString() || '0'}</div>
                       </div>
                     </div>
-                    <ChevronDown className={`w-3 h-3 md:w-4 md:h-4 text-fluid-gold transition-transform duration-200 ${
+                    <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
                       isUserMenuOpen ? 'rotate-180' : ''
                     }`} />
                   </button>
 
-                  {/* Enhanced User Dropdown */}
+                  {/* User Dropdown */}
                   <AnimatePresence>
                     {isUserMenuOpen && (
                       <motion.div
                         initial={{ opacity: 0, y: 10, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                        className="absolute top-full right-0 mt-2 w-56 md:w-64 bg-fluid-charcoal/95 backdrop-blur-xl border border-fluid-gold/20 rounded-2xl shadow-2xl shadow-fluid-gold/10 overflow-hidden"
+                        className="absolute top-full right-0 mt-2 w-64 bg-white rounded-xl border border-slate-200 shadow-xl overflow-hidden"
                       >
-                        <div className="p-3 md:p-4 border-b border-fluid-gold/10">
-                          <div className="text-white font-semibold text-sm md:text-base">{user.name}</div>
-                          <div className="text-fluid-gold text-xs md:text-sm">Premium Investor</div>
+                        <div className="p-4 border-b border-slate-100">
+                          <div className="text-slate-900 font-semibold">{user.name}</div>
+                          <div className="text-slate-500 text-sm">Premium Investor</div>
                         </div>
 
-                        <div className="p-2 md:p-3">
+                        <div className="p-3">
                           <div className="grid grid-cols-2 gap-2 mb-3">
-                            <div className="text-center p-2 bg-fluid-gold/10 rounded-lg border border-fluid-gold/20">
-                              <div className="text-fluid-gold font-bold text-sm">${user.portfolioValue.toLocaleString()}</div>
-                              <div className="text-fluid-gold text-xs">Portfolio</div>
+                            <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-200">
+                              <div className="text-blue-700 font-bold">${user.portfolioValue?.toLocaleString() || '0'}</div>
+                              <div className="text-blue-600 text-xs">Portfolio</div>
                             </div>
-                            <div className="text-center p-2 bg-fluid-sapphire/10 rounded-lg border border-fluid-sapphire/20">
-                              <div className="text-fluid-sapphire font-bold text-sm">{user.asrdBalance?.toLocaleString() || '5,000'}</div>
-                              <div className="text-fluid-sapphire text-xs">ASRD Tokens</div>
+                            <div className="text-center p-3 bg-emerald-50 rounded-lg border border-emerald-200">
+                              <div className="text-emerald-700 font-bold">{user.asrdBalance?.toLocaleString() || '5,000'}</div>
+                              <div className="text-emerald-600 text-xs">ASRD Tokens</div>
                             </div>
                           </div>
 
                           <button
                             onClick={handleLogout}
-                            className="w-full flex items-center justify-center space-x-2 px-3 md:px-4 py-2 md:py-2.5 text-red-300 hover:text-red-100 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-xl transition-all text-sm"
+                            className="w-full flex items-center justify-center space-x-2 px-4 py-3 text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-all text-sm"
                           >
                             <LogOut className="w-4 h-4" />
                             <span className="font-semibold">Logout</span>
@@ -177,10 +171,10 @@ export default function PremiumHeader() {
                 </div>
               </div>
             ) : (
-              <div className="flex items-center space-x-2 md:space-x-3">
+              <div className="flex items-center space-x-3">
                 <button
                   onClick={handleLogin}
-                  className="btn-fluid flex items-center space-x-2 text-sm px-4 md:px-6 py-2 md:py-2.5 group"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 flex items-center space-x-2 group"
                 >
                   <Zap className="w-4 h-4" />
                   <span>Start Investing</span>
@@ -189,62 +183,62 @@ export default function PremiumHeader() {
             )}
           </div>
 
-          {/* Enhanced Mobile Menu Button */}
+          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 text-fluid-silver hover:text-white transition-colors bg-white/5 rounded-xl border border-white/10 hover:border-fluid-gold/30 mobile-nav-item"
+            className="lg:hidden p-2 text-slate-600 hover:text-slate-900 transition-colors bg-slate-100 rounded-lg border border-slate-200 hover:border-blue-300"
             aria-label="Toggle mobile menu"
           >
             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
 
-        {/* Enhanced Mobile Menu */}
+        {/* Mobile Menu */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden mt-3 md:mt-4 bg-fluid-charcoal/95 backdrop-blur-xl rounded-2xl border border-fluid-gold/20 overflow-hidden"
+              className="lg:hidden mt-4 bg-white rounded-xl border border-slate-200 shadow-lg overflow-hidden"
             >
-              <div className="p-3 md:p-4 space-y-1 md:space-y-2">
+              <div className="p-4 space-y-2">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex items-center space-x-3 px-3 md:px-4 py-3 rounded-xl text-base font-medium transition-all mobile-nav-item ${
+                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-base font-medium transition-all ${
                       isActive(item.href)
-                        ? 'bg-gradient-to-r from-fluid-gold/20 to-fluid-emerald/20 text-fluid-gold border border-fluid-gold/30'
-                        : 'text-fluid-silver hover:text-white hover:bg-white/5'
+                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                        : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'
                     }`}
                   >
                     <item.icon className="w-5 h-5" />
                     <div className="flex-1">
-                      <div className="font-semibold text-sm md:text-base">{item.name}</div>
-                      <div className="text-xs text-fluid-gold opacity-80">{item.description}</div>
+                      <div className="font-semibold">{item.name}</div>
+                      <div className="text-xs text-slate-500">{item.description}</div>
                     </div>
                   </Link>
                 ))}
 
-                {/* Enhanced Mobile Auth */}
-                <div className="pt-3 md:pt-4 border-t border-fluid-gold/20">
+                {/* Mobile Auth */}
+                <div className="pt-4 border-t border-slate-200">
                   {user ? (
-                    <div className="space-y-2 md:space-y-3">
-                      <div className="px-3 md:px-4 py-3 bg-gradient-to-r from-fluid-gold/10 to-fluid-emerald/10 rounded-xl border border-fluid-gold/20">
+                    <div className="space-y-3">
+                      <div className="px-4 py-3 bg-slate-50 rounded-lg border border-slate-200">
                         <div className="flex items-center space-x-2 mb-2">
-                          <User className="w-4 h-4 text-fluid-gold" />
-                          <span className="font-semibold text-white text-sm md:text-base">{user.name}</span>
+                          <User className="w-4 h-4 text-blue-600" />
+                          <span className="font-semibold text-slate-900">{user.name}</span>
                         </div>
-                        <div className="grid grid-cols-2 gap-2 text-xs md:text-sm">
-                          <div className="text-fluid-gold">${user.portfolioValue.toLocaleString()}</div>
-                          <div className="text-fluid-sapphire">{user.asrdBalance?.toLocaleString() || '5,000'} ASRD</div>
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div className="text-blue-600">${user.portfolioValue?.toLocaleString() || '0'}</div>
+                          <div className="text-emerald-600">{user.asrdBalance?.toLocaleString() || '5,000'} ASRD</div>
                         </div>
                       </div>
                       <button
                         onClick={handleLogout}
-                        className="w-full flex items-center justify-center space-x-2 px-3 md:px-4 py-3 text-red-300 hover:text-red-100 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-xl transition-all text-sm md:text-base"
+                        className="w-full flex items-center justify-center space-x-2 px-4 py-3 text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-all"
                       >
                         <LogOut className="w-5 h-5" />
                         <span className="font-semibold">Logout</span>
@@ -253,7 +247,7 @@ export default function PremiumHeader() {
                   ) : (
                     <button
                       onClick={handleLogin}
-                      className="w-full btn-fluid flex items-center justify-center space-x-2 py-3 text-sm md:text-base mobile:w-full"
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2"
                     >
                       <Zap className="w-5 h-5" />
                       <span>Start Investing Now</span>

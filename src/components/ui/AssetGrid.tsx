@@ -2,42 +2,22 @@
 
 import React, { useState } from 'react';
 import { mockAssets } from '@/data/mockData';
-import AssetCard from './AssetCard';
+import EnhancedAssetCard from './EnhancedAssetCard';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-
-interface Asset {
-  id: number;
-  title: string;
-  category: string;
-  type: string;
-  location: string;
-  value: number;
-  currency: string;
-  status: string;
-  image: string;
-  description: string;
-  roi: string;
-  timeline: string;
-  minInvestment: number;
-}
-
-// Extend mock assets with required properties for AssetCard
-const enhancedAssets = mockAssets.map(asset => ({
-  ...asset,
-  category: asset.type, // Use type as category
-  currency: "USD",
-  image: "/api/placeholder/400/300", // Placeholder
-  description: `Premium ${asset.type.toLowerCase()} investment located in ${asset.location} with ${asset.roi} ROI.`
-}));
+import { Filter, Search, Grid, List } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Asset } from '@/types/asset';
 
 export default function AssetGrid() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
-  const [assets] = useState<Asset[]>(enhancedAssets);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [assets] = useState<Asset[]>(mockAssets); // Use enhanced mockAssets directly
   const { getFadeStyle } = useScrollAnimation();
 
   const categories = ['all', ...new Set(assets.map(asset => asset.type))];
-  const statuses = ['all', ...new Set(assets.map(asset => asset.status))];
+  const statuses = ['all', ...new Set(assets.map(asset => asset.status || 'Available'))];
 
   const handleFilter = (category: string, status: string) => {
     setSelectedCategory(category);
@@ -46,8 +26,12 @@ export default function AssetGrid() {
 
   const filteredAssets = assets.filter(asset => {
     const categoryMatch = selectedCategory === 'all' || asset.type === selectedCategory;
-    const statusMatch = selectedStatus === 'all' || asset.status === selectedStatus;
-    return categoryMatch && statusMatch;
+    const statusMatch = selectedStatus === 'all' || (asset.status || 'Available') === selectedStatus;
+    const searchMatch = asset.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                       (asset.description || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+                       asset.location.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    return categoryMatch && statusMatch && searchMatch;
   });
 
   const getCategoryLabel = (category: string) => {
@@ -58,21 +42,80 @@ export default function AssetGrid() {
     return status === 'all' ? 'All Status' : status;
   };
 
+  // UPDATED HANDLERS - Accept Asset objects
+  const handleInvest = (asset: Asset) => {
+    console.log('Invest in:', asset.id);
+  };
+
+  const handleViewDetails = (asset: Asset) => {
+    console.log('View details:', asset.id);
+  };
+
   return (
     <div className="space-y-8">
-      {/* Filters */}
-      <div className="glass-ultimate rounded-3xl border border-white/10 p-8" style={getFadeStyle(0, 200)}>
+      {/* Enhanced Filters Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6"
+      >
         <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
+          {/* Search Bar */}
+          <div className="flex-1 w-full lg:max-w-md">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search assets by name, location, or description..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-amber-400 focus:outline-none transition-all duration-300 backdrop-blur-sm"
+              />
+            </div>
+          </div>
+
+          {/* View Mode Toggle */}
+          <div className="flex items-center gap-2 bg-slate-900/50 rounded-xl p-2 border border-slate-600 backdrop-blur-sm">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-3 rounded-lg transition-all duration-300 ${
+                viewMode === 'grid'
+                  ? 'bg-amber-500 text-white shadow-lg'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-700'
+              }`}
+            >
+              <Grid className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`p-3 rounded-lg transition-all duration-300 ${
+                viewMode === 'list'
+                  ? 'bg-amber-500 text-white shadow-lg'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-700'
+              }`}
+            >
+              <List className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Category and Status Filters */}
+        <div className="mt-6 flex flex-col lg:flex-row gap-4 items-center justify-between">
           {/* Category Filters */}
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
+            <div className="flex items-center space-x-2 text-slate-300 mr-4">
+              <Filter className="w-4 h-4" />
+              <span className="text-sm font-medium">Category:</span>
+            </div>
             {categories.map(category => (
               <button
                 key={category}
                 onClick={() => handleFilter(category, selectedStatus)}
-                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 backdrop-blur-sm border ${
+                className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 backdrop-blur-sm border ${
                   selectedCategory === category
-                    ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-cyan-400/50 shadow-lg'
-                    : 'bg-white/5 text-cyan-100 border-white/20 hover:border-cyan-400/30 hover:bg-white/10'
+                    ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white border-amber-400/50 shadow-lg'
+                    : 'bg-slate-700/50 text-slate-300 border-slate-600 hover:border-amber-400/30 hover:bg-slate-700'
                 }`}
               >
                 {getCategoryLabel(category)}
@@ -81,15 +124,16 @@ export default function AssetGrid() {
           </div>
 
           {/* Status Filters */}
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
+            <span className="text-slate-300 text-sm font-medium mr-4">Status:</span>
             {statuses.map(status => (
               <button
                 key={status}
                 onClick={() => handleFilter(selectedCategory, status)}
-                className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 backdrop-blur-sm border ${
+                className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-300 backdrop-blur-sm border ${
                   selectedStatus === status
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-white border-purple-400/50'
-                    : 'bg-white/5 text-cyan-100 border-white/20 hover:border-purple-400/30 hover:bg-white/10'
+                    ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white border-emerald-400/50'
+                    : 'bg-slate-700/50 text-slate-300 border-slate-600 hover:border-emerald-400/30 hover:bg-slate-700'
                 }`}
               >
                 {getStatusLabel(status)}
@@ -98,37 +142,78 @@ export default function AssetGrid() {
           </div>
         </div>
 
-        <div className="mt-4 text-sm text-blue-300">
-          Showing {filteredAssets.length} of {assets.length} premium assets
-        </div>
-      </div>
-
-      {/* Asset Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredAssets.map((asset, index) => (
-          <div key={asset.id} style={getFadeStyle(200 + index * 100, 600)}>
-            <AssetCard
-              {...asset}
-              onInvest={(id) => console.log('Invest in:', id)}
-              onViewDetails={(id) => console.log('View details:', id)}
-            />
+        {/* Results Count */}
+        <div className="mt-4 flex items-center justify-between">
+          <div className="text-slate-300 text-sm">
+            Showing <span className="text-white font-semibold">{filteredAssets.length}</span> of{' '}
+            <span className="text-white font-semibold">{assets.length}</span> premium assets
           </div>
-        ))}
-      </div>
-
-      {/* Empty State */}
-      {filteredAssets.length === 0 && (
-        <div className="text-center py-16 glass-ultimate rounded-3xl border border-white/10" style={getFadeStyle(200, 400)}>
-          <div className="text-cyan-400 text-6xl mb-4">🔍</div>
-          <p className="text-cyan-100 text-lg mb-4">No assets found matching your filters.</p>
-          <button
-            onClick={() => handleFilter('all', 'all')}
-            className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors duration-300"
-          >
-            Clear all filters
-          </button>
+          <div className="text-slate-400 text-sm">
+            {viewMode === 'grid' ? 'Grid View' : 'List View'}
+          </div>
         </div>
-      )}
+      </motion.div>
+
+      {/* Asset Grid/List */}
+      <AnimatePresence mode="wait">
+        {filteredAssets.length > 0 ? (
+          <motion.div
+            key={viewMode}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className={viewMode === 'grid'
+              ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
+              : "space-y-4"
+            }
+          >
+            {filteredAssets.map((asset, index) => (
+              <motion.div
+                key={asset.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                {/* UPDATED: Pass asset object instead of spreading */}
+                <EnhancedAssetCard
+                  asset={asset}
+                  onInvest={handleInvest}
+                  onViewDetails={handleViewDetails}
+                  enhanced={true}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+        ) : (
+          /* Enhanced Empty State */
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center py-16 bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700"
+          >
+            <div className="max-w-md mx-auto">
+              <div className="w-16 h-16 bg-slate-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Filter className="w-8 h-8 text-slate-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">No Assets Found</h3>
+              <p className="text-slate-300 mb-6">
+                Try adjusting your search criteria or filters to find more investment opportunities.
+              </p>
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedCategory('all');
+                  setSelectedStatus('all');
+                }}
+                className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                Clear All Filters
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
