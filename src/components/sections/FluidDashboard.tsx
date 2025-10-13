@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState } from 'react';
-import {
-  DollarSign, TrendingUp, Building, Zap,
+import { useState } from 'react';
+import { 
   ArrowUpRight, Download, Eye, Coins, CalendarDays,
   BadgeCheck, Users, Clock, Star, Shield, Target
 } from 'lucide-react';
@@ -12,363 +11,348 @@ import RealAssetImage from '@/components/ui/RealAssetImage';
 import AssetDetailsModal from '@/components/ui/AssetDetailsModal';
 import { useNotification } from '@/contexts/NotificationContext';
 import { motion } from 'framer-motion';
+import { OwnedAsset } from '@/types';
 
 export default function FluidDashboard() {
   const { user, claimRental, claimWinnings } = useAuth();
   const { showNotification } = useNotification();
-  const [selectedAsset, setSelectedAsset] = useState<any>(null);
+  const [selectedAsset, setSelectedAsset] = useState<OwnedAsset | null>(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [claimedRent, setClaimedRent] = useState(false);
   const [claimedWinnings, setClaimedWinnings] = useState(false);
 
-  const totalMonthlyIncome = ownedAssets.reduce((sum, asset) => sum + asset.payoutAmount, 0);
-  const totalPortfolioValue = ownedAssets.reduce((sum, asset) => sum + (asset.value * asset.shares / 100), 0);
+  // Fixed calculations with proper type handling
+  const totalMonthlyIncome = ownedAssets.reduce((sum, asset) => sum + (asset.payoutAmount || 0), 0);
+  const totalInvested = ownedAssets.reduce((sum, asset) => sum + asset.investedAmount, 0);
+  const totalCurrentValue = ownedAssets.reduce((sum, asset) => sum + asset.currentValue, 0);
+  const totalReturns = totalCurrentValue - totalInvested;
+  const overallROI = totalInvested > 0 ? (totalReturns / totalInvested) * 100 : 0;
 
-  // Claim functionality (unchanged)
-  const handleClaimRent = () => {
-    claimRental(1);
+  const handleClaimRental = () => {
+    const assetId = ownedAssets.length > 0 ? ownedAssets[0].id : 1;
+    claimRental(assetId);
     setClaimedRent(true);
     showNotification({
-      type: 'premium',
-      title: 'Rent Income Claimed!',
-      message: '$4,250 rent successfully claimed! +132 ASRD tokens added to your balance.',
-      duration: 5000
+      type: "success",
+      title: "Rental Income Claimed",
+      message: "Rental income claimed successfully! $8,500 has been added to your wallet."
     });
   };
 
   const handleClaimWinnings = () => {
-    claimWinnings(2);
+    const assetId = ownedAssets.length > 0 ? ownedAssets[0].id : 1;
+    claimWinnings(assetId);
     setClaimedWinnings(true);
     showNotification({
-      type: 'premium',
-      title: 'Investment Winnings Claimed!',
-      message: '$8,500 winnings successfully claimed! +265 ASRD tokens added to your balance.',
-      duration: 5000
+      type: "success",
+      title: "Race Winnings Claimed",
+      message: "Race winnings claimed! $12,200 prize money deposited."
     });
   };
 
-  const handleViewDetails = (asset: any) => {
+  const openAssetDetails = (asset: OwnedAsset) => {
     setSelectedAsset(asset);
     setIsDetailsModalOpen(true);
   };
 
-  // Enhanced stats with better data
-  const stats = [
-    {
-      label: "Portfolio Value",
-      value: `$${totalPortfolioValue.toLocaleString()}`,
-      change: "+12.8%",
-      icon: DollarSign,
-      color: "text-amber-400",
-      bgColor: "bg-amber-500/10",
-      description: "Total value of your investments"
-    },
-    {
-      label: "Monthly Income",
-      value: `$${totalMonthlyIncome.toLocaleString()}`,
-      change: "+15.2%",
-      icon: TrendingUp,
-      color: "text-emerald-400",
-      bgColor: "bg-emerald-500/10",
-      description: "Expected monthly returns"
-    },
-    {
-      label: "Active Assets",
-      value: ownedAssets.length.toString(),
-      change: "+2",
-      icon: Building,
-      color: "text-blue-400",
-      bgColor: "bg-blue-500/10",
-      description: "Diversified investments"
-    },
-    {
-      label: "ASRD Tokens",
-      value: user?.asrdBalance?.toLocaleString() || "15,642",
-      change: "+265",
-      icon: Zap,
-      color: "text-amber-400",
-      bgColor: "bg-amber-500/10",
-      description: "Platform rewards balance"
-    }
-  ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Enhanced Header */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+      {/* Header Stats */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 p-6"
+      >
+        {/* Total Portfolio Value */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+          className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6"
         >
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-500/20 to-amber-600/20 border border-amber-500/30 rounded-full px-6 py-3 mb-6 backdrop-blur-sm">
-            <BadgeCheck className="w-5 h-5 text-amber-400" />
-            <span className="text-amber-400 font-semibold">Premium Portfolio</span>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-slate-400 text-sm">Portfolio Value</p>
+              <h3 className="text-2xl font-bold text-white">${(totalCurrentValue / 1000).toFixed(0)}K</h3>
+              <p className="text-green-400 text-sm">+${(totalReturns / 1000).toFixed(1)}K returns</p>
+            </div>
+            <div className="p-3 bg-cyan-500/10 rounded-xl">
+              <Coins className="w-6 h-6 text-cyan-400" />
+            </div>
           </div>
-          
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Investment <span className="bg-gradient-to-r from-amber-400 to-cyan-400 bg-clip-text text-transparent">Dashboard</span>
-          </h1>
-          
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-            Track your elite real-world asset investments with comprehensive analytics and real-time performance metrics.
-          </p>
         </motion.div>
 
-        {/* Enhanced Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6 hover:border-amber-400/30 transition-all duration-300 group"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className={`p-3 rounded-xl ${stat.bgColor}`}>
-                  <stat.icon className={`w-6 h-6 ${stat.color}`} />
-                </div>
-                <div className="flex items-center space-x-1 text-sm font-semibold text-emerald-400">
-                  <ArrowUpRight className="w-4 h-4" />
-                  <span>{stat.change}</span>
-                </div>
-              </div>
-              
-              <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">
-                {stat.value}
-              </h3>
-              
-              <p className="text-slate-300 font-medium mb-1">{stat.label}</p>
-              <p className="text-slate-400 text-sm">{stat.description}</p>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Income & Performance */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Claimable Income - Enhanced */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-white">Claimable Income</h2>
-                <div className="flex items-center space-x-2 text-amber-400">
-                  <Coins className="w-5 h-5" />
-                  <span className="font-semibold">Ready to Claim</span>
-                </div>
-              </div>
-
-              {/* Rent Income Card */}
-              <div className="bg-gradient-to-r from-amber-500/10 to-amber-600/10 rounded-xl border border-amber-500/20 p-6 mb-4">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-white mb-1">Rental Income</h3>
-                    <p className="text-slate-300 text-sm">From premium real estate assets</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-amber-400">$4,250</p>
-                    <p className="text-amber-300 text-sm">+132 ASRD Tokens</p>
-                  </div>
-                </div>
-                <button
-                  onClick={handleClaimRent}
-                  disabled={claimedRent}
-                  className={`w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2 ${
-                    claimedRent ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'
-                  }`}
-                >
-                  <Coins className="w-5 h-5" />
-                  <span>{claimedRent ? 'Claimed Successfully!' : 'Claim Rent Income'}</span>
-                </button>
-              </div>
-
-              {/* Winnings Income Card */}
-              <div className="bg-gradient-to-r from-emerald-500/10 to-emerald-600/10 rounded-xl border border-emerald-500/20 p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-white mb-1">Investment Winnings</h3>
-                    <p className="text-slate-300 text-sm">From thoroughbred and venture assets</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-emerald-400">$8,500</p>
-                    <p className="text-emerald-300 text-sm">+265 ASRD Tokens</p>
-                  </div>
-                </div>
-                <button
-                  onClick={handleClaimWinnings}
-                  disabled={claimedWinnings}
-                  className={`w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2 ${
-                    claimedWinnings ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-xl'
-                  }`}
-                >
-                  <Zap className="w-5 h-5" />
-                  <span>{claimedWinnings ? 'Claimed Successfully!' : 'Claim Winnings'}</span>
-                </button>
-              </div>
-            </motion.div>
-
-            {/* Income History - Enhanced */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-white">Income History</h2>
-                <button className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-xl font-semibold transition-all duration-300 flex items-center space-x-2">
-                  <Download className="w-4 h-4" />
-                  <span>Export</span>
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                {ownedAssets.map((asset, index) => (
-                  <motion.div
-                    key={asset.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.1 * index }}
-                    className="flex items-center justify-between p-4 bg-slate-700/30 rounded-xl border border-slate-600 hover:border-slate-500 transition-all duration-300 group cursor-pointer"
-                    onClick={() => handleViewDetails(asset)}
-                  >
-                    <div className="flex items-center space-x-4">
-                      <RealAssetImage type={asset.type} title={asset.title} size="sm" />
-                      <div>
-                        <h3 className="font-semibold text-white group-hover:text-amber-400 transition-colors">
-                          {asset.title}
-                        </h3>
-                        <div className="flex items-center space-x-2 text-slate-400 text-sm mt-1">
-                          <CalendarDays className="w-4 h-4" />
-                          <span>Next payout: {asset.nextPayout}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-lg font-bold text-blue-400">${asset.payoutAmount.toLocaleString()}</p>
-                      <p className="text-blue-300 text-sm">+{(asset.payoutAmount / 32).toFixed(0)} ASRD</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
+        {/* Monthly Income */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+          className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-slate-400 text-sm">Monthly Income</p>
+              <h3 className="text-2xl font-bold text-white">${totalMonthlyIncome.toLocaleString()}</h3>
+              <p className="text-green-400 text-sm">Next: Dec 1, 2025</p>
+            </div>
+            <div className="p-3 bg-emerald-500/10 rounded-xl">
+              <Download className="w-6 h-6 text-emerald-400" />
+            </div>
           </div>
+        </motion.div>
 
-          {/* Right Column - Your Assets */}
+        {/* Total ROI */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.3 }}
+          className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-slate-400 text-sm">Total ROI</p>
+              <h3 className="text-2xl font-bold text-white">{overallROI.toFixed(1)}%</h3>
+              <p className="text-green-400 text-sm">+${(totalReturns / 1000).toFixed(1)}K profit</p>
+            </div>
+            <div className="p-3 bg-amber-500/10 rounded-xl">
+              <Target className="w-6 h-6 text-amber-400" />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Active Investments */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.4 }}
+          className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-slate-400 text-sm">Active Investments</p>
+              <h3 className="text-2xl font-bold text-white">{ownedAssets.length}</h3>
+              <p className="text-slate-400 text-sm">Diversified portfolio</p>
+            </div>
+            <div className="p-3 bg-blue-500/10 rounded-xl">
+              <BadgeCheck className="w-6 h-6 text-blue-400" />
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 px-6 pb-6">
+        {/* Left Column - Portfolio Assets */}
+        <div className="xl:col-span-2 space-y-6">
+          {/* Portfolio Assets */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
             className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6"
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white">Your Assets</h2>
-              <div className="flex items-center space-x-2 text-emerald-400">
-                <Shield className="w-5 h-5" />
-                <span className="text-sm font-semibold">Secured</span>
-              </div>
+              <h2 className="text-xl font-semibold text-white">Your Portfolio Assets</h2>
+              <button className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors">
+                <ArrowUpRight className="w-4 h-4" />
+                View All
+              </button>
             </div>
 
             <div className="space-y-4">
               {ownedAssets.map((asset, index) => (
                 <motion.div
                   key={asset.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.1 * index }}
-                  className="bg-slate-700/30 rounded-xl border border-slate-600 p-4 hover:border-amber-400/30 transition-all duration-300 group cursor-pointer"
-                  onClick={() => handleViewDetails(asset)}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
+                  className="bg-slate-800/30 backdrop-blur-sm rounded-xl border border-slate-700 p-4 hover:border-slate-600 transition-all duration-300"
                 >
-                  <div className="flex items-start space-x-4">
-                    <RealAssetImage type={asset.type} title={asset.title} size="md" />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex-1">
-                          <h3 className="font-bold text-white text-lg mb-1 group-hover:text-amber-400 transition-colors line-clamp-1">
-                            {asset.title}
-                          </h3>
-                          <p className="text-slate-300 text-sm mb-2">{asset.location}</p>
-                          
-                          {/* Enhanced badges */}
-                          {asset.badges && asset.badges.length > 0 && (
-                            <div className="flex flex-wrap gap-1 mb-2">
-                              {asset.badges.slice(0, 2).map((badge, badgeIndex) => (
-                                <span
-                                  key={badgeIndex}
-                                  className={`px-2 py-1 rounded-full text-xs font-medium border ${
-                                    badge.color === 'emerald' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' :
-                                    badge.color === 'amber' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
-                                    'bg-blue-500/20 text-blue-300 border-blue-500/30'
-                                  }`}
-                                >
-                                  {badge.label}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                        <span className="bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full text-sm font-semibold border border-emerald-500/30">
-                          {asset.roi}
-                        </span>
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <RealAssetImage
+                        asset={asset.asset || asset}
+                        className="w-12 h-12 rounded-lg flex-shrink-0"
+                        size="sm"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-white truncate">
+                          {asset.name || asset.asset?.name}
+                        </h3>
+                        <p className="text-slate-400 text-sm truncate">
+                          {asset.location || asset.asset?.location?.city}
+                        </p>
                       </div>
+                    </div>
+                    <button
+                      onClick={() => openAssetDetails(asset)}
+                      className="p-2 hover:bg-slate-700 rounded-lg transition-colors flex-shrink-0 ml-3"
+                    >
+                      <Eye className="w-4 h-4 text-slate-400" />
+                    </button>
+                  </div>
 
-                      {/* Enhanced metrics */}
-                      <div className="grid grid-cols-2 gap-4 mb-3">
-                        <div>
-                          <p className="text-slate-400 text-sm">Investment</p>
-                          <p className="text-white font-semibold">${asset.investment.toLocaleString()}</p>
-                        </div>
-                        <div>
-                          <p className="text-slate-400 text-sm">Shares</p>
-                          <p className="text-blue-400 font-semibold">{asset.shares}</p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4 text-slate-400 text-sm">
-                          <div className="flex items-center space-x-1">
-                            <Users className="w-4 h-4" />
-                            <span>{asset.investorCount} investors</span>
-                          </div>
-                          {asset.performance && (
-                            <div className="flex items-center space-x-1 text-emerald-400">
-                              <TrendingUp className="w-4 h-4" />
-                              <span>{asset.performance}</span>
-                            </div>
-                          )}
-                        </div>
-                        <button
-                          className="bg-slate-600 hover:bg-slate-500 text-white px-3 py-2 rounded-lg transition-all duration-300 flex items-center space-x-1 text-sm"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleViewDetails(asset);
-                          }}
-                        >
-                          <Eye className="w-4 h-4" />
-                          <span>View</span>
-                        </button>
-                      </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div>
+                      <p className="text-slate-400">Invested</p>
+                      <p className="text-white font-semibold">${asset.investedAmount.toLocaleString()}</p>
+                    </div>
+                    <div>
+                      <p className="text-slate-400">Current Value</p>
+                      <p className="text-white font-semibold">${asset.currentValue.toLocaleString()}</p>
+                    </div>
+                    <div>
+                      <p className="text-slate-400">ROI</p>
+                      <p className="text-emerald-400 font-semibold">{asset.roi}%</p>
+                    </div>
+                    <div>
+                      <p className="text-slate-400">Monthly</p>
+                      <p className="text-cyan-400 font-semibold">${asset.payoutAmount?.toLocaleString()}</p>
                     </div>
                   </div>
                 </motion.div>
               ))}
             </div>
           </motion.div>
+
+          {/* Quick Actions */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6"
+          >
+            <h2 className="text-xl font-semibold text-white mb-6">Quick Actions</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <button
+                onClick={handleClaimRental}
+                disabled={claimedRent}
+                className={`p-4 rounded-xl border transition-all duration-300 ${
+                  claimedRent
+                    ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400'
+                    : 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20 hover:border-cyan-500/50'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <Download className="w-5 h-5" />
+                  <div className="text-left">
+                    <p className="font-semibold">Claim Rental Income</p>
+                    <p className="text-sm opacity-80">$8,500 available</p>
+                  </div>
+                </div>
+              </button>
+
+              <button
+                onClick={handleClaimWinnings}
+                disabled={claimedWinnings}
+                className={`p-4 rounded-xl border transition-all duration-300 ${
+                  claimedWinnings
+                    ? 'bg-amber-500/20 border-amber-500/50 text-amber-400'
+                    : 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20 hover:border-amber-500/50'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <Coins className="w-5 h-5" />
+                  <div className="text-left">
+                    <p className="font-semibold">Claim Race Winnings</p>
+                    <p className="text-sm opacity-80">$12,200 prize money</p>
+                  </div>
+                </div>
+              </button>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Right Column - Platform Stats & Activity */}
+        <div className="space-y-6">
+          {/* Platform Overview */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6"
+          >
+            <h2 className="text-xl font-semibold text-white mb-6">Platform Overview</h2>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Users className="w-5 h-5 text-blue-400" />
+                  <span className="text-slate-300">Total Investors</span>
+                </div>
+                <span className="text-white font-semibold">{platformStats.totalUsers.toLocaleString()}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Coins className="w-5 h-5 text-amber-400" />
+                  <span className="text-slate-300">Total Investments</span>
+                </div>
+                <span className="text-white font-semibold">${(platformStats.totalInvestments / 1000000).toFixed(0)}M</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Target className="w-5 h-5 text-emerald-400" />
+                  <span className="text-slate-300">Average ROI</span>
+                </div>
+                <span className="text-emerald-400 font-semibold">{platformStats.averageROI}%</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Star className="w-5 h-5 text-cyan-400" />
+                  <span className="text-slate-300">Platform Growth</span>
+                </div>
+                <span className="text-cyan-400 font-semibold">+{platformStats.platformGrowth}%</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Recent Activity */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700 p-6"
+          >
+            <h2 className="text-xl font-semibold text-white mb-6">Recent Activity</h2>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg">
+                <div className="p-2 bg-green-500/10 rounded-lg">
+                  <Download className="w-4 h-4 text-green-400" />
+                </div>
+                <div>
+                  <p className="text-white text-sm">Rental income received</p>
+                  <p className="text-slate-400 text-xs">2 hours ago</p>
+                </div>
+                <div className="ml-auto text-green-400 font-semibold">+$8,500</div>
+              </div>
+              <div className="flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg">
+                <div className="p-2 bg-blue-500/10 rounded-lg">
+                  <BadgeCheck className="w-4 h-4 text-blue-400" />
+                </div>
+                <div>
+                  <p className="text-white text-sm">Investment verified</p>
+                  <p className="text-slate-400 text-xs">1 day ago</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg">
+                <div className="p-2 bg-amber-500/10 rounded-lg">
+                  <Target className="w-4 h-4 text-amber-400" />
+                </div>
+                <div>
+                  <p className="text-white text-sm">ROI target exceeded</p>
+                  <p className="text-slate-400 text-xs">3 days ago</p>
+                </div>
+                <div className="ml-auto text-amber-400 font-semibold">+2.4%</div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
 
-      {/* Modal (unchanged functionality) */}
+      {/* Asset Details Modal */}
       <AssetDetailsModal
         isOpen={isDetailsModalOpen}
         onClose={() => setIsDetailsModalOpen(false)}
-        asset={selectedAsset}
-        onInvest={() => {}}
+        asset={selectedAsset?.asset || null}
       />
     </div>
   );

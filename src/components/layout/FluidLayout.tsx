@@ -1,7 +1,8 @@
-"use client";
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUniversal } from '@/lib/universal';
 import PremiumHeader from './PremiumHeader';
 
 interface FluidLayoutProps {
@@ -9,67 +10,39 @@ interface FluidLayoutProps {
   showHeader?: boolean;
 }
 
+// Throttle helper
+function throttle(func: Function, limit: number) {
+  let inThrottle: boolean;
+  return function(this: any, ...args: any[]) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+}
+
 export default function FluidLayout({ children, showHeader = true }: FluidLayoutProps) {
   const { user } = useAuth();
-  const [isMobile, setIsMobile] = useState(false);
+  const { deviceInfo, universalAttributes } = useUniversal();
+  const [isMobile, setIsMobile] = useState(deviceInfo.type === 'mobile');
 
   useEffect(() => {
-    // Check if mobile on mount
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    const handleResize = throttle(() => {
+      setIsMobile(deviceInfo.type === 'mobile');
+    }, 100);
 
-  useEffect(() => {
-    // Fluid scroll animation observer
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, {
-      threshold: isMobile ? 0.05 : 0.1, // Lower threshold on mobile
-      rootMargin: isMobile ? '0px 0px -30px 0px' : '0px 0px -50px 0px'
-    });
-
-    // Observe all fluid scroll items
-    document.querySelectorAll('.fluid-scroll-item').forEach(item => {
-      observer.observe(item);
-    });
-
-    return () => observer.disconnect();
-  }, [isMobile]);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [deviceInfo.type]);
 
   return (
-    <div className="fluid-bg min-h-screen">
-      {/* Fluid Background Elements - Reduced on mobile */}
-      <div className="fixed inset-0 pointer-events-none">
-        {!isMobile && (
-          <>
-            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-fluid-gold rounded-full opacity-5 fluid-float"></div>
-            <div className="absolute top-1/3 right-1/4 w-56 h-56 bg-fluid-emerald rounded-full opacity-5 fluid-float" style={{ animationDelay: '2s' }}></div>
-            <div className="absolute bottom-1/4 left-1/3 w-48 h-48 bg-fluid-sapphire rounded-full opacity-5 fluid-float" style={{ animationDelay: '4s' }}></div>
-          </>
-        )}
-      </div>
-      
-      {/* Main content container */}
-      <div className="relative z-10">
-        {showHeader && <PremiumHeader />}
-
-        {/* Main content area with mobile-optimized spacing */}
-        <main className="w-full">
-          <div className={`${showHeader ? 'pt-16 md:pt-24' : 'pt-0'} fluid-header-spacing`}>
-            {children}
-          </div>
-        </main>
-      </div>
+    <div
+      className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30"
+      {...universalAttributes}
+    >
+      {showHeader && <PremiumHeader />}
+      <main className="flex-1">{children}</main>
     </div>
   );
 }

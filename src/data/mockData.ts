@@ -1,543 +1,288 @@
-// ULTIMATE ENHANCED MOCK DATA - SATISFIES ALL COMPONENTS
-// Mock data for the application
+// ULTIMATE INVESTOR EXPERIENCE MOCK DATA
+// Australia/UK/Dubai Focus | Real Estate & Horse Racing Only | 22-46% Returns
+import { Asset, OwnedAsset, PlatformStats } from '@/types';
 
+// ==================== PREMIUM ASSET DATA ====================
+export const mockAssets: Asset[] = [
+  // 🏢 DUBAI REAL ESTATE - Premium Waterfront
+  {
+    id: 1,
+    name: "Dubai Marina Sky Towers",
+    title: "Luxury Waterfront Apartments with Marina Views",
+    description: "Exclusive collection of 3 luxury towers in the heart of Dubai Marina featuring 1-4 bedroom apartments with private balconies overlooking the marina. Each unit includes premium German kitchen appliances, Italian marble flooring, and smart home automation. The development features a state-of-the-art gym, infinity pool, private beach access, and 24/7 concierge services. Located within walking distance of Dubai Marina Mall and JBR Beach.",
+    type: "real-estate",
+    category: "Luxury Residential",
+    location: { country: "Dubai", city: "Dubai Marina", address: "Marina Walk, Dubai Marina", coordinates: { lat: 25.0801, lng: 55.1422 } },
+    currency: "AED",
+    minimumInvestment: 100000,
+    minInvestment: 100000,
+    totalFunding: 75000000,
+    fundedAmount: 68250000,
+    fundingProgress: 91,
+    projectedROI: 34,
+    expectedReturn: 34,
+    roi: 34,
+    term: 48,
+    riskLevel: "Medium",
+    investorCount: 228,
+    rating: 4.9,
+    images: [
+      "/assets/dubai-marina-1.jpg",
+      "/assets/dubai-marina-2.jpg",
+      "/assets/dubai-marina-3.jpg"
+    ],
+    image: "/assets/dubai-marina-1.jpg",
+    features: [
+      "Panoramic Marina Views",
+      "Private Beach Access",
+      "Infinity Pool",
+      "Smart Home Automation",
+      "24/7 Concierge",
+      "German Appliances",
+      "Italian Marble Flooring",
+      "Underground Parking"
+    ],
+    tags: ["Luxury", "Waterfront", "High-Yield", "Prime Location"],
+    badges: [
+      { label: "Premium", color: "amber" },
+      { label: "92% Occupancy", color: "emerald" },
+      { label: "Fast Filling", color: "blue" }
+    ],
+    financials: {
+      currentValuation: 78500000,
+      totalInvested: 68250000,
+      totalReturns: 10250000,
+      annualizedReturn: 31.2,
+      currentROI: 34,
+      projectedROI: 34,
+      volatility: 12.8
+    },
+    details: { bedrooms: 3, bathrooms: 3, area: 1850, units: 45, yearBuilt: 2023 },
+    _3dConfig: { particles: 35, animations: 'premium', shadows: true }
+  },
+  // 🏛️ UK REAL ESTATE - Historic Luxury
+  {
+    id: 2,
+    name: "Mayfair Heritage Collection",
+    title: "Grade II Listed Georgian Townhouses",
+    description: "Exquisite collection of 8 Grade II listed Georgian townhouses in Mayfair's most prestigious square. Meticulously restored to preserve original features including marble fireplaces, cornicing, and sash windows while incorporating modern luxury amenities. Each property features private gardens, wine cellars, and secure underground parking. Current tenants include diplomatic missions and ultra-high-net-worth individuals with average lease terms of 5+ years.",
+    type: "real-estate",
+    category: "Historic Luxury",
+    location: { country: "United Kingdom", city: "London", address: "Grosvenor Square, Mayfair", coordinates: { lat: 51.5136, lng: -0.1503 } },
+    currency: "GBP",
+    minimumInvestment: 150000,
+    minInvestment: 150000,
+    totalFunding: 45000000,
+    fundedAmount: 42750000,
+    fundingProgress: 95,
+    projectedROI: 28,
+    expectedReturn: 28,
+    roi: 28,
+    term: 60,
+    riskLevel: "Low",
+    investorCount: 156,
+    rating: 4.8,
+    images: [
+      "/assets/mayfair-1.jpg",
+      "/assets/mayfair-2.jpg",
+      "/assets/mayfair-3.jpg"
+    ],
+    image: "/assets/mayfair-1.jpg",
+    features: [
+      "Grade II Listed",
+      "Private Gardens",
+      "Original Features",
+      "Wine Cellars",
+      "Secure Parking",
+      "Diplomatic Tenants",
+      "5+ Year Leases",
+      "Heritage Restoration"
+    ],
+    tags: ["Historic", "Ultra-Luxury", "Stable", "Prime"],
+    badges: [
+      { label: "Historic", color: "purple" },
+      { label: "100% Occupied", color: "emerald" },
+      { label: "Low Risk", color: "blue" }
+    ],
+    financials: {
+      currentValuation: 47250000,
+      totalInvested: 42750000,
+      totalReturns: 4500000,
+      annualizedReturn: 25.4,
+      currentROI: 28,
+      projectedROI: 28,
+      volatility: 8.2
+    },
+    details: { bedrooms: 6, bathrooms: 5, area: 4200, units: 8, yearBuilt: 1785 },
+    _3dConfig: { particles: 30, animations: 'premium', shadows: true }
+  },
+  // 🏢 AUSTRALIA REAL ESTATE - Premium Commercial
+  {
+    id: 3,
+    name: "Collins Street Premium Tower",
+    title: "A-Grade CBD Office Development",
+    description: "New 45-story premium office tower in Melbourne's financial district featuring 6-star NABERS energy rating and WELL Platinum certification. Anchor tenants include two major international banks and a top-tier law firm with weighted average lease expiry of 8.2 years. Features include end-of-trip facilities, premium dining precinct, advanced building management systems, and direct access to Parliament Station.",
+    type: "real-estate",
+    category: "Premium Commercial",
+    location: { country: "Australia", city: "Melbourne", address: "525 Collins Street, CBD", coordinates: { lat: -37.8185, lng: 144.9537 } },
+    currency: "AUD",
+    minimumInvestment: 75000,
+    minInvestment: 75000,
+    totalFunding: 85000000,
+    fundedAmount: 76500000,
+    fundingProgress: 90,
+    projectedROI: 26,
+    expectedReturn: 26,
+    roi: 26,
+    term: 84,
+    riskLevel: "Low",
+    investorCount: 342,
+    rating: 4.7,
+    images: [
+      "/assets/collins-street-1.jpg",
+      "/assets/collins-street-2.jpg",
+      "/assets/collins-street-3.jpg"
+    ],
+    image: "/assets/collins-street-1.jpg",
+    features: [
+      "6-Star NABERS Rating",
+      "WELL Platinum Certified",
+      "Anchor Tenants Secured",
+      "8.2 Year WALE",
+      "End-of-Trip Facilities",
+      "Direct Station Access",
+      "Premium Dining",
+      "Advanced BMS"
+    ],
+    tags: ["Commercial", "Sustainable", "Prime CBD", "Long Lease"],
+    badges: [
+      { label: "Sustainable", color: "emerald" },
+      { label: "96% Leased", color: "blue" },
+      { label: "Low Volatility", color: "green" }
+    ],
+    financials: {
+      currentValuation: 89250000,
+      totalInvested: 76500000,
+      totalReturns: 12750000,
+      annualizedReturn: 23.8,
+      currentROI: 26,
+      projectedROI: 26,
+      volatility: 7.5
+    },
+    details: { floors: 45, area: 65000, parking: 285, yearBuilt: 2025 },
+    _3dConfig: { particles: 25, animations: 'enhanced', shadows: true }
+  }
+  // Add the rest of your assets (Horse Racing, Burj Vista, etc.) similarly
+];
+
+// ==================== OWNED ASSETS ====================
+export const ownedAssets: OwnedAsset[] = [
+  {
+    id: 1,
+    asset: mockAssets[0],
+    investedAmount: 750000,
+    currentValue: 1020000,
+    purchaseDate: "2025-01-15",
+    returns: 270000,
+    roi: 36,
+    shares: 15,
+    value: 1020000,
+    payoutAmount: 8500,
+    payoutFrequency: "monthly",
+    nextPayout: "2025-12-01",
+    status: "active",
+    badges: [
+      { label: "Active", color: "emerald" },
+      { label: "Monthly Income", color: "blue" }
+    ]
+  }
+];
+
+// ==================== PLATFORM STATS ====================
+export const platformStats: PlatformStats = {
+  totalUsers: 4850,
+  activeInvestors: 3247,
+  totalInvestments: 485000000,
+  totalReturns: 112000000,
+  platformGrowth: 42.8,
+  averageROI: 32.6
+};
+
+// ==================== INVESTOR EDUCATION ====================
+export const treasuryData = {
+  totalValue: 485000000,
+  availableFunds: 85000000,
+  allocatedFunds: 400000000,
+  monthlyIncome: 3850000,
+  monthlyExpenses: 1250000,
+  netCashFlow: 2600000,
+  assets: [
+    { name: 'Premium Real Estate', value: 285000000, percentage: 58.8, color: 'emerald' },
+    { name: 'Elite Horse Racing', value: 125000000, percentage: 25.8, color: 'amber' },
+    { name: 'Commercial Properties', value: 75000000, percentage: 15.4, color: 'blue' }
+  ],
+  growth: { monthly: "+12.4%", quarterly: "+38.2%", yearly: "+156.7%" },
+  performance: { currentMonth: "+12.4%", lastMonth: "+10.8%", ytd: "+86.3%" }
+};
+
+// ==================== PROPOSALS ====================
 export const mockProposals = [
   {
     id: 1,
-    title: "Expand Dubai Real Estate Portfolio",
-    description: "Acquire additional luxury properties in Palm Jumeirah to meet growing investor demand",
-    votesFor: 1250,
-    votesAgainst: 320,
+    title: "Dubai Palm Jumeirah Expansion",
+    description: "Acquire 8 luxury villas on Palm Jumeirah to capitalize on 45% annual tourism growth and premium rental demand averaging 32% ROI.",
+    votesFor: 2842,
+    votesAgainst: 428,
     status: "active",
-    endDate: "2025-02-15"
+    endDate: "2025-03-15",
+    type: "Real Estate",
+    impact: "High",
+    budget: "$42M",
+    timeline: "8 months",
+    expectedROI: 32,
+    riskLevel: "Medium"
   },
   {
     id: 2,
-    title: "Launch New Thoroughbred Fund",
-    description: "Create specialized fund for champion racehorses with proven track records",
-    votesFor: 890,
-    votesAgainst: 210,
-    status: "active",
-    endDate: "2025-02-20"
-  },
-  {
-    id: 3,
-    title: "Upgrade Yacht Fleet Amenities",
-    description: "Invest in premium upgrades for Mediterranean superyacht to increase charter rates",
-    votesFor: 670,
-    votesAgainst: 150,
-    status: "active",
-    endDate: "2025-02-25"
+    title: "Royal Ascot Breeding Program",
+    description: "Establish new thoroughbred breeding program focused on Royal Ascot champions with John Gosden training and Newmarket facilities.",
+    votesFor: 2156,
+    votesAgainst: 289,
+    status: "approved",
+    endDate: "2025-12-30",
+    type: "Horse Racing",
+    impact: "High",
+    budget: "$18M",
+    timeline: "4 months",
+    expectedROI: 45,
+    riskLevel: "High"
   }
 ];
 
-export const mockAssets = [
-  {
-    id: 1,
-    title: "Dubai Luxury Villa",
-    type: "Real Estate",
-    category: "Luxury Residential",
-    location: "Palm Jumeirah, Dubai",
-    value: 2500000,
-    totalValue: 2500000,
-    roi: "32.5%",
-    expectedROI: "32.5%",
-    timeline: "36 months",
-    investmentHorizon: "36 months",
-    minInvestment: 100,
-    status: "Available",
-    description: "Exclusive waterfront villa in the prestigious Palm Jumeirah. Features private beach access, infinity pool, and panoramic views of the Arabian Gulf. Managed by luxury hospitality experts with proven rental income history.",
-    
-    // Enhanced properties for ALL COMPONENTS
-    badges: [
-      { label: "Featured", color: "amber" },
-      { label: "High Demand", color: "rose" },
-      { label: "Verified", color: "emerald" }
-    ],
-    performance: "+15.2%",
-    timeLeft: "45 days",
-    investorCount: 234,
-    sharesAvailable: 100,
-    sharesSold: 78,
-    enhanced: true,
-    
-    // NEW PROPERTIES FOR EnhancedAssetCard COMPATIBILITY
-    investment: 50000,           // For EnhancedAssetCard & FluidDashboard
-    shares: 2.0,                 // For EnhancedAssetCard & FluidDashboard
-    image: "/assets/dubai-villa.jpg",
-    progress: 78,
-    riskLevel: "Medium",
-    liquidity: "High",
-    tags: ["Luxury", "High ROI", "Verified", "Rental Income"],
-    currency: "USD"
-  },
-  {
-    id: 2,
-    title: "Champion Thoroughbred",
-    type: "Thoroughbred",
-    category: "Sports & Racing",
-    location: "Kentucky, USA",
-    value: 1800000,
-    totalValue: 1800000,
-    roi: "45.2%",
-    expectedROI: "45.2%",
-    timeline: "24 months",
-    investmentHorizon: "24 months",
-    minInvestment: 100,
-    status: "Available",
-    description: "Elite racehorse with championship pedigree and multiple stakes wins. Under professional training with top-tier racing schedule. Includes breeding rights and insurance coverage.",
-    
-    // Enhanced properties
-    badges: [
-      { label: "Exclusive", color: "violet" },
-      { label: "Limited Time", color: "sapphire" }
-    ],
-    performance: "+8.7%",
-    timeLeft: "21 days",
-    investorCount: 189,
-    sharesAvailable: 100,
-    sharesSold: 65,
-    enhanced: true,
-    
-    // NEW PROPERTIES FOR EnhancedAssetCard COMPATIBILITY
-    investment: 35000,
-    shares: 1.94,
-    image: "/assets/thoroughbred.jpg",
-    progress: 65,
-    riskLevel: "High",
-    liquidity: "Medium",
-    tags: ["Sports", "Racing", "Exclusive", "Breeding Rights"],
-    currency: "USD"
-  },
-  {
-    id: 3,
-    title: "Mediterranean Superyacht",
-    type: "Marine Asset",
-    category: "Luxury Marine",
-    location: "French Riviera",
-    value: 4200000,
-    totalValue: 4200000,
-    roi: "41.3%",
-    expectedROI: "41.3%",
-    timeline: "48 months",
-    investmentHorizon: "48 months",
-    minInvestment: 100,
-    status: "Available",
-    description: "Luxury 45-meter superyacht available for charter in the Mediterranean. Features helipad, cinema, spa, and professional crew. High-demand seasonal charter market with premium rates.",
-    
-    // Enhanced properties
-    badges: [
-      { label: "Top Performer", color: "cyan" },
-      { label: "Verified", color: "emerald" },
-      { label: "Featured", color: "amber" }
-    ],
-    performance: "+12.4%",
-    timeLeft: "15 days",
-    investorCount: 156,
-    sharesAvailable: 100,
-    sharesSold: 89,
-    enhanced: true,
-    
-    // NEW PROPERTIES FOR EnhancedAssetCard COMPATIBILITY
-    investment: 25000,
-    shares: 0.6,
-    image: "/assets/superyacht.jpg",
-    progress: 89,
-    riskLevel: "Medium",
-    liquidity: "Low",
-    tags: ["Luxury", "Marine", "Charter", "Seasonal"],
-    currency: "USD"
-  },
-  {
-    id: 4,
-    title: "Private Jet Portfolio",
-    type: "Aviation",
-    category: "Business Aviation",
-    location: "Global Operations",
-    value: 3500000,
-    totalValue: 3500000,
-    roi: "38.7%",
-    expectedROI: "38.7%",
-    timeline: "60 months",
-    investmentHorizon: "60 months",
-    minInvestment: 100,
-    status: "Available",
-    description: "Diverse fleet of business jets available for charter and leaseback. Includes maintenance programs and certified operators. Serving corporate and private clients worldwide.",
-    
-    // Enhanced properties
-    badges: [
-      { label: "Blockchain Verified", color: "emerald" },
-      { label: "High Demand", color: "rose" }
-    ],
-    performance: "+9.3%",
-    timeLeft: "30 days",
-    investorCount: 201,
-    sharesAvailable: 100,
-    sharesSold: 72,
-    enhanced: true,
-    
-    // NEW PROPERTIES FOR EnhancedAssetCard COMPATIBILITY
-    investment: 45000,
-    shares: 1.29,
-    image: "/assets/private-jet.jpg",
-    progress: 72,
-    riskLevel: "Medium",
-    liquidity: "Medium",
-    tags: ["Aviation", "Business", "Global", "Leaseback"],
-    currency: "USD"
-  },
-  {
-    id: 5,
-    title: "Tech Startup Venture",
-    type: "Venture Capital",
-    category: "Technology",
-    location: "Silicon Valley",
-    value: 1200000,
-    totalValue: 1200000,
-    roi: "52.1%",
-    expectedROI: "52.1%",
-    timeline: "72 months",
-    investmentHorizon: "72 months",
-    minInvestment: 100,
-    status: "Available",
-    description: "Promising AI technology startup with patented algorithms and enterprise clients. Strong growth trajectory with recurring revenue model and expansion plans.",
-    
-    // Enhanced properties
-    badges: [
-      { label: "High Growth", color: "rose" },
-      { label: "Exclusive Access", color: "violet" },
-      { label: "Verified", color: "emerald" }
-    ],
-    performance: "+18.6%",
-    timeLeft: "7 days",
-    investorCount: 178,
-    sharesAvailable: 100,
-    sharesSold: 81,
-    enhanced: true,
-    
-    // NEW PROPERTIES FOR EnhancedAssetCard COMPATIBILITY
-    investment: 20000,
-    shares: 1.67,
-    image: "/assets/tech-startup.jpg",
-    progress: 81,
-    riskLevel: "High",
-    liquidity: "Low",
-    tags: ["Technology", "AI", "Startup", "High Growth"],
-    currency: "USD"
-  },
-  {
-    id: 6,
-    title: "Luxury Watch Collection",
-    type: "Luxury Goods",
-    category: "Collectibles",
-    location: "Geneva, Switzerland",
-    value: 950000,
-    totalValue: 950000,
-    roi: "28.9%",
-    expectedROI: "28.9%",
-    timeline: "24 months",
-    investmentHorizon: "24 months",
-    minInvestment: 100,
-    status: "Available",
-    description: "Curated collection of rare and vintage luxury timepieces from top Swiss manufacturers. Includes limited editions and historically significant pieces with appreciation potential.",
-    
-    // Enhanced properties
-    badges: [
-      { label: "Limited Edition", color: "sapphire" },
-      { label: "Verified", color: "emerald" }
-    ],
-    performance: "+6.8%",
-    timeLeft: "14 days",
-    investorCount: 145,
-    sharesAvailable: 100,
-    sharesSold: 67,
-    enhanced: true,
-    
-    // NEW PROPERTIES FOR EnhancedAssetCard COMPATIBILITY
-    investment: 15000,
-    shares: 1.58,
-    image: "/assets/luxury-watches.jpg",
-    progress: 67,
-    riskLevel: "Low",
-    liquidity: "Medium",
-    tags: ["Luxury", "Collectibles", "Watches", "Limited"],
-    currency: "USD"
-  },
-  {
-    id: 7,
-    title: "Commercial Office Tower",
-    type: "Real Estate",
-    category: "Commercial",
-    location: "Manhattan, NYC",
-    value: 8500000,
-    totalValue: 8500000,
-    roi: "22.4%",
-    expectedROI: "22.4%",
-    timeline: "120 months",
-    investmentHorizon: "120 months",
-    minInvestment: 100,
-    status: "Available",
-    description: "Prime commercial real estate in Manhattan with AAA-rated tenants and long-term leases. Stable income generation with annual appreciation.",
-    
-    // Enhanced properties
-    badges: [
-      { label: "Stable Income", color: "emerald" },
-      { label: "Prime Location", color: "amber" }
-    ],
-    performance: "+4.2%",
-    timeLeft: "60 days",
-    investorCount: 312,
-    sharesAvailable: 100,
-    sharesSold: 92,
-    enhanced: true,
-    
-    // NEW PROPERTIES FOR EnhancedAssetCard COMPATIBILITY
-    investment: 75000,
-    shares: 0.88,
-    image: "/assets/office-tower.jpg",
-    progress: 92,
-    riskLevel: "Low",
-    liquidity: "High",
-    tags: ["Commercial", "Real Estate", "Stable", "Prime"],
-    currency: "USD"
-  },
-  {
-    id: 8,
-    title: "Fine Art Collection",
-    type: "Fine Art",
-    category: "Art & Collectibles",
-    location: "London, UK",
-    value: 2800000,
-    totalValue: 2800000,
-    roi: "35.8%",
-    expectedROI: "35.8%",
-    timeline: "48 months",
-    investmentHorizon: "48 months",
-    minInvestment: 100,
-    status: "Available",
-    description: "Curated collection of contemporary art from emerging and established artists. Includes pieces with proven auction history and museum exhibitions.",
-    
-    // Enhanced properties
-    badges: [
-      { label: "Cultural Asset", color: "violet" },
-      { label: "Appreciating", color: "rose" },
-      { label: "Verified", color: "emerald" }
-    ],
-    performance: "+11.7%",
-    timeLeft: "25 days",
-    investorCount: 167,
-    sharesAvailable: 100,
-    sharesSold: 58,
-    enhanced: true,
-    
-    // NEW PROPERTIES FOR EnhancedAssetCard COMPATIBILITY
-    investment: 30000,
-    shares: 1.07,
-    image: "/assets/fine-art.jpg",
-    progress: 58,
-    riskLevel: "Medium",
-    liquidity: "Low",
-    tags: ["Art", "Collectibles", "Cultural", "Appreciating"],
-    currency: "USD"
-  }
+// ==================== HOW IT WORKS ====================
+export const howItWorksData = [
+  { step: 1, title: "Discover Premium Opportunities", description: "Browse curated real estate and horse racing investments in Australia, UK, and Dubai with detailed analytics and 3D visualizations.", icon: "search", duration: "Instant" },
+  { step: 2, title: "Deep Due Diligence", description: "Access comprehensive investment memos, financial models, and live 3D property tours before making investment decisions.", icon: "shield", duration: "1-3 Days" },
+  { step: 3, title: "Invest with Confidence", description: "Execute investments through our secure platform with blockchain verification and instant settlement.", icon: "dollar", duration: "Instant" },
+  { step: 4, title: "Track & Optimize", description: "Monitor performance in real-time with advanced dashboards and receive regular income distributions.", icon: "chart", duration: "Ongoing" }
 ];
 
-export const ownedAssets = [
-  {
-    id: 1,
-    title: "Dubai Luxury Villa",
-    type: "Real Estate",
-    category: "Luxury Residential",
-    location: "Palm Jumeirah, Dubai",
-    value: 2500000,
-    totalValue: 2500000,
-    roi: "32.5%",
-    expectedROI: "32.5%",
-    timeline: "36 months",
-    investmentHorizon: "36 months",
-    investment: 50000,
-    shares: 2,
-    status: "Active",
-    nextPayout: "2025-03-15",
-    payoutAmount: 4250,
-    description: "Your investment in this premium Dubai property generates consistent rental income from luxury tourism and corporate rentals.",
-    
-    // Enhanced properties
-    badges: [
-      { label: "Performing", color: "emerald" },
-      { label: "Monthly Payout", color: "cyan" }
-    ],
-    performance: "+15.2%",
-    investorCount: 234,
-    enhanced: true,
-    
-    // Additional properties for consistency
-    minInvestment: 100,
-    sharesAvailable: 100,
-    sharesSold: 78,
-    timeLeft: "45 days",
-    image: "/assets/dubai-villa.jpg",
-    progress: 78,
-    riskLevel: "Medium",
-    liquidity: "High",
-    tags: ["Luxury", "High ROI", "Verified", "Rental Income"],
-    currency: "USD"
-  },
-  {
-    id: 2,
-    title: "Champion Thoroughbred",
-    type: "Thoroughbred",
-    category: "Sports & Racing",
-    location: "Kentucky, USA",
-    value: 1800000,
-    totalValue: 1800000,
-    roi: "45.2%",
-    expectedROI: "45.2%",
-    timeline: "24 months",
-    investmentHorizon: "24 months",
-    investment: 35000,
-    shares: 1.94,
-    status: "Active",
-    nextPayout: "2025-04-20",
-    payoutAmount: 8500,
-    description: "Ownership share in champion racehorse with upcoming major racing events and breeding opportunities.",
-    
-    // Enhanced properties
-    badges: [
-      { label: "High Performer", color: "amber" },
-      { label: "Seasonal", color: "sapphire" }
-    ],
-    performance: "+28.7%",
-    investorCount: 189,
-    enhanced: true,
-    
-    // Additional properties for consistency
-    minInvestment: 100,
-    sharesAvailable: 100,
-    sharesSold: 65,
-    timeLeft: "21 days",
-    image: "/assets/thoroughbred.jpg",
-    progress: 65,
-    riskLevel: "High",
-    liquidity: "Medium",
-    tags: ["Sports", "Racing", "Exclusive", "Breeding Rights"],
-    currency: "USD"
-  },
-  {
-    id: 3,
-    title: "Mediterranean Superyacht",
-    type: "Marine Asset",
-    category: "Luxury Marine",
-    location: "French Riviera",
-    value: 4200000,
-    totalValue: 4200000,
-    roi: "41.3%",
-    expectedROI: "41.3%",
-    timeline: "48 months",
-    investmentHorizon: "48 months",
-    investment: 25000,
-    shares: 0.6,
-    status: "Active",
-    nextPayout: "2025-02-25",
-    payoutAmount: 3200,
-    description: "Partial ownership in luxury superyacht generating revenue from high-end charter services in premium Mediterranean locations.",
-    
-    // Enhanced properties
-    badges: [
-      { label: "Seasonal", color: "sapphire" },
-      { label: "Performing", color: "emerald" }
-    ],
-    performance: "+12.4%",
-    investorCount: 156,
-    enhanced: true,
-    
-    // Additional properties for consistency
-    minInvestment: 100,
-    sharesAvailable: 100,
-    sharesSold: 89,
-    timeLeft: "15 days",
-    image: "/assets/superyacht.jpg",
-    progress: 89,
-    riskLevel: "Medium",
-    liquidity: "Low",
-    tags: ["Luxury", "Marine", "Charter", "Seasonal"],
-    currency: "USD"
-  }
-];
-
-export const platformStats = {
-  totalValue: 25420000,
-  totalInvestors: 3470,
-  averageRoi: "38.7%",
-  activeAssets: 36,
-  monthlyReturns: 625000,
-  totalReturns: 4850000,
-  totalAssets: 52
+// ==================== USER PORTFOLIO ====================
+export const userPortfolioData = {
+  totalValue: 1020000,
+  monthlyIncome: 8500,
+  activeInvestments: 3,
+  totalReturns: 270000,
+  averageROI: 36,
+  assets: [
+    { id: 1, name: "Dubai Marina Sky Towers", value: 1020000, shares: 15, monthlyIncome: 8500, roi: 36 }
+  ]
 };
 
-// Additional enhanced data for new sections
-export const testimonialData = [
-  {
-    id: 1,
-    name: "Sarah Chen",
-    role: "Real Estate Investor",
-    content: "I never thought I could own a piece of a luxury Dubai property. With just $500, I'm now earning rental income from assets I could only dream of before.",
-    investment: "$500",
-    returns: "28% ROI",
-    avatar: "SC",
-    category: "Real Estate",
-    verified: true,
-    duration: "6 months"
-  },
-  {
-    id: 2,
-    name: "Marcus Rodriguez",
-    role: "Tech Professional",
-    content: "The fractional ownership model changed everything for me. I've diversified across thoroughbreds and real estate with minimal capital.",
-    investment: "$1,200",
-    returns: "35% ROI",
-    avatar: "MR",
-    category: "Diversified Portfolio",
-    verified: true,
-    duration: "1 year"
-  },
-  {
-    id: 3,
-    name: "Jennifer Kim",
-    role: "Teacher & Investor",
-    content: "As an educator, I never had access to these opportunities. Now I'm building real wealth alongside my teaching career.",
-    investment: "$250",
-    returns: "22% ROI",
-    avatar: "JK",
-    category: "Alternative Assets",
-    verified: true,
-    duration: "4 months"
-  }
-];
-
-export const howItWorksData = [
-  {
-    step: 1,
-    title: "Explore Assets",
-    description: "Browse curated real-world assets from commercial real estate to fine art",
-    icon: "Search"
-  },
-  {
-    step: 2,
-    title: "Invest Fractionally",
-    description: "Start with as little as $100 and own a piece of elite assets",
-    icon: "Wallet"
-  },
-  {
-    step: 3,
-    title: "Earn Returns",
-    description: "Receive regular dividends and benefit from asset appreciation",
-    icon: "TrendingUp"
-  },
-  {
-    step: 4,
-    title: "Trade Securely",
-    description: "Buy and sell your fractions on our secure blockchain platform",
-    icon: "RefreshCw"
-  }
+// ==================== PLATFORM FEATURES ====================
+export const platformFeatures = [
+  { title: "Immersive 3D Property Tours", description: "Walk through every investment property with photorealistic 3D tours and virtual reality compatibility", icon: "cube" },
+  { title: "Blockchain Verification", description: "Every transaction and asset ownership recorded on immutable blockchain for maximum security", icon: "shield" },
+  { title: "Advanced Analytics", description: "Real-time performance tracking, ROI forecasting, and comprehensive investment analytics", icon: "chart" },
+  { title: "Universal Experience", description: "Seamless investment experience across all devices with adaptive performance optimization", icon: "devices" }
 ];

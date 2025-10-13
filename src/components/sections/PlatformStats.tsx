@@ -1,84 +1,107 @@
 "use client";
 
 import React from 'react';
-import { Shield, Users, TrendingUp, DollarSign } from 'lucide-react';
+import { Shield, Users, TrendingUp, DollarSign, Target, Zap } from 'lucide-react';
+import { platformStats } from '@/data/mockData';
+import { useUniversal } from '@/lib/universal';
+import { motion } from 'framer-motion';
 
 const PlatformStats = () => {
+  const { universalAttributes } = useUniversal();
+
   const stats = [
     {
       icon: DollarSign,
-      value: "$15.4M+",
+      value: `$${(platformStats.totalInvestments / 1000000).toFixed(0)}M+`,
       label: "Assets Under Management",
-      description: "Total platform value",
+      description: "Total platform investments",
       color: "blue"
     },
     {
       icon: Users,
-      value: "1,247+",
-      label: "Active Investors",
+      value: `${platformStats.totalUsers.toLocaleString()}+`,
+      label: "Total Investors",
       description: "Growing community",
       color: "emerald"
     },
     {
       icon: TrendingUp,
-      value: "12.8%",
+      value: `${platformStats.averageROI}%`,
       label: "Average ROI",
-      description: "Historical returns",
+      description: "Historical platform returns",
       color: "amber"
     },
     {
       icon: Shield,
-      value: "100%",
-      label: "Secure & Verified",
-      description: "Asset verification",
-      color: "blue"
+      value: `$${(platformStats.totalReturns / 1000000).toFixed(1)}M+`,
+      label: "Total Returns",
+      description: "Generated for investors",
+      color: "cyan"
     }
   ];
 
-  const colorClasses = {
-    blue: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700', icon: 'text-blue-600' },
-    emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-700', icon: 'text-emerald-600' },
-    amber: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700', icon: 'text-amber-600' }
+  const getColorClasses = (color: string) => {
+    const colorMap = {
+      emerald: 'from-emerald-500 to-green-500',
+      amber: 'from-amber-500 to-orange-500',
+      blue: 'from-blue-500 to-cyan-500',
+      cyan: 'from-cyan-500 to-blue-500'
+    };
+    return colorMap[color as keyof typeof colorMap] || 'from-cyan-500 to-blue-500';
   };
 
   return (
-    <section className="py-16 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-            Trusted by <span className="text-blue-600">Thousands</span>
+    <section 
+      className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
+      {...universalAttributes}
+    >
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Platform <span className="text-cyan-400">Performance</span>
           </h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Real results from real investors. Join the movement democratizing elite asset ownership.
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
+            Trusted by thousands of investors with proven track record and transparent reporting
           </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {stats.map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="text-center group"
+            >
+              <div className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-r ${getColorClasses(stat.color)} mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                <stat.icon className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-3xl font-bold text-white mb-2">{stat.value}</h3>
+              <h4 className="text-lg font-semibold text-cyan-400 mb-2">{stat.label}</h4>
+              <p className="text-slate-400">{stat.description}</p>
+            </motion.div>
+          ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.map((stat, index) => {
-            const colors = colorClasses[stat.color as keyof typeof colorClasses];
-            return (
-              <div
-                key={stat.label}
-                className={`p-6 rounded-xl border-2 ${colors.bg} ${colors.border} transition-all duration-300 hover:shadow-lg`}
-              >
-                <div className="flex justify-center mb-4">
-                  <div className={`p-3 rounded-lg ${colors.bg} border ${colors.border}`}>
-                    <stat.icon className={`w-6 h-6 ${colors.icon}`} />
-                  </div>
-                </div>
-                <div className={`text-2xl md:text-3xl font-bold ${colors.text} mb-2 text-center`}>
-                  {stat.value}
-                </div>
-                <h3 className="text-slate-900 font-semibold text-center mb-1">
-                  {stat.label}
-                </h3>
-                <p className="text-slate-500 text-sm text-center">
-                  {stat.description}
-                </p>
-              </div>
-            );
-          })}
-        </div>
+        {/* Growth Metric */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-center mt-12"
+        >
+          <div className="inline-flex items-center gap-2 bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-full px-6 py-3">
+            <Zap className="w-5 h-5 text-amber-400" />
+            <span className="text-amber-400 font-semibold">Platform Growth: +{platformStats.platformGrowth}%</span>
+            <Target className="w-5 h-5 text-emerald-400" />
+          </div>
+        </motion.div>
       </div>
     </section>
   );

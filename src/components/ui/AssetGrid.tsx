@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 import { mockAssets } from '@/data/mockData';
@@ -6,54 +6,45 @@ import EnhancedAssetCard from './EnhancedAssetCard';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { Filter, Search, Grid, List } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Asset } from '@/types/asset';
+import { Asset } from '@/types';
 
 export default function AssetGrid() {
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedStatus, setSelectedStatus] = useState('all');
+  const [selectedRisk, setSelectedRisk] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [assets] = useState<Asset[]>(mockAssets); // Use enhanced mockAssets directly
+  const [assets] = useState<Asset[]>(mockAssets);
   const { getFadeStyle } = useScrollAnimation();
 
-  const categories = ['all', ...new Set(assets.map(asset => asset.type))];
-  const statuses = ['all', ...new Set(assets.map(asset => asset.status || 'Available'))];
+  const categories = ['all', ...new Set(assets.map(a => a.type))];
+  const riskLevels = ['all', ...new Set(assets.map(a => a.riskLevel || 'Medium'))];
 
-  const handleFilter = (category: string, status: string) => {
+  const handleFilter = (category: string, risk: string) => {
     setSelectedCategory(category);
-    setSelectedStatus(status);
+    setSelectedRisk(risk);
   };
 
   const filteredAssets = assets.filter(asset => {
     const categoryMatch = selectedCategory === 'all' || asset.type === selectedCategory;
-    const statusMatch = selectedStatus === 'all' || (asset.status || 'Available') === selectedStatus;
-    const searchMatch = asset.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                       (asset.description || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-                       asset.location.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    return categoryMatch && statusMatch && searchMatch;
+    const riskMatch = selectedRisk === 'all' || (asset.riskLevel || 'Medium') === selectedRisk;
+    const searchMatch =
+      asset.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      asset.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (asset.description || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      asset.location.city.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return categoryMatch && riskMatch && searchMatch;
   });
 
-  const getCategoryLabel = (category: string) => {
-    return category === 'all' ? 'All Assets' : category;
-  };
+  const getCategoryLabel = (c: string) => (c === 'all' ? 'All Assets' : c);
+  const getRiskLabel = (r: string) => (r === 'all' ? 'All Risk Levels' : r);
 
-  const getStatusLabel = (status: string) => {
-    return status === 'all' ? 'All Status' : status;
-  };
-
-  // UPDATED HANDLERS - Accept Asset objects
-  const handleInvest = (asset: Asset) => {
-    console.log('Invest in:', asset.id);
-  };
-
-  const handleViewDetails = (asset: Asset) => {
-    console.log('View details:', asset.id);
-  };
+  const handleInvest = (asset: Asset) => console.log('Invest in:', asset.id);
+  const handleViewDetails = (asset: Asset) => console.log('View details:', asset.id);
 
   return (
     <div className="space-y-8">
-      {/* Enhanced Filters Header */}
+      {/* Filters Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -69,7 +60,7 @@ export default function AssetGrid() {
                 type="text"
                 placeholder="Search assets by name, location, or description..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-amber-400 focus:outline-none transition-all duration-300 backdrop-blur-sm"
               />
             </div>
@@ -100,9 +91,8 @@ export default function AssetGrid() {
           </div>
         </div>
 
-        {/* Category and Status Filters */}
+        {/* Category & Risk Filters */}
         <div className="mt-6 flex flex-col lg:flex-row gap-4 items-center justify-between">
-          {/* Category Filters */}
           <div className="flex flex-wrap gap-2">
             <div className="flex items-center space-x-2 text-slate-300 mr-4">
               <Filter className="w-4 h-4" />
@@ -111,7 +101,7 @@ export default function AssetGrid() {
             {categories.map(category => (
               <button
                 key={category}
-                onClick={() => handleFilter(category, selectedStatus)}
+                onClick={() => handleFilter(category, selectedRisk)}
                 className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 backdrop-blur-sm border ${
                   selectedCategory === category
                     ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white border-amber-400/50 shadow-lg'
@@ -123,20 +113,23 @@ export default function AssetGrid() {
             ))}
           </div>
 
-          {/* Status Filters */}
           <div className="flex flex-wrap gap-2">
-            <span className="text-slate-300 text-sm font-medium mr-4">Status:</span>
-            {statuses.map(status => (
+            <span className="text-slate-300 text-sm font-medium mr-4">Risk Level:</span>
+            {riskLevels.map(risk => (
               <button
-                key={status}
-                onClick={() => handleFilter(selectedCategory, status)}
+                key={risk}
+                onClick={() => handleFilter(selectedCategory, risk)}
                 className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-300 backdrop-blur-sm border ${
-                  selectedStatus === status
-                    ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white border-emerald-400/50'
+                  selectedRisk === risk
+                    ? risk === 'Low'
+                      ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white border-emerald-400/50'
+                      : risk === 'Medium'
+                      ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white border-amber-400/50'
+                      : 'bg-gradient-to-r from-rose-500 to-rose-600 text-white border-rose-400/50'
                     : 'bg-slate-700/50 text-slate-300 border-slate-600 hover:border-emerald-400/30 hover:bg-slate-700'
                 }`}
               >
-                {getStatusLabel(status)}
+                {getRiskLabel(risk)}
               </button>
             ))}
           </div>
@@ -148,9 +141,7 @@ export default function AssetGrid() {
             Showing <span className="text-white font-semibold">{filteredAssets.length}</span> of{' '}
             <span className="text-white font-semibold">{assets.length}</span> premium assets
           </div>
-          <div className="text-slate-400 text-sm">
-            {viewMode === 'grid' ? 'Grid View' : 'List View'}
-          </div>
+          <div className="text-slate-400 text-sm">{viewMode === 'grid' ? 'Grid View' : 'List View'}</div>
         </div>
       </motion.div>
 
@@ -163,10 +154,7 @@ export default function AssetGrid() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className={viewMode === 'grid'
-              ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
-              : "space-y-4"
-            }
+            className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6' : 'space-y-4'}
           >
             {filteredAssets.map((asset, index) => (
               <motion.div
@@ -175,18 +163,17 @@ export default function AssetGrid() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                {/* UPDATED: Pass asset object instead of spreading */}
                 <EnhancedAssetCard
                   asset={asset}
                   onInvest={handleInvest}
                   onViewDetails={handleViewDetails}
+                  viewMode={viewMode}
                   enhanced={true}
                 />
               </motion.div>
             ))}
           </motion.div>
         ) : (
-          /* Enhanced Empty State */
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -204,7 +191,7 @@ export default function AssetGrid() {
                 onClick={() => {
                   setSearchQuery('');
                   setSelectedCategory('all');
-                  setSelectedStatus('all');
+                  setSelectedRisk('all');
                 }}
                 className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
               >

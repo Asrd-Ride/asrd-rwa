@@ -1,9 +1,9 @@
-// src/app/home/page.tsx - Updated with new flow
+// src/app/home/page.tsx - CONSISTENT DARK THEME
 "use client";
 
 import React from 'react';
 import FluidLayout from '@/components/layout/FluidLayout';
-import FluidHero from '@/components/sections/FluidHero'; // This is now EnhancedHero content
+import FluidHero from '@/components/sections/FluidHero';
 import ProblemSection from '@/components/sections/ProblemSection';
 import SolutionSection from '@/components/sections/SolutionSection';
 import HowItWorksSection from '@/components/sections/HowItWorksSection';
@@ -18,29 +18,29 @@ export default function HomePage() {
       {/* 1. Enhanced Hero Section */}
       <FluidHero />
 
-      {/* 2. Problem Section */}
-      <section className="fluid-section-sm bg-white">
+      {/* 2. Problem Section - Updated to dark theme */}
+      <section id="problem" className="fluid-section-sm bg-slate-900">
         <div className="fluid-container">
           <ProblemSection />
         </div>
       </section>
 
-      {/* 3. Solution Section */}
-      <section className="fluid-section-sm bg-slate-50">
+      {/* 3. Solution Section - Updated to dark theme */}
+      <section id="solution" className="fluid-section-sm bg-slate-800">
         <div className="fluid-container">
           <SolutionSection />
         </div>
       </section>
 
-      {/* 4. How It Works Section */}
-      <section className="fluid-section-sm bg-white">
+      {/* 4. How It Works Section - Updated to dark theme */}
+      <section id="how-it-works" className="fluid-section-sm bg-slate-900">
         <div className="fluid-container">
           <HowItWorksSection />
         </div>
       </section>
 
       {/* 5. Featured Assets Section */}
-      <section className="fluid-section-sm bg-fluid-charcoal">
+      <section id="featured-assets" className="fluid-section-sm bg-slate-800">
         <div className="fluid-container">
           <FeaturedAssetsSection />
         </div>
@@ -49,7 +49,7 @@ export default function HomePage() {
       {/* 6. Platform Statistics */}
       <PlatformStats />
 
-      {/* 7. Testimonials Section */}
+      {/* 7. Testimonials Section - Updated to dark theme */}
       <TestimonialsSection />
 
       {/* 8. Final CTA Section */}
