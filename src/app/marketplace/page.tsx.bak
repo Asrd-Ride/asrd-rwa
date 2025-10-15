@@ -2,9 +2,9 @@
 
 import React from 'react';
 import FluidLayout from '@/components/layout/FluidLayout';
-import dynamicImport from 'next/dynamic';
+import dynamic from 'next/dynamic';
 
-const FluidMarketplace = dynamicImport(() => import('@/components/sections/FluidMarketplace'), {
+const FluidMarketplace = dynamic(() => import('@/components/sections/FluidMarketplace'), {
   ssr: false,
   loading: () => <div className="min-h-screen bg-gradient-to-br from-slate-900 to-blue-900/20 animate-pulse rounded-2xl" />
 });

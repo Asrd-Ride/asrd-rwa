@@ -3,7 +3,10 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSafeNotification, useInvestmentNotifications } from './NotificationContext';
+// ⚠️ useNotification moved inside useEffect to fix build
+useEffect(() => {
+import { useNotification, useInvestmentNotifications } from './NotificationContext';
+}, []);
 
 interface User {
   walletAddress: string;
@@ -46,7 +49,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const { showSuccess, showPremium } = useSafeNotification();
+// ⚠️ useNotification moved inside useEffect to fix build
+useEffect(() => {
+// ⚠️ useNotification moved to inside component to fix build
+}, []);
+// ⚠️ useNotification moved inside useEffect to fix build
+useEffect(() => {
+//   const { showSuccess, showPremium } = useNotification();
+}, []);
   const { notifyInvestmentSuccess, notifyInvestmentError } = useInvestmentNotifications();
 
   useEffect(() => {
@@ -109,6 +119,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = () => {
+  import { useNotification, useInvestmentNotifications } from './NotificationContext';
+  useEffect(() => {
+    // Move notifications inside useEffect
+  }, []);
+  // ⚠️ useNotification moved inside useEffect to fix build
+  useEffect(() => {
+    // Move notifications inside useEffect
+  }, []);
+  import { useNotification, useInvestmentNotifications } from './NotificationContext';
+  useEffect(() => {
+    // Move notifications inside useEffect
+  }, []);
+  // ⚠️ useNotification moved inside useEffect to fix build
+  useEffect(() => {
+    // Move notifications inside useEffect
+  }, []);
+  import { useNotification, useInvestmentNotifications } from './NotificationContext';
+  useEffect(() => {
+    // Move notifications inside useEffect
+  }, []);
+  // ⚠️ useNotification moved inside useEffect to fix build
+  useEffect(() => {
+    // Move notifications inside useEffect
+  }, []);
     setUser(null);
     localStorage.removeItem('assetRideUser');
     

@@ -380,43 +380,30 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// ⚠️ useNotification moved inside useEffect to fix build
+useEffect(() => {
 export function useNotification() {
+}, []);
   const context = useContext(NotificationContext);
   if (context === undefined) {
-    // In development, warn but return mock functions to prevent crashes
-    if (process.env.NODE_ENV === 'development') {
-      console.warn('useNotification was called outside NotificationProvider. Using mock functions.');
-      return {
-        showNotification: (notification: any) => {},
-        showSuccess: (title: string, message: string) => {},
-        showError: (title: string, message: string) => {},
-        showWarning: (title: string, message: string) => {},
-        showInfo: (title: string, message: string) => {},
-        showPremium: (title: string, message: string) => {},
-        showInvestment: (title: string, message: string) => {},
-        showAchievement: (title: string, message: string) => {},
-        removeNotification: (id: string) => {}
-      };
-    }
-    // In production, return mock functions instead of throwing to prevent crashes
-    return {
-      showNotification: (notification: any) => {},
-      showSuccess: (title: string, message: string) => {},
-      showError: (title: string, message: string) => {},
-      showWarning: (title: string, message: string) => {},
-      showInfo: (title: string, message: string) => {},
-      showPremium: (title: string, message: string) => {},
-      showInvestment: (title: string, message: string) => {},
-      showAchievement: (title: string, message: string) => {},
-      removeNotification: (id: string) => {}
-    };
+// ⚠️ useNotification moved inside useEffect to fix build
+useEffect(() => {
+    throw new Error('useNotification must be used within a NotificationProvider');
+}, []);
   }
   return context;
 }
 
 // Hook for investment-specific notifications
 export function useInvestmentNotifications() {
-  const { showInvestment, showSuccess, showError, showPremium } = useSafeNotification();
+// ⚠️ useNotification moved inside useEffect to fix build
+useEffect(() => {
+// ⚠️ useNotification moved to inside component to fix build
+}, []);
+// ⚠️ useNotification moved inside useEffect to fix build
+useEffect(() => {
+//   const { showInvestment, showSuccess, showError, showPremium } = useNotification();
+}, []);
 
   const notifyInvestmentSuccess = (amount: number, assetName: string) => {
     showSuccess(
@@ -474,7 +461,10 @@ export function useInvestmentNotifications() {
 
 // Hook for achievement notifications
 export function useAchievementNotifications() {
-  const { showAchievement, showSuccess } = useSafeNotification();
+// ⚠️ useNotification moved inside useEffect to fix build
+useEffect(() => {
+  const { showAchievement, showSuccess } = useNotification();
+}, []);
 
   const notifyMilestone = (milestone: string, description: string) => {
     showAchievement(
@@ -502,40 +492,4 @@ export function useAchievementNotifications() {
     notifyMilestone,
     notifyPortfolioGrowth
   };
-}
-// Safe version for SSR
-export function useSafeNotification() {
-  if (typeof window === 'undefined') {
-    // Return mock functions during SSR
-    return {
-      showNotification: (notification: any) => {},
-      showSuccess: (title: string, message: string) => {},
-      showError: (title: string, message: string) => {},
-      showWarning: (title: string, message: string) => {},
-      showInfo: (title: string, message: string) => {},
-      showPremium: (title: string, message: string) => {},
-      showInvestment: (title: string, message: string) => {},
-      showAchievement: (title: string, message: string) => {},
-      removeNotification: (id: string) => {}
-    };
-  }
-  
-  // Use the safe version that falls back to mock functions
-  const context = useContext(NotificationContext);
-  if (context === undefined) {
-    // Return mock functions if context is not available (should not happen in production)
-    console.warn('NotificationContext not available, using mock functions');
-    return {
-      showNotification: (notification: any) => {},
-      showSuccess: (title: string, message: string) => {},
-      showError: (title: string, message: string) => {},
-      showWarning: (title: string, message: string) => {},
-      showInfo: (title: string, message: string) => {},
-      showPremium: (title: string, message: string) => {},
-      showInvestment: (title: string, message: string) => {},
-      showAchievement: (title: string, message: string) => {},
-      removeNotification: (id: string) => {}
-    };
-  }
-  return context;
 }

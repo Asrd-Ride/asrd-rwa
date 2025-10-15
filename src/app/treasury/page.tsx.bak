@@ -2,9 +2,9 @@
 
 import React from 'react';
 import FluidLayout from '@/components/layout/FluidLayout';
-import dynamicImport from 'next/dynamic';
+import dynamic from 'next/dynamic';
 
-const FluidTreasury = dynamicImport(() => import('@/components/sections/FluidTreasury'), {
+const FluidTreasury = dynamic(() => import('@/components/sections/FluidTreasury'), {
   ssr: false,
   loading: () => <div className="min-h-screen bg-gradient-to-br from-green-900/20 to-emerald-900/20 animate-pulse rounded-2xl" />
 });

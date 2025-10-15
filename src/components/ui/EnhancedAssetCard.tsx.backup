@@ -9,8 +9,6 @@ interface Props {
   asset: Asset;
   onViewDetails: (asset: Asset) => void;
   onInvest: (asset: Asset) => void;
-  onLike?: (assetId: string) => void;
-  isLiked?: boolean;
   viewMode?: 'grid' | 'list';
   enhanced?: boolean;
 }

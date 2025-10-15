@@ -10,7 +10,7 @@ import InvestmentModal from '@/components/ui/InvestmentModal';
 import AssetDetailsModal from '@/components/ui/AssetDetailsModal';
 import { mockAssets } from '@/data/mockData';
 import { Asset } from '@/types';
-import { useUniversalDevice } from '@/hooks/useUniversalDevice';
+import useUniversalDevice from '@/hooks/useUniversalDevice';
 
 export default function FluidMarketplace() {
   const { user, login, invest } = useAuth();
@@ -189,6 +189,7 @@ export default function FluidMarketplace() {
         isOpen={isDetailsModalOpen}
         onClose={() => setIsDetailsModalOpen(false)}
         asset={selectedAsset}
+        onInvest={handleInvest}
       />
     </div>
   );

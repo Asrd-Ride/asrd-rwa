@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { Star, TrendingUp, MapPin, Calendar, Shield, Users, ArrowRight } from 'lucide-react';
+import { Star, TrendingUp, MapPin, Calendar, Shield, Users, ArrowRight, Eye, Target } from 'lucide-react';
 import { mockAssets } from '@/data/mockData';
 import { useUniversal } from '@/lib/universal';
 import InvestmentModal from '@/components/ui/InvestmentModal';
@@ -10,10 +10,12 @@ import AssetDetailsModal from '@/components/ui/AssetDetailsModal';
 import { Asset } from '@/types';
 import RealAssetImage from '@/components/ui/RealAssetImage';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSafeNotification } from '@/contexts/NotificationContext';
 
 export default function FeaturedAssetsSection() {
   const { universalAttributes, deviceInfo } = useUniversal();
-  const { user } = useAuth();
+  const { user, login, invest } = useAuth();
+  const { showNotification } = useSafeNotification();
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
   const [isInvestmentModalOpen, setIsInvestmentModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
@@ -21,8 +23,44 @@ export default function FeaturedAssetsSection() {
   const featuredAssets = mockAssets.slice(0, 3);
 
   const handleInvest = (asset: Asset) => {
+    if (!user) {
+      login('/home');
+      showNotification({ 
+        title: 'Connect Your Wallet', 
+        message: 'Please connect your wallet to start investing', 
+        type: 'warning',
+        duration: 4000
+      });
+      return;
+    }
+    
     setSelectedAsset(asset);
     setIsInvestmentModalOpen(true);
+  };
+
+  const handleInvestmentConfirm = (amount: number) => {
+    if (!selectedAsset || !user) return;
+    
+    const success = invest(amount, selectedAsset.name, Number(selectedAsset.id));
+    
+    if (success) {
+      showNotification({
+        title: 'Investment Successful! 🎉',
+        message: `You've invested $${amount.toLocaleString()} in ${selectedAsset.title}. Welcome to the investor community!`,
+        type: 'success',
+        duration: 6000
+      });
+    } else {
+      showNotification({
+        title: 'Insufficient Balance',
+        message: 'You need more ASRD tokens to complete this investment. Visit the treasury to purchase more.',
+        type: 'error',
+        duration: 5000
+      });
+    }
+    
+    setIsInvestmentModalOpen(false);
+    setSelectedAsset(null);
   };
 
   const handleViewDetails = (asset: Asset) => {
@@ -40,7 +78,7 @@ export default function FeaturedAssetsSection() {
   };
 
   return (
-    <section 
+    <section
       className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-900 to-slate-800"
       {...universalAttributes}
     >
@@ -49,142 +87,125 @@ export default function FeaturedAssetsSection() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Featured <span className="text-cyan-400">Investment</span> Opportunities
+            Featured <span className="text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text">Investment</span> Opportunities
           </h2>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-            Curated selection of premium real estate and thoroughbred assets in Australia, UK, and Dubai with proven 22-46% returns.
+            Hand-picked premium assets with verified track records and exceptional returns. Start investing from just $100.
           </p>
         </motion.div>
 
-        {/* Featured Assets Grid */}
+        {/* Assets Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredAssets.map((asset, index) => (
             <motion.div
               key={asset.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
               whileHover={{ y: -5 }}
-              className="bg-white rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:transform hover:scale-105 glass-morphism depth-3"
+              className="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 hover:border-cyan-500/30 transition-all duration-300 group"
             >
               {/* Asset Image */}
-              <div className="relative h-48 overflow-hidden rounded-t-2xl">
+              <div className="relative h-48 overflow-hidden">
                 <RealAssetImage
                   asset={asset}
-                  size="xl"
-                  className="w-full h-full"
+                  size="lg"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
                 
-                {/* Badges */}
-                <div className="absolute top-4 right-4 flex flex-col gap-2">
-                  {asset.badges?.map((badge, badgeIndex) => (
-                    <span
-                      key={badgeIndex}
-                      className={`px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm border ${
-                        badge.color === 'emerald' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' :
-                        badge.color === 'amber' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
-                        badge.color === 'blue' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' :
-                        badge.color === 'rose' ? 'bg-rose-500/20 text-rose-300 border-rose-500/30' :
-                        'bg-purple-500/20 text-purple-300 border-purple-500/30'
-                      }`}
-                    >
-                      {badge.label}
-                    </span>
-                  ))}
+                {/* Risk Badge */}
+                <div className="absolute top-4 left-4">
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getRiskColor(asset.riskLevel)}`}>
+                    {asset.riskLevel} Risk
+                  </span>
                 </div>
 
-                {/* Risk Level */}
-                <div className="absolute bottom-4 left-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm border ${getRiskColor(asset.riskLevel)}`}>
-                    {asset.riskLevel} Risk
+                {/* ROI Badge */}
+                <div className="absolute top-4 right-4">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
+                    {asset.projectedROI}% ROI
                   </span>
                 </div>
               </div>
 
               {/* Asset Content */}
               <div className="p-6">
-                {/* Location & Type */}
                 <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2 text-slate-600">
+                  <div className="flex items-center gap-2 text-slate-400">
                     <MapPin className="w-4 h-4" />
-                    <span className="text-sm font-medium">{asset.location.city}, {asset.location.country}</span>
+                    <span className="text-sm">{asset.location.city}</span>
                   </div>
-                  <span className="text-sm font-semibold text-cyan-600 bg-cyan-50 px-2 py-1 rounded">
-                    {asset.type.replace('-', ' ').toUpperCase()}
-                  </span>
+                  <div className="text-slate-400 text-sm">
+                    {asset.term} months
+                  </div>
                 </div>
 
-                {/* Title */}
-                <h3 className="text-xl font-bold text-slate-900 mb-2 line-clamp-2">
+                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
                   {asset.title}
                 </h3>
 
-                {/* Description */}
-                <p className="text-slate-600 text-sm mb-4 line-clamp-2">
+                <p className="text-slate-400 text-sm mb-4 line-clamp-2">
                   {asset.description}
                 </p>
 
-                {/* Stats Grid */}
-                <div className="grid grid-cols-2 gap-4 mb-6">
+                {/* Stats */}
+                <div className="grid grid-cols-3 gap-4 mb-6">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-cyan-600">{asset.projectedROI}%</div>
-                    <div className="text-xs text-slate-500">Projected ROI</div>
+                    <div className="text-2xl font-bold text-cyan-400">{asset.projectedROI}%</div>
+                    <div className="text-xs text-slate-400">ROI</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-slate-900">{asset.term} mos</div>
-                    <div className="text-xs text-slate-500">Term</div>
+                    <div className="text-2xl font-bold text-blue-400">{asset.term}</div>
+                    <div className="text-xs text-slate-400">Months</div>
                   </div>
-                </div>
-
-                {/* Features */}
-                <div className="flex items-center gap-4 mb-6 text-xs text-slate-500">
-                  <div className="flex items-center gap-1">
-                    <Users className="w-3 h-3" />
-                    <span>{asset.investorCount} investors</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Star className="w-3 h-3" />
-                    <span>{asset.rating}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Shield className="w-3 h-3" />
-                    <span>Verified</span>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-emerald-400">${asset.minimumInvestment}</div>
+                    <div className="text-xs text-slate-400">Min. Invest</div>
                   </div>
                 </div>
 
                 {/* Progress Bar */}
                 <div className="mb-6">
-                  <div className="flex justify-between text-sm text-slate-600 mb-2">
+                  <div className="flex justify-between text-sm text-slate-400 mb-2">
                     <span>Funding Progress</span>
-                    <span>{asset.fundingProgress}%</span>
+                    <span className="font-semibold text-cyan-400">{asset.fundingProgress}%</span>
                   </div>
-                  <div className="w-full bg-slate-200 rounded-full h-2">
-                    <div 
-                      className="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full transition-all duration-500"
-                      style={{ width: `${asset.fundingProgress}%` }}
-                    ></div>
+                  <div className="w-full bg-slate-700 rounded-full h-2">
+                    <motion.div 
+                      className="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full"
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${asset.fundingProgress}%` }}
+                      transition={{ duration: 1, delay: index * 0.2 }}
+                    />
                   </div>
                 </div>
 
                 {/* Action Buttons */}
                 <div className="flex gap-3">
-                  <button
+                  <motion.button
                     onClick={() => handleInvest(asset)}
-                    className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-3 px-4 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105 active:scale-95"
+                    className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
-                    Invest Now
-                  </button>
-                  <button
+                    <Target className="w-4 h-4" />
+                    Invest from ${asset.minimumInvestment}
+                  </motion.button>
+                  
+                  <motion.button
                     onClick={() => handleViewDetails(asset)}
-                    className="flex items-center justify-center gap-2 text-slate-700 hover:text-slate-900 transition-colors duration-300 border border-slate-300 hover:border-slate-400 rounded-xl px-4 py-3"
+                    className="flex items-center justify-center gap-2 text-slate-300 hover:text-white transition-all duration-300 border border-slate-600 hover:border-cyan-500/50 rounded-xl px-4 py-3"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    <span>Details</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
+                    <Eye className="w-4 h-4" />
+                    <span className="font-semibold">Learn More</span>
+                  </motion.button>
                 </div>
               </div>
             </motion.div>
@@ -195,12 +216,19 @@ export default function FeaturedAssetsSection() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-12"
         >
-          <button className="bg-transparent border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105">
-            View All Investment Opportunities
-          </button>
+          <motion.button
+            className="bg-transparent border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span className="flex items-center gap-2">
+              View All Investment Opportunities
+              <ArrowRight className="w-5 h-5" />
+            </span>
+          </motion.button>
         </motion.div>
       </div>
 
@@ -209,10 +237,7 @@ export default function FeaturedAssetsSection() {
         isOpen={isInvestmentModalOpen}
         onClose={() => setIsInvestmentModalOpen(false)}
         asset={selectedAsset}
-        onInvest={(amount) => {
-          console.log(`Investing $${amount} in ${selectedAsset?.name}`);
-          setIsInvestmentModalOpen(false);
-        }}
+        onInvest={handleInvestmentConfirm}
         userBalance={user?.asrdBalance || 0}
       />
 
@@ -220,6 +245,7 @@ export default function FeaturedAssetsSection() {
         isOpen={isDetailsModalOpen}
         onClose={() => setIsDetailsModalOpen(false)}
         asset={selectedAsset}
+        onInvest={handleInvest}
       />
     </section>
   );

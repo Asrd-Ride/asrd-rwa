@@ -1,0 +1,18 @@
+"use client";
+
+import React from 'react';
+import FluidLayout from '@/components/layout/FluidLayout';
+import dynamic from 'next/dynamic';
+
+const FluidDashboard = dynamic(() => import('@/components/sections/FluidDashboard'), {
+  ssr: false,
+  loading: () => <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 animate-pulse" />
+});
+
+export default function DashboardPage() {
+  return (
+    <FluidLayout>
+      <FluidDashboard />
+    </FluidLayout>
+  );
+}

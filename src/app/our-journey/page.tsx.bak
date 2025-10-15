@@ -2,9 +2,9 @@
 
 import React from 'react';
 import FluidLayout from '@/components/layout/FluidLayout';
-import dynamicImport from 'next/dynamic';
+import dynamic from 'next/dynamic';
 
-const OurJourneySection = dynamicImport(() => import('@/components/sections/OurJourneySection'), {
+const OurJourneySection = dynamic(() => import('@/components/sections/OurJourneySection'), {
   ssr: false,
   loading: () => <div className="min-h-screen bg-gradient-to-br from-emerald-900/20 to-cyan-900/20 animate-pulse rounded-2xl" />
 });

@@ -2,9 +2,9 @@
 
 import React from 'react';
 import FluidLayout from '@/components/layout/FluidLayout';
-import dynamicImport from 'next/dynamic';
+import dynamic from 'next/dynamic';
 
-const FluidDAO = dynamicImport(() => import('@/components/sections/FluidDAO'), {
+const FluidDAO = dynamic(() => import('@/components/sections/FluidDAO'), {
   ssr: false,
   loading: () => <div className="min-h-screen bg-gradient-to-br from-purple-900/20 to-pink-900/20 animate-pulse rounded-2xl" />
 });

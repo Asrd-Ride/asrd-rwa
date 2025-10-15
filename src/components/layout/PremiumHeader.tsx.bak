@@ -123,8 +123,8 @@ export default function PremiumHeader() {
                         <User className="w-4 h-4 text-white" />
                       </div>
                       <div className="text-left">
-                        <div className="text-white font-semibold text-sm">{user?.walletAddress?.slice(0, 6) || "000000"}...{user?.walletAddress?.slice(-4) || "0000"}</div>
-                        <div className="text-cyan-400 text-xs">${user?.portfolioValue?.toLocaleString() || '0'}</div>
+                        <div className="text-white font-semibold text-sm">{user.walletAddress.slice(0, 6)}...{user.walletAddress.slice(-4)}</div>
+                        <div className="text-cyan-400 text-xs">${user.portfolioValue?.toLocaleString() || '0'}</div>
                       </div>
                     </div>
                     <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
@@ -142,18 +142,18 @@ export default function PremiumHeader() {
                         className="absolute top-full right-0 mt-2 w-64 bg-slate-800 rounded-xl border border-slate-700 shadow-2xl overflow-hidden"
                       >
                         <div className="p-4 border-b border-slate-700">
-                          <div className="text-white font-semibold">{user?.walletAddress?.slice(0, 6) || "000000"}...{user?.walletAddress?.slice(-4) || "0000"}</div>
+                          <div className="text-white font-semibold">{user.walletAddress.slice(0, 6)}...{user.walletAddress.slice(-4)}</div>
                           <div className="text-cyan-400 text-sm">Premium Investor</div>
                         </div>
 
                         <div className="p-3">
                           <div className="grid grid-cols-2 gap-2 mb-3">
                             <div className="text-center p-3 bg-cyan-500/10 rounded-lg border border-cyan-500/20">
-                              <div className="text-cyan-400 font-bold">${user?.portfolioValue?.toLocaleString() || '0'}</div>
+                              <div className="text-cyan-400 font-bold">${user.portfolioValue?.toLocaleString() || '0'}</div>
                               <div className="text-cyan-400/80 text-xs">Portfolio</div>
                             </div>
                             <div className="text-center p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                              <div className="text-blue-400 font-bold">{user?.asrdBalance?.toLocaleString() || '5,000'}</div>
+                              <div className="text-blue-400 font-bold">{user.asrdBalance?.toLocaleString() || '5,000'}</div>
                               <div className="text-blue-400/80 text-xs">ASRD Tokens</div>
                             </div>
                           </div>
@@ -230,11 +230,11 @@ export default function PremiumHeader() {
                       <div className="px-4 py-3 bg-slate-700/50 rounded-lg border border-slate-600">
                         <div className="flex items-center space-x-2 mb-2">
                           <User className="w-4 h-4 text-cyan-400" />
-                          <span className="font-semibold text-white">{user?.walletAddress?.slice(0, 6) || "000000"}...{user?.walletAddress?.slice(-4) || "0000"}</span>
+                          <span className="font-semibold text-white">{user.walletAddress.slice(0, 6)}...{user.walletAddress.slice(-4)}</span>
                         </div>
                         <div className="grid grid-cols-2 gap-2 text-sm">
-                          <div className="text-cyan-400">${user?.portfolioValue?.toLocaleString() || '0'}</div>
-                          <div className="text-blue-400">{user?.asrdBalance?.toLocaleString() || '5,000'} ASRD</div>
+                          <div className="text-cyan-400">${user.portfolioValue?.toLocaleString() || '0'}</div>
+                          <div className="text-blue-400">{user.asrdBalance?.toLocaleString() || '5,000'} ASRD</div>
                         </div>
                       </div>
                       <button
